@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_client_visit_user,crm.client.visit.user,model_crm_client_visit,group_crm_visit_user,1,1,1,1
+access_crm_client_visit_manager,crm.client.visit.manager,model_crm_client_visit,group_crm_visit_manager,1,1,1,1
+access_crm_client_visit_attendance_user,crm.client.visit.attendance.user,model_crm_client_visit_attendance,group_crm_visit_user,1,0,0,0
+access_crm_client_visit_attendance_manager,crm.client.visit.attendance.manager,model_crm_client_visit_attendance,group_crm_visit_manager,1,1,1,1
+access_crm_client_visit_analysis_user,crm.client.visit.analysis.user,model_crm_client_visit_analysis,group_crm_visit_user,1,0,0,0
+access_crm_client_visit_analysis_manager,crm.client.visit.analysis.manager,model_crm_client_visit_analysis,group_crm_visit_manager,1,0,0,0
+

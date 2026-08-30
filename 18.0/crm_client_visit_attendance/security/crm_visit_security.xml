@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- User Group -->
+        <record id="group_crm_visit_user" model="res.groups">
+            <field name="name">CRM Visit User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="group_crm_visit_manager" model="res.groups">
+            <field name="name">CRM Visit Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_crm_visit_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- User: See only own visits -->
+        <record id="crm_client_visit_user_rule" model="ir.rule">
+            <field name="name">CRM Visit: User - Own Visits</field>
+            <field name="model_id" ref="model_crm_client_visit"/>
+            <field name="domain_force">[('leader_employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_crm_visit_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Manager: See all visits -->
+        <record id="crm_client_visit_manager_rule" model="ir.rule">
+            <field name="name">CRM Visit: Manager - All Visits</field>
+            <field name="model_id" ref="model_crm_client_visit"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_crm_visit_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- User: See only own attendance -->
+        <record id="crm_visit_attendance_user_rule" model="ir.rule">
+            <field name="name">CRM Visit Attendance: User - Own Records</field>
+            <field name="model_id" ref="model_crm_client_visit_attendance"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_crm_visit_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Manager: See all attendance -->
+        <record id="crm_visit_attendance_manager_rule" model="ir.rule">
+            <field name="name">CRM Visit Attendance: Manager - All Records</field>
+            <field name="model_id" ref="model_crm_client_visit_attendance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_crm_visit_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Multi-Company Rules -->
+        <record id="crm_client_visit_company_rule" model="ir.rule">
+            <field name="name">CRM Visit: Multi-Company</field>
+            <field name="model_id" ref="model_crm_client_visit"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+            <field name="global" eval="True"/>
+        </record>
+
+        <record id="crm_visit_attendance_company_rule" model="ir.rule">
+            <field name="name">CRM Visit Attendance: Multi-Company</field>
+            <field name="model_id" ref="model_crm_client_visit_attendance"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+            <field name="global" eval="True"/>
+        </record>
+
+    </data>
+</odoo>
+

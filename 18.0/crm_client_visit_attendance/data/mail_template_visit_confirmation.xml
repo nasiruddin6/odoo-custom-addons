@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Email Template: Visit Confirmation -->
+        <record id="email_template_visit_confirmation" model="mail.template">
+            <field name="name">Client Visit: Confirmation Email</field>
+            <field name="model_id" ref="model_crm_client_visit"/>
+            <field name="subject">{{ object.company_id.name }} Visit Scheduled (Ref {{ object.name or 'n/a' }})</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to">{{ object.client_id.id }}</field>
+            <field name="email_cc">{{ (object.leader_employee_id.work_email or '') + (', ' + ', '.join([emp.work_email
+                for emp in object.visit_employee_ids if emp.work_email]) if object.visit_employee_ids else '') }}
+            </field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <strong t-out="object.client_id.name or ''">Partner Name</strong>,
+                        <br/>
+                        <br/>
+                        This is to confirm our scheduled visit to your location.
+                        <br/>
+                        <br/>
+                    </p>
+
+                    <div style="background-color: #f8f9fa; padding: 20px; border-left: 4px solid #007bff; margin: 20px 0;">
+                        <h3 style="margin-top: 0; color: #007bff;">Visit Details</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; width: 40%;">
+                                    <strong>Reference:</strong>
+                                </td>
+                                <td style="padding: 8px 0;">
+                                    <span t-out="object.name or ''">VISIT/001</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0;">
+                                    <strong>Client:</strong>
+                                </td>
+                                <td style="padding: 8px 0;">
+                                    <span t-out="object.client_id.name or ''">Client Name</span>
+                                </td>
+                            </tr>
+                            <t t-if="object.planned_datetime">
+                                <tr>
+                                    <td style="padding: 8px 0;">
+                                        <strong>Date:</strong>
+                                    </td>
+                                    <td style="padding: 8px 0;">
+                                        <span t-out="format_date(object.planned_datetime) or ''">Date</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0;">
+                                        <strong>Time:</strong>
+                                    </td>
+                                    <td style="padding: 8px 0;">
+                                        <span t-out="format_time(object.planned_datetime) or ''">Time</span>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="padding: 8px 0;">
+                                    <strong>Duration:</strong>
+                                </td>
+                                <td style="padding: 8px 0;">
+                                    <span t-out="object.expected_duration or 0">0</span>
+                                    hour(s)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0;">
+                                    <strong>Visit Type:</strong>
+                                </td>
+                                <td style="padding: 8px 0;">
+                                    <span t-out="dict(object._fields['visit_type'].selection).get(object.visit_type) or ''">
+                                        Type
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0;">
+                                    <strong>Team Leader:</strong>
+                                </td>
+                                <td style="padding: 8px 0;">
+                                    <span t-out="object.leader_employee_id.name or ''">Employee</span>
+                                </td>
+                            </tr>
+                            <t t-if="object.purpose">
+                                <tr>
+                                    <td style="padding: 8px 0;">
+                                        <strong>Purpose:</strong>
+                                    </td>
+                                    <td style="padding: 8px 0;">
+                                        <span t-out="object.purpose or ''">Purpose</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+
+                    <t t-if="object.client_id.street or object.client_id.phone">
+                        <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <p style="margin: 0 0 10px 0; font-weight: bold;">Your Contact Information:</p>
+                            <t t-if="object.client_id.street">
+                                <p style="margin: 5px 0;">📍
+                                    <span t-out="object.client_id.street or ''">Address</span>
+                                    <t t-if="object.client_id.city">,
+                                        <span t-out="object.client_id.city or ''">City</span>
+                                    </t>
+                                </p>
+                            </t>
+                            <t t-if="object.client_id.phone">
+                                <p style="margin: 5px 0;">📞
+                                    <span t-out="object.client_id.phone or ''">Phone</span>
+                                </p>
+                            </t>
+                            <t t-if="object.client_id.email">
+                                <p style="margin: 5px 0;">✉️
+                                    <span t-out="object.client_id.email or ''">Email</span>
+                                </p>
+                            </t>
+                        </div>
+                    </t>
+
+                    <p style="margin: 10px 0px; font-size: 13px;">
+                        If you need to reschedule or have any questions, please contact us as soon as possible.
+                        <br/>
+                        <br/>
+                        We look forward to meeting you!
+                        <br/>
+                        <br/>
+                    </p>
+
+                    <p style="margin-top: 30px; font-size: 13px;">
+                        Best regards,
+                        <br/>
+                        <strong t-out="object.company_id.name or ''">Company</strong>
+                    </p>
+
+                    <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;"/>
+                    <p style="font-size: 11px; color: #999; text-align: center; margin: 0px;">
+                        This is an automated notification. Please do not reply to this email.
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">{{ object.client_id.lang }}</field>
+        </record>
+
+
+    </data>
+</odoo>
+

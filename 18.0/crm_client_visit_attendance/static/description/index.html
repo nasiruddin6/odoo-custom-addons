@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Primary Meta Tags -->
+    <title>CRM Client Visit & Employee Attendance Management</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <meta name="author" content="Tectise" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="" />
+    <meta
+      property="og:image"
+      content="https://www.tectise.com/images/odoo-access-manager-og.jpg"
+    />
+    <meta property="og:url" content="https://www.tectise.com/" />
+    <meta property="og:site_name" content="Tectise" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://www.tectise.com/" />
+    <meta name="twitter:site" content="@tectise" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.tectise.com/" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      .img-border {
+        border: 1px solid #ffc107;
+      }
+
+      .section-box {
+        padding: 30px 0;
+      }
+
+      .bg-teal {
+        background-color: #017e84 !important;
+      }
+
+      .bg-purple {
+        background-color: #875a7b !important;
+      }
+
+      /* Reusable badge style */
+      .badge-box {
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        margin: 3px;
+        border-radius: 50px;
+        min-width: 120px;
+      }
+    </style>
+  </head>
+
+  <body style="font-size: 22px">
+    <div class="container">
+      <!-- Header -->
+      <div class="row">
+        <div
+          class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between flex-wrap align-items-sm-center"
+          style="border-bottom: 1px solid rgba(0, 0, 0, 0.22)"
+        >
+          <div class="my-3">
+            <img
+              src="./icon/logo.png"
+              style="width: auto !important; height: 60px !important"
+            />
+          </div>
+          <div class="my-3 d-flex align-items-center">
+            <div
+              class="text-center"
+              style="
+                background-color: #017e84 !important;
+                font-size: 18px !important;
+                color: #fff !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Community
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #875a7b !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Enterprise
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #71639e !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Odoo.sh
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!--
+    /*******************************************************************************************/
+     Header Section 
+     /*******************************************************************************************/
+     -->
+
+      <h1 style="text-align: center; font-size: 60px">
+        <b>CRM Client Visit & Employee Attendance Management</b>
+      </h1>
+
+      <!-- <h2> <b>Description</b></h2> -->
+      <p class="small" style="font-size: 22px; text-align: center">
+       CRM Client Visit & Employee Attendance Management streamlines field operations by combining CRM visit planning with GPS-based check-in/check-out and automatic attendance generation. It enables teams to schedule and track client visits, verify locations in real time, auto-create HR attendance, and analyze employee performance all from a single, mobile-ready, multi-company compatible solution fully integrated with Odoo CRM and HR.
+      </p>
+      <br />
+      <!-- banner_updated -->
+
+      <p class="text-center" style="font-size: 25px !important">
+        <a
+          href="https://www.youtube.com/watch?v=LgfoQHy6b4w"
+          target="_blank"
+          style="text-decoration: none; color: #e17055 !important"
+        >
+          <span
+            class="badge"
+            style="
+              border: 2px solid #e17055 !important;
+              border-radius: 7px !important;
+              color: #e17055 !important;
+              padding: 15px !important;
+              font-size: 20px !important;
+              font-weight: 900 !important;
+            "
+          >
+            <img
+              src="./icon/youtube-48x48.png"
+              class="img-fluid"
+              style="width: 35px; vertical-align: middle; margin-right: 5px"
+            />
+            How it works? Click here to watch video
+          </span>
+        </a>
+      </p>
+
+      <br />
+      <!-- Feature List -->
+      <div>
+        <h3 style="margin-bottom: 30px"><b>Key Features:</b></h3>
+        <ol>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">CRM-Based Client Visit Scheduling -</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Plan and manage client visits directly from leads and opportunities.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0"> GPS Check-In & Check-Out Verification -</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+               Ensure authentic visits with real-time location tracking.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Automatic HR Attendance Creation -</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                Field visits automatically generate employee attendance records. 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0"> Smart Visit Workflow Management -</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Track visits from planning to completion with approval control. 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0"> Complete CRM Integration - </h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                Access visit history, outcomes, and next actions from customer records.
+              </p>
+            </div>
+          </li>
+                    <li>
+            <div class="inline-item">
+              <h4 style="margin: 0"> Role-Based Access & Audit Logs - </h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Secure data visibility with manager override and full traceability. 
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Mobile-Ready & API-Driven - </h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Optimized for field teams with seamless mobile app integration.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Multi-Company Support - </h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Manage visits and attendance across multiple companies effortlessly.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Advanced Reporting & Dashboards - </h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Monitor employee performance, visit duration, and productivity.
+              </p>
+            </div>
+          </li>
+
+      </div>
+
+      <h3 class="pt-4"><b>Description</b></h3>
+      <!-- Screenshots -->
+      <div class="section-box">
+        <h3>1. Click “Schedule Visit” from the opportunity to initiate a field visit linked to the sales pipeline.</h3>
+        <img src="./images/1.png" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>2. Define visit details, assign team, and confirm scheduling. </h3>
+        <img src="./images/2.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>3. The system prepares a visit confirmation email with all visit details click “Send” to notify the client.</h3>
+        <img src="./images/3.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>4. Begin visit with GPS check-in and track activities in real time.</h3>
+        <img src="./images/4.png" class="img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>5. Click “Check Out” to record visit completion, calculate duration, and trigger automatic attendance creation.</h3>
+        <img src="./images/5.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>6.  Employee attendance is created with check-in/out times and duration visible under the Attendance tab.</h3>
+        <img src="./images/6.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>7. View actual check-in/out timestamps and GPS coordinates for location verification and audit</h3>
+        <img src="./images/7.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>8. Log visit result, interest level, expected value, and follow-up actions under the Outcome tab.</h3>
+        <img src="./images/8.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>9. Upload unlimited files, photos, signed forms, documents, and visiting cards under the Attachments tab.</h3>
+        <img src="./images/9.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>10.  View internal notes and client feedback under the Remarks tab for future reference and quality tracking.</h3>
+        <img src="./images/10.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>11. Go to “Reporting > Visit Analysis” to view performance metrics and visit summaries.</h3>
+        <img src="./images/11.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>12. Analyze visit completion trends using bar charts for quick visual insights.</h3>
+        <img src="./images/12.png" class="img-thumbnail img-border" />
+      </div>
+            <div class="section-box">
+        <h3>13. Review visit data by expected value, interest level, and actual duration in pivot format.</h3>
+        <img src="./images/13.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>14. Track visit history with reference, client, team leader, visit type, and status in tabular format.</h3>
+        <img src="./images/14.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>15. Enable “CRM Visit Manager” or “CRM Visit User” roles in user settings to control access and permissions.</h3>
+        <img src="./images/15.png" class="img-thumbnail img-border" />
+      </div>
+
+      <!--
+    /*******************************************************************************************/
+     Footer Section 
+     /*******************************************************************************************/
+     -->
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-8 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                  >
+                    Free
+                    <span
+                      style="
+                        background-color: #dc3545;
+                        color: white;
+                        border-radius: 10rem;
+                        padding: 0.25em 0.6em;
+                        font-size: 25px;
+                      "
+                      >90 Days</span
+                    >
+                    Support
+                  </span>
+                  <p class="m-0" style="color: #718096">
+                    Tectise will provide FREE 90 days support for any doubt,
+                    queries, and bug fixing (excluding data recovery) or any
+                    type of issues related to this module. This is applicable
+                    from the date of purchase.
+                  </p>
+                  <div style="font-weight: 400"><span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-4 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/90-days-support.png"
+                  alt=""
+                  width="200px"
+                  style="margin-right: 12px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div
+          class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-5"
+        >
+          <img
+            src="./icon/logo.png"
+            class="img-thumbnail"
+            style="width: 20%"
+          />
+        </div>
+      </div>
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/support.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                    >Need Any Help?</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Got questions or need help? Get in touch.
+                  </p>
+                  <div style="font-weight: 400">
+                    <span
+                      ><img
+                        src="./icon/email.png"
+                        alt=""
+                        width="18px"
+                        style="margin-right: 0.8rem" /></span
+                    >info.tectise@gmail.com
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/whatsapp.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div>
+                  <span
+                    style="color: #714b67; font-size: 24px; font-weight: 600"
+                    >WhatsApp</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Say hi to us on WhatsApp!
+                  </p>
+                  <div style="font-weight: 400; font-size: 16px">
+                    <span
+                      ><img
+                        src="./icon/call.png"
+                        alt=""
+                        width="14px"
+                        style="margin-right: 0.8rem" /></span
+                    >+8801903559562
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
