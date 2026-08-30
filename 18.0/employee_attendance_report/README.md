@@ -1,106 +1,143 @@
 # Employee Attendance Report
 
-## Overview
-Comprehensive employee attendance reporting module for Odoo 19 that generates detailed Excel reports with advanced attendance analytics.
+## 1. Module Overview
 
-## Features
+- **Module name:** Employee Attendance Report (`employee_attendance_report`)
+- **What it does:** Generates an Excel attendance report for one employee and a selected date range.
+- **Main purpose:** Summarize attendance, working hours, absences, late arrivals, early check-outs, approved time off, public holidays, and overtime.
 
-### Core Functionality
-- Date range based attendance tracking
-- Multi-employee support
-- Automatic working days calculation based on employee shift
-- Leave and holiday integration
-- Timezone-aware time tracking
+## 2. Odoo Version
 
-### Attendance Metrics
-- **Total Working Days**: Calculated based on employee's shift schedule
-- **Present Days**: Days with attendance records (excluding leaves/holidays)
-- **Absent Days**: Missing attendance on working days
-- **Late Check-ins**: Arrivals after shift start time
-- **Early Check-outs**: Departures before shift end time
-- **Leave Days**: Approved leaves within date range
-- **Holidays**: Public holidays from resource calendar
-- **Overtime Hours**: Hours worked beyond standard 8-hour day
+- Odoo 18.0
 
-### Status Classification
-- **Present**: Normal attendance
-- **Late**: Check-in after shift start
-- **Early Checkout**: Check-out before shift end
-- **Late & Early Checkout**: Both conditions met
-- **Leave**: Employee on approved leave
-- **Holiday**: Public holiday
-- **Absent**: No attendance on working day
-- **Non-Working Day**: Weekend or non-scheduled day
+## 3. Features
 
-### Excel Report Features
-- Company header with logo and contact information
-- Employee details summary
-- Date-wise attendance table with:
-  - Date and day of week
-  - Check-in and check-out times (user timezone)
-  - Working hours and extra hours
-  - Attendance status
-- Professional formatting with borders and styles
-- Auto-sized columns for better readability
-- Language-specific date/time formatting
+- Excel report by employee and date range.
+- Company and employee details in the report header.
+- Attendance summary and daily status.
+- Working-schedule-based working-day, late, early, and absence checks.
+- Approved time off and public holiday integration.
+- Employee-timezone and user-language date/time formatting.
 
-## Technical Details
+## 4. Dependencies
 
-### Dependencies
-- `hr`: Base HR module
-- `hr_attendance`: Attendance management
-- `hr_holidays`: Leave management
+- `hr`
+- `hr_attendance`
+- `hr_holidays`
 
-### Python Dependencies
-- `xlsxwriter`: Excel file generation
-- `pytz`: Timezone handling
+## 5. Installation
 
-### Models
-- **attendance.report.wizard**: Transient model for report generation
+1. Copy `employee_attendance_report` into the Odoo addons path.
+2. Restart Odoo and update the Apps list.
+3. Open **Apps**, search for **Employee Attendance Report**, and install it.
 
-### Access Rights
-- Available to all users (can be customized via security groups)
+## 6. Configuration
 
-## Usage
+No module-specific setting must be enabled.
 
-1. Navigate to: **Attendances > Reporting > Employee Attendance Report**
-2. Select employee
-3. Choose date range (From - To)
-4. Click **Export Excel**
-5. Download automatically generated report
+**Go to:** `Odoo → Employees → Employees → Employees → select an employee → Work Information`
 
-## Configuration
+**Steps:**
 
-### Shift Configuration
-The module respects employee shift settings from `resource.calendar`:
-- Working days (Mon-Sun configuration)
-- Shift start and end times
-- Default: 8:00 AM - 5:00 PM if no calendar assigned
+1. Under **Schedule**, set **Working Hours**.
+2. Set the employee **Timezone**.
+3. Save the employee.
 
-### Leave Management
-Integrates with Odoo's leave system:
-- Only approved leaves counted
-- Leave dates excluded from present days calculation
-- Leave status shown in report
+To edit a schedule, go to `Odoo → Employees → Configuration → Employee → Working Schedules`, open the assigned schedule, and configure its working days and hours.
 
-### Holiday Management
-Uses resource calendar leaves:
-- Global holidays (company-wide)
-- Employee-specific holidays
-- Calendar-based holiday tracking
+## 7. How to Test in Odoo UI
 
-## Timezone Handling
-All times are converted from UTC (database) to user's timezone for accurate reporting.
+#### Test: Generate the Excel Report
 
-## Date Format
-Automatically formats dates and times based on user's language settings from `res.lang`.
+**Go to:** `Odoo → Attendances → Reporting → Employee Attendance Report`
 
-## Version
-**19.0.1.0.0**
+**Steps:**
 
-## Author
-TecTISE Solutions
+1. Select an **Employee**.
+2. Set **From** and **To** dates containing attendance records.
+3. Click **Export Excel**.
+4. Open the downloaded `Employee_Attendance_Report.xlsx` file.
 
-## License
-LGPL-3
+**Expected Result:**
 
+An Excel file downloads with company details, the selected dates, employee details, attendance totals, and a daily attendance table.
+
+#### Test: Attendance Statuses and Hours
+
+**Go to:** `Odoo → Attendances → Overview`
+
+**Steps:**
+
+1. Click **New** and create completed attendance records for the test employee using **Check In** and **Check Out**.
+2. Include records that start after the employee's scheduled start, end before the scheduled finish, and exceed eight worked hours.
+3. Return to `Odoo → Attendances → Reporting → Employee Attendance Report`.
+4. Export a report covering the test dates.
+
+**Expected Result:**
+
+The daily rows show the applicable statuses: **Present**, **Late**, **Early Checkout**, or **Late & Early Checkout**. Scheduled days without attendance show **Absent**. The report shows working hours, extra hours, and summary totals.
+
+#### Test: Approved Time Off
+
+**Go to:** `Odoo → Time Off → Management → Time Off`
+
+**Steps:**
+
+1. Create a time-off request for the test employee on a scheduled working day.
+2. Set the time-off type and dates, then approve the request.
+3. Open `Odoo → Attendances → Reporting → Employee Attendance Report`.
+4. Export a report covering the approved date.
+
+**Expected Result:**
+
+The date shows **Leave** in the daily table and is included in **Leave Days (Approved)**.
+
+#### Test: Public Holiday
+
+**Go to:** `Odoo → Time Off → Configuration → Public Holidays`
+
+**Steps:**
+
+1. Add a public holiday with a **Name**, **Working Hours**, **Start Date**, and **End Date**.
+2. Use the working schedule assigned to the test employee.
+3. Open `Odoo → Attendances → Reporting → Employee Attendance Report`.
+4. Export a report covering the holiday date.
+
+**Expected Result:**
+
+The date shows **Holiday - [Name]** in the daily table and is included in **Holidays**.
+
+#### Test: Timezone and Date/Time Formatting
+
+**Go to:** `Odoo → Employees → Employees → Employees → select an employee → Work Information`
+
+**Steps:**
+
+1. Confirm the employee's **Timezone** under **Schedule**.
+2. Create a completed attendance record from `Odoo → Attendances → Overview`.
+3. Export a report that includes the record.
+4. Compare the Excel check-in/check-out values with the employee's timezone and the current user's language format.
+
+**Expected Result:**
+
+Check-in and check-out values use the employee's timezone. Dates and times use the current user's Odoo language formats.
+
+## 8. Screenshots
+
+Add screenshots of:
+
+- `Attendances → Reporting → Employee Attendance Report`.
+- The completed report wizard before export.
+- The generated Excel summary and daily attendance table.
+
+## 9. Technical Notes
+
+- Wizard model: `attendance.report.wizard` (`TransientModel`).
+- Source models: `hr.employee`, `hr.attendance`, `hr.leave`, and `resource.calendar.leaves`.
+- The wizard is opened by a modal form view and downloads an `ir.attachment` generated with `xlsxwriter`.
+- Access is defined in `security/ir.model.access.csv`; the menu is under the standard Attendances Reporting menu.
+- Extra hours are calculated as worked hours above eight hours per attendance record.
+
+## 10. Changelog
+
+- **18.0.1.0.0** — Initial Odoo 18 release with Excel export, attendance metrics, time off, holidays, and timezone-aware values.
