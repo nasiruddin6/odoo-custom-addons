@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fund_request_list" model="ir.ui.view">
+        <field name="name">fund.request.list</field>
+        <field name="model">fund.request</field>
+        <field name="arch" type="xml">
+            <tree string="Fund Requests"
+                  decoration-info="status == 'draft'"
+                  decoration-warning="status == 'submitted'"
+                  decoration-success="status == 'approved'"
+                  decoration-danger="status == 'rejected'">
+                <field name="request_number"/>
+                <field name="request_date"/>
+                <field name="employee_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'draft'"
+                       decoration-warning="status == 'submitted'"
+                       decoration-success="status == 'approved'"
+                       decoration-danger="status == 'rejected'"/>
+                <field name="created_by" optional="hide"/>
+                <field name="last_modified_by" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_fund_request_form" model="ir.ui.view">
+        <field name="name">fund.request.form</field>
+        <field name="model">fund.request</field>
+        <field name="arch" type="xml">
+            <form string="Fund Request">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="oe_highlight" invisible="status != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" groups="nn_fund_management.group_fund_manager" invisible="status != 'submitted'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-secondary" groups="nn_fund_management.group_fund_manager" invisible="status != 'submitted'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" class="btn-secondary" groups="nn_fund_management.group_fund_manager" invisible="status not in ['submitted', 'rejected']"/>
+                    <button name="action_print_report" string="Print Report" type="object" class="btn-secondary" invisible="not id"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="request_number"/>
+                        <h1>
+                            <field name="request_number" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Request Details">
+                            <field name="employee_id"/>
+                            <field name="request_date"/>
+                            <field name="amount"/>
+                        </group>
+                        <group string="Audit">
+                            <field name="created_by" readonly="1"/>
+                            <field name="last_modified_by" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Purpose" name="purpose">
+                            <field name="purpose" placeholder="Describe why this fund is needed..."/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Optional internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_fund_request_search" model="ir.ui.view">
+        <field name="name">fund.request.search</field>
+        <field name="model">fund.request</field>
+        <field name="arch" type="xml">
+            <search string="Fund Requests">
+                <field name="request_number"/>
+                <field name="employee_id"/>
+                <field name="purpose"/>
+                <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('status', '=', 'submitted')]"/>
+                <filter string="Approved" name="approved" domain="[('status', '=', 'approved')]"/>
+                <filter string="Rejected" name="rejected" domain="[('status', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="My Requests" name="my_requests" domain="[('created_by', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Request Date" name="group_request_date" context="{'group_by': 'request_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Demo Data for Fund Requests -->
+        
+        <!-- Sample Employee Partners for Demo -->
+        <record id="partner_john_doe" model="res.partner">
+            <field name="name">John Doe</field>
+            <field name="email">john.doe@example.com</field>
+            <field name="phone">+1-555-0101</field>
+            <field name="is_company">False</field>
+        </record>
+        
+        <record id="partner_jane_smith" model="res.partner">
+            <field name="name">Jane Smith</field>
+            <field name="email">jane.smith@example.com</field>
+            <field name="phone">+1-555-0102</field>
+            <field name="is_company">False</field>
+        </record>
+        
+        <!-- Demo Fund Request 1 - Draft -->
+        <record id="fund_request_draft" model="fund.request">
+            <field name="employee_id" ref="partner_john_doe"/>
+            <field name="request_date">2025-01-15</field>
+            <field name="amount">5000.00</field>
+            <field name="purpose">Equipment purchase for office setup including computer monitors and keyboards</field>
+            <field name="status">draft</field>
+            <field name="notes">Initial request for office equipment upgrade</field>
+        </record>
+        
+        <!-- Demo Fund Request 2 - Submitted -->
+        <record id="fund_request_submitted" model="fund.request">
+            <field name="employee_id" ref="partner_jane_smith"/>
+            <field name="request_date">2025-01-16</field>
+            <field name="amount">10000.00</field>
+            <field name="purpose">Professional development and training course fees for advanced skills certification</field>
+            <field name="status">submitted</field>
+            <field name="notes">Professional development request for team lead position</field>
+        </record>
+        
+        <!-- Demo Fund Request 3 - Approved -->
+        <record id="fund_request_approved" model="fund.request">
+            <field name="employee_id" ref="partner_john_doe"/>
+            <field name="request_date">2024-12-31</field>
+            <field name="amount">3500.00</field>
+            <field name="purpose">Software licenses for development tools and project management applications</field>
+            <field name="status">approved</field>
+            <field name="notes">Approved for procurement</field>
+        </record>
+        
+    </data>
+</odoo>

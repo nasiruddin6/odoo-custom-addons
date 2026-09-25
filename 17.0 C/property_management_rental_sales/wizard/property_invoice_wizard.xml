@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view for the transient wizard property.invoice.wizard -->
+    <record id="view_property_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">property.invoice.wizard.form</field>
+        <field name="model">property.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Invoice">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="contract_id" readonly="1"/>
+                            <field name="product_id"/>
+                            <field name="invoice_for" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="property_id" readonly="1"/>
+                            <field name="property_unit_id" readonly="1"/>
+                            <field name="invoice_date"/>
+                            <field name="amount"/>
+                        </group>
+                        <field name="description" nolabel="1" placeholder="Description"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Create Invoice" type="object" name="action_create_invoice" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
+

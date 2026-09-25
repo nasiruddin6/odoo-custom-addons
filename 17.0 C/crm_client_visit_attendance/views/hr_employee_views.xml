@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit HR Employee Form View -->
+    <record id="view_employee_form_inherit_crm_visit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.crm.visit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add Smart Buttons -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_visits"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-map-marker"
+                        groups="crm_client_visit_attendance.group_crm_visit_user">
+                    <field name="visit_count" widget="statinfo" string="Visits"/>
+                </button>
+                <button name="action_view_visit_attendance"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calendar-check-o"
+                        invisible="visit_attendance_count == 0"
+                        groups="crm_client_visit_attendance.group_crm_visit_user">
+                    <field name="visit_attendance_count" widget="statinfo" string="Visit Attendance"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+
+
+</odoo>
+

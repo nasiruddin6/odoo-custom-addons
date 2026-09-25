@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Default FSN Threshold Configuration -->
+        <record id="config_fsn_fast_threshold" model="ir.config_parameter">
+            <field name="key">inventory_fsn_analysis.fast_threshold</field>
+            <field name="value">100.0</field>
+        </record>
+
+        <record id="config_fsn_slow_threshold" model="ir.config_parameter">
+            <field name="key">inventory_fsn_analysis.slow_threshold</field>
+            <field name="value">10.0</field>
+        </record>
+
+    </data>
+</odoo>
+

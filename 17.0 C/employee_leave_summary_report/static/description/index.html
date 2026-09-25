@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Primary Meta Tags -->
+    <title>Employee Leave Summary Report</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <meta name="author" content="Tectise" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="" />
+    <meta
+      property="og:image"
+      content="https://www.tectise.com/images/odoo-access-manager-og.jpg"
+    />
+    <meta property="og:url" content="https://www.tectise.com/" />
+    <meta property="og:site_name" content="Tectise" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://www.tectise.com/" />
+    <meta name="twitter:site" content="@tectise" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.tectise.com/" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      .img-border {
+        border: 1px solid #ffc107;
+      }
+
+      .section-box {
+        padding: 30px 0;
+      }
+
+      .bg-teal {
+        background-color: #017e84 !important;
+      }
+
+      .bg-purple {
+        background-color: #875a7b !important;
+      }
+
+      /* Reusable badge style */
+      .badge-box {
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        margin: 3px;
+        border-radius: 50px;
+        min-width: 120px;
+      }
+    </style>
+  </head>
+
+  <body style="font-size: 22px">
+    <div class="container">
+      <!-- Header -->
+      <div class="row">
+        <div
+          class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between flex-wrap align-items-sm-center"
+          style="border-bottom: 1px solid rgba(0, 0, 0, 0.22)"
+        >
+          <div class="my-3">
+            <img
+              src="./icon/logo.png"
+              style="width: auto !important; height: 60px !important"
+            />
+          </div>
+          <div class="my-3 d-flex align-items-center">
+            <div
+              class="text-center"
+              style="
+                background-color: #017e84 !important;
+                font-size: 18px !important;
+                color: #fff !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Community
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #875a7b !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Enterprise
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #71639e !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Odoo.sh
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!--
+    /*******************************************************************************************/
+     Header Section 
+     /*******************************************************************************************/
+     -->
+
+      <h1 style="text-align: center; font-size: 60px">
+        <b>Employee Leave Summary Report</b>
+      </h1>
+
+      <!-- <h2> <b>Description</b></h2> -->
+      <p class="small" style="font-size: 22px; text-align: center">
+       Employee Leave Summary Report provides a clear overview of employee leave balances, used leaves, pending requests, and remaining entitlements in one place. Easily track annual, sick, casual, and unpaid leaves to ensure accurate HR planning, payroll compliance, and workforce transparency. Ideal for HR teams to monitor leave trends, improve attendance management, and support data-driven decisions.
+      </p>
+      <br />
+      <!-- banner_updated -->
+
+<!--      <p class="text-center" style="font-size: 25px !important">-->
+<!--        <a-->
+<!--          href="https://www.youtube.com/watch?v=LgfoQHy6b4w"-->
+<!--          target="_blank"-->
+<!--          style="text-decoration: none; color: #e17055 !important"-->
+<!--        >-->
+<!--          <span-->
+<!--            class="badge"-->
+<!--            style="-->
+<!--              border: 2px solid #e17055 !important;-->
+<!--              border-radius: 7px !important;-->
+<!--              color: #e17055 !important;-->
+<!--              padding: 15px !important;-->
+<!--              font-size: 20px !important;-->
+<!--              font-weight: 900 !important;-->
+<!--            "-->
+<!--          >-->
+<!--            <img-->
+<!--              src="./icon/youtube-48x48.png"-->
+<!--              class="img-fluid"-->
+<!--              style="width: 35px; vertical-align: middle; margin-right: 5px"-->
+<!--            />-->
+<!--            How it works? Click here to watch video-->
+<!--          </span>-->
+<!--        </a>-->
+<!--      </p>-->
+
+      <br />
+      <!-- Feature List -->
+      <div>
+        <h3 style="margin-bottom: 30px"><b>Key Features:</b></h3>
+        <ol>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Date Range–Based Tracking</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Analyze employee leave summary records for a selected start and end date.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Employee wise filter</h4>
+              <p
+                style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                "
+              >
+                 Select employees to generate leave summary reports for specific individuals or groups.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0"> Show current leave balance</h4>
+              <p style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                ">
+                On reports show current leave balance of employees for better leave management.
+              </p>
+            </div>
+          </li>
+                    <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Leave summary Metrics & Analytics</h4>
+              <p style="
+                  margin: 2px;
+                  padding-bottom: 10px;
+                  font-size: 20px !important;
+                  color: #333;
+                " >
+                <ul>
+                  <li>Badge ID – Unique employee identification number for accurate leave tracking</li>
+                  <li>Employee – Name of the employee who requested or used leave</li>
+                  <li>Department – Department or team the employee belongs to</li>
+                  <li>Start Date – Leave starting date for the requested period</li>
+                  <li>End Date – Leave ending date for the requested period</li>
+                  <li>Leave Type – Category of leave such as annual, sick, or casual</li>
+                  <li>Total Leave – Total number of leave days allocated or requested</li>
+                  <li>Leave Balance – Remaining available leave days after deduction</li>
+                  <li>Status – Current leave request status (Approved, Pending, or Rejected)</li>
+                  </ul>
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <h3 class="pt-4"><b>Description</b></h3>
+      <!-- Screenshots -->
+      <div class="section-box">
+        <h3>1. Report Menu Navigation enables quick and intuitive access to HR reports, allowing users to easily view, filter, and analyze employee leave data from a centralized reporting menu.</h3>
+        <img src="./images/1.png" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>2. Open wizard to select employees and date to date filters, status (All, To Approve, Second Approve, Approved, Refuse) </h3>
+        <img src="./images/2.png" class="img-thumbnail img-border" />
+      </div>
+      <div class="section-box">
+        <h3>3. Employee Leave Summary Report provides a clear summary of an employee’s leave summary for a selected period, including Badge ID,	Employee, Department, Start Date, End Date,	Leave Type, Total Leave, Leave Balance and Status.</h3>
+        <img src="./images/3.png" class="img-thumbnail img-border" />
+      </div>
+
+      <!--
+    /*******************************************************************************************/
+     Footer Section 
+     /*******************************************************************************************/
+     -->
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-8 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                  >
+                    Free
+                    <span
+                      style="
+                        background-color: #dc3545;
+                        color: white;
+                        border-radius: 10rem;
+                        padding: 0.25em 0.6em;
+                        font-size: 25px;
+                      "
+                      >90 Days</span
+                    >
+                    Support
+                  </span>
+                  <p class="m-0" style="color: #718096">
+                    Tectise will provide FREE 90 days support for any doubt,
+                    queries, and bug fixing (excluding data recovery) or any
+                    type of issues related to this module. This is applicable
+                    from the date of purchase.
+                  </p>
+                  <div style="font-weight: 400"><span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-4 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/90-days-support.png"
+                  alt=""
+                  width="200px"
+                  style="margin-right: 12px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div
+          class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-5"
+        >
+          <img
+            src="./icon/logo.png"
+            class="img-thumbnail"
+            style="width: 20%"
+          />
+        </div>
+      </div>
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/support.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                    >Need Any Help?</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Got questions or need help? Get in touch.
+                  </p>
+                  <div style="font-weight: 400">
+                    <span
+                      ><img
+                        src="./icon/email.png"
+                        alt=""
+                        width="18px"
+                        style="margin-right: 0.8rem" /></span
+                    >info.tectise@gmail.com
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/whatsapp.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div>
+                  <span
+                    style="color: #714b67; font-size: 24px; font-weight: 600"
+                    >WhatsApp</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Say hi to us on WhatsApp!
+                  </p>
+                  <div style="font-weight: 400; font-size: 16px">
+                    <span
+                      ><img
+                        src="./icon/call.png"
+                        alt=""
+                        width="14px"
+                        style="margin-right: 0.8rem" /></span
+                    >+8801903559562
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

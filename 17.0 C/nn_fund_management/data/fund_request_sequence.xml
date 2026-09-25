@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sequence for Fund Request Number -->
+        <record id="seq_fund_request" model="ir.sequence">
+            <field name="name">Fund Request Sequence</field>
+            <field name="code">fund.request</field>
+            <field name="prefix">FR/%(year)s/%(month)s/</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="padding">5</field>
+            <field name="use_date_range">False</field>
+        </record>
+        
+    </data>
+</odoo>

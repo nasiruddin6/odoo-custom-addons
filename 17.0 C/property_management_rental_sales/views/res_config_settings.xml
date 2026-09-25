@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.property</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Property" string="Property" name="property_management_rental_sales">
+                    <block title="Property" name="property_setting_container">
+                        <div class="app_settings_block" data-string="Property Management" string="Property"
+                             data-key="property_management_rental_sales">
+                            <h2>Property Management</h2>
+
+                            <div class="row mt16 o_settings_container">
+                                <div class="col-12 col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <label for="rental_installment_product_id"
+                                                   string="Rental Installment Product"/>
+                                            <field name="rental_installment_product_id" class="oe_inline"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-6 o_setting_box">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <label for="sales_installment_product_id"
+                                                   string="Sales Installment Product"/>
+                                        <field name="sales_installment_product_id" class="oe_inline"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_property_config_settings" model="ir.actions.act_window">
+        <field name="name">Property Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'property_management_rental_sales'}</field>
+    </record>
+
+</odoo>

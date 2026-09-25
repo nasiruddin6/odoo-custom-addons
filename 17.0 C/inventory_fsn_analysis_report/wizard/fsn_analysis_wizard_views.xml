@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FSN Analysis Wizard Form View -->
+    <record id="view_fsn_analysis_wizard_form" model="ir.ui.view">
+        <field name="name">fsn.analysis.wizard.form</field>
+        <field name="model">fsn.analysis.wizard</field>
+        <field name="arch" type="xml">
+            <form string="FSN Analysis Report">
+                <sheet>
+                    <group>
+                        <group name="date_range" string="Analysis Period">
+                            <field name="start_date" widget="date"/>
+                            <field name="end_date" widget="date"/>
+                        </group>
+                        <group name="company_info" string="Company">
+                            <field name="company_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group name="classification" string="Classification Filter">
+                            <field name="classification_type"/>
+                        </group>
+                        <group name="thresholds" string="FSN Thresholds (Editable)">
+                            <field name="fast_threshold"
+                                   widget="float"
+                                   string="Fast Moving (≥)"
+                                   placeholder="e.g., 100.00"/>
+                            <field name="slow_threshold"
+                                   widget="float"
+                                   string="Slow Moving (≥)"
+                                   placeholder="e.g., 10.00"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Filters" name="filters">
+                            <group>
+                                <group name="product_filters" string="Product Filters">
+                                    <field name="product_ids"
+                                           widget="many2many_tags"
+                                           options="{'no_create': True}"
+                                           placeholder="Leave empty for all products"/>
+                                    <field name="product_categ_ids"
+                                           widget="many2many_tags"
+                                           options="{'no_create': True}"
+                                           placeholder="Leave empty for all categories"/>
+                                </group>
+                                <group name="warehouse_filters" string="Warehouse Filters">
+                                    <field name="warehouse_ids"
+                                           widget="many2many_tags"
+                                           options="{'no_create': True}"
+                                           placeholder="Leave empty for all warehouses"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <footer>
+                    <button string="Export to Excel"
+                            name="action_export_excel"
+                            type="object"
+                            class="btn-primary"
+                            data-hotkey="x"/>
+                    <button string="Generate Analysis"
+                            name="action_generate_analysis"
+                            type="object"
+                            class="btn-secondary"
+                            data-hotkey="q"/>
+                    <button string="Cancel"
+                            class="btn-danger"
+                            special="cancel"
+                            data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Wizard Action -->
+    <record id="action_fsn_analysis_wizard" model="ir.actions.act_window">
+        <field name="name">FSN Analysis Report</field>
+        <field name="res_model">fsn.analysis.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_fsn_analysis_root"
+              name="FSN Analysis Report"
+              parent="stock.menu_warehouse_report"
+              action="action_fsn_analysis_wizard"
+              sequence="100"
+              groups="stock.group_stock_user"/>
+
+</odoo>
+

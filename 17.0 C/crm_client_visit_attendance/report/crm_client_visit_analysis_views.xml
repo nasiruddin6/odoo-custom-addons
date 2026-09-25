@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Visit Analysis Graph View -->
+    <record id="view_crm_client_visit_analysis_graph" model="ir.ui.view">
+        <field name="name">crm.client.visit.analysis.graph</field>
+        <field name="model">crm.client.visit.analysis</field>
+        <field name="arch" type="xml">
+            <graph string="Visit Analysis" sample="1" type="bar">
+                <field name="state"/>
+                <field name="visit_type"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Visit Analysis Pivot View -->
+    <record id="view_crm_client_visit_analysis_pivot" model="ir.ui.view">
+        <field name="name">crm.client.visit.analysis.pivot</field>
+        <field name="model">crm.client.visit.analysis</field>
+        <field name="arch" type="xml">
+            <pivot string="Visit Analysis" sample="1">
+                <field name="visit_type" type="row"/>
+                <field name="state" type="col"/>
+                <field name="expected_value" type="measure"/>
+                <field name="interest_level" type="measure"/>
+                <field name="actual_duration" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Visit Analysis List View -->
+    <record id="view_crm_client_visit_analysis_list" model="ir.ui.view">
+        <field name="name">crm.client.visit.analysis.list</field>
+        <field name="model">crm.client.visit.analysis</field>
+        <field name="arch" type="xml">
+            <tree string="Visit Analysis" sample="1" create="false" delete="false" edit="false">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="leader_employee_id"/>
+                <field name="visit_type"/>
+                <field name="planned_date"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'planned'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-success="state == 'completed'"
+                       decoration-danger="state == 'missed'"/>
+                <field name="outcome" optional="hide"/>
+                <field name="expected_duration" widget="float_time" optional="show"/>
+                <field name="actual_duration" widget="float_time" optional="hide"/>
+                <field name="interest_level" widget="percentage" optional="hide"/>
+                <field name="expected_value" optional="hide"/>
+                <field name="team_size" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Visit Analysis Search View -->
+    <record id="view_crm_client_visit_analysis_search" model="ir.ui.view">
+        <field name="name">crm.client.visit.analysis.search</field>
+        <field name="model">crm.client.visit.analysis</field>
+        <field name="arch" type="xml">
+            <search string="Visit Analysis">
+                <!-- Search Fields -->
+                <field name="name" string="Visit Reference"/>
+                <field name="client_id" string="Client"/>
+                <field name="leader_employee_id" string="Team Leader"/>
+                <field name="user_id" string="Salesperson"/>
+                <field name="visit_type" string="Visit Type"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Visit Analysis Action -->
+    <record id="action_crm_client_visit_analysis" model="ir.actions.act_window">
+        <field name="name">Visit Analysis</field>
+        <field name="res_model">crm.client.visit.analysis</field>
+        <field name="view_mode">graph,pivot,tree</field>
+        <field name="search_view_id" ref="view_crm_client_visit_analysis_search"/>
+        <field name="context">{
+            'search_default_completed': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No visit data to analyze yet
+            </p>
+            <p>
+                This report provides analytical insights into client visits including:
+                <ul>
+                    <li>Visit trends by type, status, and outcome</li>
+                    <li>Team performance and productivity</li>
+                    <li>Expected vs actual duration analysis</li>
+                    <li>Client interest levels and expected values</li>
+                    <li>Overdue visits and follow-up requirements</li>
+                </ul>
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item under CRM > Reports -->
+    <menuitem id="menu_crm_visit_analysis"
+              name="Visit Analysis"
+              parent="crm.crm_menu_report"
+              action="action_crm_client_visit_analysis"
+              sequence="10"/>
+
+</odoo>
+

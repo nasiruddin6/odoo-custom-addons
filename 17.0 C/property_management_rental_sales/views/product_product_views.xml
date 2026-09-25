@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Action for product.product (Utilities) -->
+        <record id="action_product_product_property" model="ir.actions.act_window">
+            <field name="name">Utilities</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_property_utility', '=', True)]</field>
+            <field name="context">{'default_is_property_utility': True}</field>
+        </record>
+
+        <!-- Inherited Form view for product.product -->
+        <record id="view_product_product_form_property" model="ir.ui.view">
+            <field name="name">product.product.form.property</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_general']" position="after">
+                    <group name="property" string="Property">
+                        <field name="is_property_utility"/>
+                        <field name="utility_type" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- List view for product.product (Utilities) -->
+        <record id="view_product_product_list_property" model="ir.ui.view">
+            <field name="name">product.product.list.property</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="utility_type"/>
+                    <field name="is_property_utility"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_product_product_property" model="ir.actions.act_window">
+            <field name="view_id" ref="view_product_product_list_property"/>
+        </record>
+    </data>
+</odoo>

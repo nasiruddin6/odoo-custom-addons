@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_move_out_invoice_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.out.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']/.." position="after">
+                <field name="property_id" readonly="state == 'posted'"/>
+                <field name="property_unit_id" readonly="state == 'posted'"/>
+                <field name="contract_id" invisible="is_sell_invoice" readonly="state == 'posted'"/>
+                <field name="so_id" invisible="is_rent_invoice" readonly="state == 'posted'"/>
+                <field name="is_rent_invoice" readonly="state == 'posted'" invisible="1"/>
+                <field name="is_sell_invoice" readonly="state == 'posted'" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_leave_summary_wizard_user,access.leave.summary.wizard.user,model_leave_summary_wizard,hr_holidays.group_hr_holidays_user,1,1,1,1
+access_leave_summary_wizard_manager,access.leave.summary.wizard.manager,model_leave_summary_wizard,hr_holidays.group_hr_holidays_manager,1,1,1,1
+

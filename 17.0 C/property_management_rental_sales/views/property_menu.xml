@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_property_root" name="Properties" sequence="1" web_icon="property_management_rental_sales,static/description/icon.png"/>
+
+        <!-- Submenu: Property Management -->
+        <menuitem id="menu_property_management" name="Property Management" parent="menu_property_root" sequence="10"/>
+
+        <!-- Menu items for Property and Unit -->
+        <menuitem id="menu_property_property" name="Property" parent="menu_property_management"
+                  action="action_property_property" sequence="10"/>
+        <menuitem id="menu_property_unit" name="Unit" parent="menu_property_management" action="action_property_unit"
+                  sequence="20"/>
+
+        <menuitem id="menu_property_renting_root" name="Rental" parent="menu_property_root" sequence="15" groups="group_property_manager"/>
+        <menuitem id="menu_property_renting_contract" name="Contracts" parent="menu_property_renting_root"
+                  action="action_property_renting_contract" sequence="30"/>
+        <menuitem id="menu_property_renting_invoices" name="Invoices" parent="menu_property_renting_root"
+                  action="action_property_renting_invoice" sequence="30"/>
+        <menuitem id="menu_property_renting_payments" name="Payments" parent="menu_property_renting_root"
+                  action="action_account_payment" sequence="40"/>
+	<menuitem id="menu_contract_settlement"
+                name="Settlements"
+                parent="menu_property_renting_root"
+                action="action_contract_settlement"
+                sequence="50"
+                groups="property_management_rental_sales.group_property_manager"/>
+        <menuitem id="menu_property_tenant" name="Tenants" parent="menu_property_renting_root" action="action_property_tenant"
+                  sequence="60" groups="property_management_rental_sales.group_property_manager"/>
+	    
+	    
+	<menuitem id="menu_property_selling_root" name="Sales" parent="menu_property_root" sequence="20"/>
+        <menuitem id="menu_property_selling_contract" name="Contracts" parent="menu_property_selling_root"
+                  action="action_property_selling_contract" sequence="30"/>
+        <menuitem id="menu_property_selling_invoices" name="Invoices" parent="menu_property_selling_root"
+                  action="action_property_selling_invoice" sequence="30"/>
+        <menuitem id="menu_so_payment_plan" name="Payment Plans" parent="menu_property_selling_root"
+                  action="action_so_payment_plan" sequence="40"/>
+        <menuitem id="menu_so_booking" name="Bookings" parent="menu_property_selling_root"
+                  action="action_so_booking" sequence="50"/>
+
+        <menuitem id="menu_property_customer" name="Customers" parent="menu_property_selling_root"
+                  action="action_property_customer" sequence="40"/>
+
+
+
+        <!-- Configuration Menu -->
+        <menuitem id="menu_property_config" name="Configuration" parent="menu_property_root" sequence="100"/>
+        <menuitem id="menu_property_config_settings" name="Settings"
+              parent="menu_property_config" action="action_property_config_settings" sequence="0"/>
+	    <menuitem id="menu_property_duration" name="Durations" parent="menu_property_config" action="action_property_duration" sequence="5"/>
+
+
+        <!-- Configuration Menu Items -->
+        <menuitem id="menu_property_amenities" name="Amenities" parent="menu_property_config"
+                  action="action_property_amenities" sequence="20"/>
+        <menuitem id="menu_property_city" name="Cities" parent="menu_property_config" action="action_property_city"
+                  sequence="40"/>
+        <menuitem id="menu_property_connectivity" name="Nearby Connectivity" parent="menu_property_config"
+                  action="action_property_connectivity" sequence="50"/>
+        <menuitem id="menu_property_furnish_type" name="Furnish Types" parent="menu_property_config"
+                  action="action_property_furnish_type" sequence="70"/>
+        <menuitem id="menu_property_specification" name="Specifications" parent="menu_property_config"
+                  action="action_property_specification" sequence="80"/>
+        <menuitem id="menu_property_tags" name="Tags" parent="menu_property_config" action="action_property_tags"
+                  sequence="90"/>
+        <menuitem id="menu_product_product" name="Utilities" parent="menu_property_config"
+                  action="action_product_product_property" sequence="110"/>
+        <menuitem id="menu_property_contacts" name="Contacts" parent="menu_property_root" sequence="40"/>
+        <menuitem id="menu_property_landlords" name="LandLords" parent="menu_property_contacts"
+                  action="action_property_landlord" sequence="40"/>
+        <menuitem id="menu_property_brokers" name="Brokers" parent="menu_property_contacts"
+                  action="action_property_brokers" sequence="40"/>
+        <menuitem id="menu_property_contact_all" name="Contacts" parent="menu_property_contacts"
+                  action="contacts.action_contacts" sequence="40"/>
+        <menuitem id="menu_property_employees" name="Employees" parent="menu_property_root"
+                  action="hr.open_view_employee_list_my" sequence="40"/>
+        <menuitem id="menu_property_leads_root" name="Leads" parent="menu_property_root" sequence="40"/>
+        <menuitem id="menu_property_leads" name="Property Leads" parent="menu_property_leads_root"
+                  action="crm.crm_lead_all_leads" sequence="40"/>
+        <menuitem id="menu_property_leads" name="Property Leads" parent="menu_property_leads_root"
+                  action="crm.crm_lead_all_leads" sequence="40"/>
+        <menuitem id="menu_property_opportunities" name="Opportunities" parent="menu_property_leads_root"
+                  action="crm.crm_lead_action_pipeline" sequence="40"/>
+        <menuitem id="menu_property_my_activities" name="My Activities" parent="menu_property_leads_root"
+                  action="crm.crm_lead_action_my_activities" sequence="40"/>
+        <menuitem id="menu_crm_property_visit" name="Property Visits" parent="menu_property_leads_root"
+                  action="action_crm_property_visit" sequence="50"/>
+
+        <menuitem id="menu_property_maintenance" name="Maintenance"
+                parent="property_management_rental_sales.menu_property_root" sequence="60"/>
+        <menuitem id="menu_property_maintenance_request" name="Requests"
+                parent="property_management_rental_sales.menu_property_maintenance"
+                action="action_property_maintenance_request" sequence="60"/>
+        <menuitem id="menu_property_maintenance_request" name="Requests"
+                parent="property_management_rental_sales.menu_property_maintenance"
+                action="action_property_maintenance_request" sequence="60"/>
+
+        <menuitem id="menu_property_category" name="Property Category"
+                parent="property_management_rental_sales.menu_property_config"
+                action="action_property_category" sequence="70"/>
+        <menuitem id="menu_property_type" name="Property Types" parent="menu_property_config"
+                  action="action_property_type" sequence="75"/>
+        <menuitem id="menu_property_facilities" name="Property Facilities"
+                parent="property_management_rental_sales.menu_property_config"
+                action="action_property_facilities" sequence="80"/>
+        <menuitem id="menu_property_unit_types" name="Unit Types"
+                parent="property_management_rental_sales.menu_property_config"
+                action="action_property_unit_type" sequence="90"/>
+
+    </data>
+</odoo>

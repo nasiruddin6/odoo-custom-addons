@@ -1,0 +1,23 @@
+/* Odoo 18 – Clean style for HTML field in settings */
+
+.o_setting_box .o_field_html {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* actual editable area */
+.o_setting_box .o_field_html .note-editable {
+    min-height: 120px !important;
+    max-height: 180px !important;
+    overflow-y: auto;
+}
+
+/* editor container */
+.o_setting_box .note-editor.note-frame {
+    width: 100% !important;
+}
+
+/* remove extra spacing */
+.o_setting_box .o_field_html .note-editor {
+    margin: 0 !important;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_leave_summary_report"
+        name="Leave Summary Report"
+        parent="hr_holidays.menu_hr_holidays_report"
+        action="action_leave_summary_wizard"
+        sequence="10"
+        groups="hr_holidays.group_hr_holidays_user"/>
+</odoo>
+

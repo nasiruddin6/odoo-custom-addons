@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- SO Booking Form View -->
+    <record id="view_so_booking_form" model="ir.ui.view">
+        <field name="name">so.booking.form</field>
+        <field name="model">so.booking</field>
+        <field name="arch" type="xml">
+            <form string="SO Booking">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary" invisible="state in ['draft', 'cancelled']"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" class="btn-secondary" invisible="state != 'cancelled'"/>
+                    <button name="action_create_payment" string="Register Payment" type="object" class="oe_highlight" invisible="state != 'confirmed' or payment_id != False"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Paid" invisible="payment_state != 'paid'"/>
+                    <widget name="web_ribbon" title="In Process" bg_color="text-bg-warning" invisible="payment_state != 'in_process'"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_payment" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="not payment_id">
+                            <field name="payment_id" widget="statinfo" string="Payment"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Booking Name" readonly="state != 'draft'"/>
+                            <field name="so_id" required="1" readonly="state != 'draft'"/>
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                            <field name="expiration_date" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="property_id" readonly="state != 'draft'"/>
+                            <field name="unit_id" readonly="state != 'draft'"/>
+                            <field name="currency_id" invisible="1" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+
+                    <group string="Financial Details">
+                        <group>
+                            <field name="amount" readonly="state != 'draft'"/>
+                            <field name="price" readonly="state != 'draft'"/>
+                            <field name="other_fees" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="payment_plan_id" readonly="state != 'draft'"/>
+                            <field name="down_payment_percentage" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group name="additional_fees" string="Additional Fees">
+                        <group>
+                            <field name="currency_id" invisible="1" readonly="state != 'draft'"/>
+                            <field name="admin_fee" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="stamp_duty_fee" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="registration_fee" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="mutation_fee" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="others_fee" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="total_fees" widget="monetary" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <!-- Property Information -->
+                     <group string="Property Informations" name="property_informations">
+                        <group>
+                            <field name="property_id" readonly="state != 'draft'"/>
+                            <field name="unit_id" readonly="state != 'draft'"/>
+                            <field name="floor" readonly="state != 'draft'"/>
+                            <field name="building" readonly="state != 'draft'"/>
+                            <field name="area_sqft" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="property_unit_type_id" readonly="state != 'draft'"/>
+                            <field name="bedroom" readonly="state != 'draft'"/>
+                            <field name="living" readonly="state != 'draft'"/>
+                            <field name="dining" readonly="state != 'draft'"/>
+                            <field name="kitchen" readonly="state != 'draft'"/>
+                            <field name="bathroom" readonly="state != 'draft'"/>
+                            <field name="balcony" readonly="state != 'draft'"/>
+                            <field name="parking" readonly="state != 'draft'"/>
+                            <field name="facing" readonly="state != 'draft'"/>
+                            <field name="furnishing_type" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SO Booking list View -->
+    <record id="view_so_booking_list" model="ir.ui.view">
+        <field name="name">so.booking.list</field>
+        <field name="model">so.booking</field>
+        <field name="arch" type="xml">
+            <tree string="SO Bookings">
+                <field name="name"/>
+                <field name="so_id"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+                <field name="unit_id"/>
+                <field name="expiration_date"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="price" optional="hide"/>
+                <field name="other_fees" optional="hide"/>
+                <field name="down_payment_percentage" optional="hide"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- SO Booking Search View -->
+    <record id="view_so_booking_search" model="ir.ui.view">
+        <field name="name">so.booking.search</field>
+        <field name="model">so.booking</field>
+        <field name="arch" type="xml">
+            <search string="Search SO Bookings">
+                <field name="name" string="Booking" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="so_id" string="Contract"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="property_id" string="Property"/>
+                <field name="unit_id" string="Unit"/>
+
+                <filter string="Expired" name="expired" domain="[('expiration_date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Active" name="active" domain="[('expiration_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+
+                <separator/>
+                <filter string="Expiration Date" name="group_expiration_date" context="{'group_by': 'expiration_date'}"/>
+                <filter string="Customer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                <filter string="Property" name="group_property" context="{'group_by': 'property_id'}"/>
+                <filter string="Contract" name="group_so" context="{'group_by': 'so_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- SO Booking Action -->
+    <record id="action_so_booking" model="ir.actions.act_window">
+        <field name="name">SO Bookings</field>
+        <field name="res_model">so.booking</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new SO Booking
+            </p>
+            <p>
+                Track sales order bookings with expiration dates, payment plans, and property details.
+            </p>
+        </field>
+    </record>
+
+</odoo>

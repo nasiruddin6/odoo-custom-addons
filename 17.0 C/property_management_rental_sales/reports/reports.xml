@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="report_property_contract" model="ir.actions.report">
+            <field name="name">Property Contract Report</field>
+            <field name="model">property.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">property_management_rental_sales.property_contract</field>
+            <field name="report_file">property_management_rental_sales.property_contract</field>
+            <field name="binding_model_id" ref="property_management_rental_sales.model_property_contract"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_sale_contract" model="ir.actions.report">
+            <field name="name">Sales Contract</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">property_management_rental_sales.report_sale_contract</field>
+            <field name="report_file">property_management_rental_sales.report_sale_contract</field>
+            <field name="print_report_name">'Sale Contract - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

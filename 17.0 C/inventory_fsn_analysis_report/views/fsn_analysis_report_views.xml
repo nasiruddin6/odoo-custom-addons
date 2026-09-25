@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FSN Analysis Report List View -->
+    <record id="view_fsn_analysis_report_list" model="ir.ui.view">
+        <field name="name">fsn.analysis.report.list</field>
+        <field name="model">fsn.analysis.report</field>
+        <field name="arch" type="xml">
+            <tree string="FSN Analysis Report"
+                  create="false"
+                  edit="false"
+                  delete="true"
+                  sample="1">
+                <field name="product_code" optional="show"/>
+                <field name="product_id"/>
+                <field name="product_categ_id"/>
+                <field name="warehouse_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="qty_moved" sum="Total Quantity Moved"/>
+                <field name="uom_id" optional="hide"/>
+                <field name="on_hand_qty" optional="show"/>
+                <field name="fsn_classification"
+                       decoration-success="fsn_classification == 'fast'"
+                       decoration-warning="fsn_classification == 'slow'"
+                       decoration-danger="fsn_classification == 'non_moving'"/>
+                <field name="last_movement_date" optional="show"/>
+                <field name="date_from" optional="hide"/>
+                <field name="date_to" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Report Search View -->
+    <record id="view_fsn_analysis_report_search" model="ir.ui.view">
+        <field name="name">fsn.analysis.report.search</field>
+        <field name="model">fsn.analysis.report</field>
+        <field name="arch" type="xml">
+            <search string="FSN Analysis">
+
+            </search>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Report Pivot View -->
+    <record id="view_fsn_analysis_report_pivot" model="ir.ui.view">
+        <field name="name">fsn.analysis.report.pivot</field>
+        <field name="model">fsn.analysis.report</field>
+        <field name="arch" type="xml">
+            <pivot string="FSN Analysis" sample="1">
+                <field name="fsn_classification" type="row"/>
+                <field name="product_categ_id" type="row"/>
+                <field name="qty_moved" type="measure"/>
+                <field name="on_hand_qty" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Report Graph View -->
+    <record id="view_fsn_analysis_report_graph" model="ir.ui.view">
+        <field name="name">fsn.analysis.report.graph</field>
+        <field name="model">fsn.analysis.report</field>
+        <field name="arch" type="xml">
+            <graph string="FSN Analysis" type="bar" sample="1" stacked="False">
+                <field name="fsn_classification"/>
+                <field name="qty_moved" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Report Form View -->
+    <record id="view_fsn_analysis_report_form" model="ir.ui.view">
+        <field name="name">fsn.analysis.report.form</field>
+        <field name="model">fsn.analysis.report</field>
+        <field name="arch" type="xml">
+            <form string="FSN Analysis Detail" create="false" edit="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_stock_moves"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-exchange">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Stock</span>
+                                <span class="o_stat_text">Moves</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="Fast Moving"
+                            bg_color="text-bg-success"
+                            invisible="fsn_classification != 'fast'"/>
+                    <widget name="web_ribbon" title="Slow Moving"
+                            bg_color="text-bg-warning"
+                            invisible="fsn_classification != 'slow'"/>
+                    <widget name="web_ribbon" title="Non Moving"
+                            bg_color="text-bg-danger"
+                            invisible="fsn_classification != 'non_moving'"/>
+
+                    <group>
+                        <group name="product_info" string="Product Information">
+                            <field name="product_id"/>
+                            <field name="product_code"/>
+                            <field name="product_categ_id"/>
+                            <field name="uom_id"/>
+                        </group>
+                        <group name="warehouse_info" string="Warehouse Information">
+                            <field name="warehouse_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="on_hand_qty"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group name="analysis_info" string="Analysis Information">
+                            <field name="fsn_classification"/>
+                            <field name="qty_moved"/>
+                            <field name="last_movement_date"/>
+                        </group>
+                        <group name="period_info" string="Analysis Period">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- FSN Analysis Report Action -->
+    <record id="action_fsn_analysis_report" model="ir.actions.act_window">
+        <field name="name">FSN Analysis Report</field>
+        <field name="res_model">fsn.analysis.report</field>
+        <field name="view_mode">tree,pivot,graph,form</field>
+        <field name="context">{
+            'search_default_group_by_classification': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FSN Analysis data available
+            </p>
+            <p>
+                Click on "FSN Analysis Report" menu to generate analysis.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fsn_analysis_report_user,fsn.analysis.report.user,model_fsn_analysis_report,stock.group_stock_user,1,0,0,0
+access_fsn_analysis_report_manager,fsn.analysis.report.manager,model_fsn_analysis_report,stock.group_stock_manager,1,1,1,1
+access_fsn_analysis_wizard_user,fsn.analysis.wizard.user,model_fsn_analysis_wizard,stock.group_stock_user,1,1,1,1
+access_fsn_analysis_wizard_manager,fsn.analysis.wizard.manager,model_fsn_analysis_wizard,stock.group_stock_manager,1,1,1,1
+

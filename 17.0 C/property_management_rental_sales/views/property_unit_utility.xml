@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- unit.category List View -->
+        <record id="view_unit_category_list" model="ir.ui.view">
+            <field name="name">unit.category.list</field>
+            <field name="model">unit.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="unit_count"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- unit.category Form View -->
+        <record id="view_unit_category_form" model="ir.ui.view">
+            <field name="name">unit.category.form</field>
+            <field name="model">unit.category</field>
+            <field name="arch" type="xml">
+                <form string="Unit Category">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(property_management_rental_sales.action_property_unit)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                    icon="fa-building-o">
+                                <field name="unit_count"
+                                       widget="statinfo"
+                                       string="Units"/>
+                            </button>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                                <field name="color" widget="color_picker"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="description"
+                                   placeholder="Add category description..."/>
+                        </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- unit.category Kanban View -->
+        <record id="view_unit_category_kanban" model="ir.ui.view">
+            <field name="name">unit.category.kanban</field>
+            <field name="model">unit.category</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="unit_count"/>
+                    <field name="color"/>
+                    <field name="description"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{record.color.raw_value} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary">
+                                            <strong>
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_secondary">
+                                            <span>Code:
+                                                <field name="code"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_content">
+                                    <div class="o_kanban_card_manage_pane">
+                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <div>
+                                                <field name="description"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_footer">
+                                    <div class="oe_kanban_footer_left">
+                                        <span class="badge badge-pill">
+                                            <i class="fa fa-building-o" role="img" aria-label="Units" title="Units"/>
+                                            <field name="unit_count"/>
+                                            Units
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- unit.category Search View -->
+        <record id="view_unit_category_search" model="ir.ui.view">
+            <field name="name">unit.category.search</field>
+            <field name="model">unit.category</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="code"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Code" name="group_by_code" context="{'group_by': 'code'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- unit.category Action -->
+        <record id="action_unit_category" model="ir.actions.act_window">
+            <field name="name">Unit Categories</field>
+            <field name="res_model">unit.category</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="view_unit_category_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Unit Category
+                </p>
+                <p>
+                    Unit categories help you organize and classify your property units.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_unit_category"
+                  name="Unit Categories"
+                  parent="menu_property_config"
+                  action="property_management_rental_sales.action_unit_category"
+                  sequence="115"/>
+    </data>
+</odoo>
+

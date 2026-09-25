@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view for the transient wizard so.invoice.wizard, matched to property wizard layout -->
+    <data>
+
+        <record id="view_so_invoice_wizard_form" model="ir.ui.view">
+            <field name="name">so.invoice.wizard.form</field>
+            <field name="model">so.invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Invoice">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="so_id" readonly="1"/>
+                                <field name="product_id" domain="[('type','=','service')]"/>
+                                <field name="invoice_for" widget="radio"/>
+                            </group>
+                            <group>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="invoice_date"/>
+                                <field name="amount"/>
+                            </group>
+                            <field name="description" nolabel="1" placeholder="Description"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

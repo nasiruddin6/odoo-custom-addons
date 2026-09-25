@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!--Form View-->
+		<record id="view_so_payment_plan_form" model="ir.ui.view">
+			<field name="name">view.so.payment.plan.form</field>
+			<field name="model">so.payment.plan</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<field name="name" placeholder="Name"/>
+							</h1>
+						</div>
+						
+						<group>
+							<group name="payment_ratio" string="Payment Ratio">
+								<div class="oe_title mw-100">
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="down_payment_percentage" class="d-inline-block"/>
+										<div id="down_payment_percentage" class="d-flex align-items-baseline">
+											<field name="down_payment_percentage" class="oe_inline o_input_6ch"/>
+											<span class="ms-2">%</span>
+										</div>
+									</div>
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="pre_handover_percentage" class="d-inline-block"/>
+										<div id="pre_handover_percentage" class="d-flex align-items-baseline">
+											<field name="pre_handover_percentage" class="oe_inline o_input_6ch"/>
+											<span class="ms-2">%</span>
+										</div>
+									</div>
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="on_handover_percentage" class="d-inline-block"/>
+										<div id="on_handover_percentage" class="d-flex align-items-baseline">
+											<field name="on_handover_percentage" class="oe_inline o_input_6ch"/>
+											<span class="ms-2">%</span>
+										</div>
+									</div>
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="after_handover_percentage" class="d-inline-block"/>
+										<div id="after_handover_percentage" class="d-flex align-items-baseline">
+											<field name="after_handover_percentage" class="oe_inline o_input_6ch"/>
+											<span class="ms-2">%</span>
+										</div>
+									</div>
+									<div class="col-auto w-100 w-sm-auto alert alert-info" role="alert">
+										<p class="m-0 p-0 fs-5">
+											The total of <strong>Down Payment</strong>, <strong>Pre-Handover</strong>,
+											<strong>On Handover</strong>, and
+											<strong>After Handover</strong>
+											must equal <strong>100%</strong>.
+										</p>
+									</div>
+								</div>
+							</group>
+							
+							<group name="payment_setup" string="Payment Setup">
+								<div class="oe_title mw-100">
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="duration" class="d-inline-block"/>
+										<div id="duration" class="d-flex align-items-baseline">
+											<field name="duration" class="oe_inline o_input_6ch"/>
+											<span invisible="duration &gt; 1" class="ms-1">Month</span>
+											<span invisible="duration &lt; 2" class="ms-1">Months</span>
+										</div>
+									</div>
+									<div class="col-auto d-flex pb-2 w-100 w-sm-auto">
+										<label for="collection_gaps" class="d-inline-block"/>
+										<div id="collection_gaps" class="d-flex align-items-baseline">
+											<field name="collection_gaps" class="oe_inline o_input_6ch"/>
+											<span invisible="collection_gaps &gt; 1" class="ms-1">Month</span>
+											<span invisible="collection_gaps &lt; 2" class="ms-1">Months</span>
+										</div>
+									</div>
+								</div>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<!-- Tree/List View -->
+		<record id="view_so_payment_plan_tree" model="ir.ui.view">
+			<field name="name">so.payment.plan.tree</field>
+			<field name="model">so.payment.plan</field>
+			<field name="arch" type="xml">
+				<tree string="Payment Plans">
+					<field name="name"/>
+					<field name="duration"/>
+					<field name="collection_gaps"/>
+					<field name="down_payment_percentage" string="Down Payment(%)"/>
+					<field name="pre_handover_percentage" string="Pre-Handover(%)"/>
+					<field name="on_handover_percentage" string="On-Handover(%)"/>
+					<field name="after_handover_percentage" string="Post-Handover(%)"/>
+					<field name="currency_id" column_invisible="1"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Kanban View -->
+		<record id="view_so_payment_plan_kanban" model="ir.ui.view">
+			<field name="name">so.payment.plan.kanban</field>
+			<field name="model">so.payment.plan</field>
+			<field name="arch" type="xml">
+				<kanban class="o_kanban_mobile">
+					<field name="name"/>
+					<field name="duration"/>
+					<field name="collection_gaps"/>
+					<field name="down_payment_percentage"/>
+					<field name="pre_handover_percentage"/>
+					<field name="on_handover_percentage"/>
+					<field name="after_handover_percentage"/>
+					<field name="currency_id"/>
+					
+					<templates>
+						<t t-name="kanban-box">
+							<div class="oe_kanban_card oe_kanban_global_click">
+								<div class="o_kanban_card_header">
+									<div class="o_kanban_card_header_title">
+										<div class="o_primary">
+											<strong t-out="record.name.value"/>
+										</div>
+									</div>
+								</div>
+								
+								<div class="o_kanban_card_content">
+									<div class="row mb-2">
+										<div class="col-6">
+											<span class="text-muted">Duration:</span>
+											<strong t-out="record.duration.value"/>
+											<span class="ms-1" t-if="record.duration.value &gt; 1">months</span>
+											<span class="ms-1" t-if="record.duration.value &lt; 2">month</span>
+										</div>
+										<div class="col-6">
+											<span class="text-muted">Collection Gap:</span>
+											<strong t-out="record.collection_gaps.value"/>
+											<span class="ms-1" t-if="record.collection_gaps.value &gt; 1">months</span>
+											<span class="ms-1" t-if="record.collection_gaps.value &lt; 2">month</span>
+										</div>
+									</div>
+									
+									<div class="row mb-2">
+										<div class="col-12">
+											<span class="badge text-bg-primary">
+												Down Payment:<t t-out="record.down_payment_percentage.value"/>%
+											</span>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-4">
+											<small class="text-muted">Pre-Handover</small>
+											<br/>
+											<strong t-out="record.pre_handover_percentage.value"/>%
+										</div>
+										<div class="col-4">
+											<small class="text-muted">On-Handover</small>
+											<br/>
+											<strong t-out="record.on_handover_percentage.value"/>%
+										</div>
+										<div class="col-4">
+											<small class="text-muted">After-Handover</small>
+											<br/>
+											<strong t-out="record.after_handover_percentage.value"/>%
+										</div>
+									</div>
+									
+									<hr class="mt-2 mb-2"/>
+									
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		
+		<!-- Search View -->
+		<record id="view_so_payment_plan_search" model="ir.ui.view">
+			<field name="name">so.payment.plan.search</field>
+			<field name="model">so.payment.plan</field>
+			<field name="arch" type="xml">
+				<search string="Payment Plans">
+					<field name="name" string="Payment Plan"
+					       filter_domain="[('name', 'ilike', self)]"/>
+					<field name="duration"/>
+					<field name="collection_gaps"/>
+					
+					<separator/>
+					<filter string="Short Duration (≤12 months)" name="short_duration"
+					        domain="[('duration', '&lt;=', 12)]"/>
+					<filter string="Medium Duration (13-36 months)" name="medium_duration"
+					        domain="[('duration', '&gt;', 12), ('duration', '&lt;=', 36)]"/>
+					<filter string="Long Duration (>36 months)" name="long_duration"
+					        domain="[('duration', '&gt;', 36)]"/>
+					
+					<separator/>
+					<filter string="High Down Payment (≥20%)" name="high_down_payment"
+					        domain="[('down_payment_percentage', '&gt;=', 20)]"/>
+					<filter string="Low Down Payment (&lt;20%)" name="low_down_payment"
+					        domain="[('down_payment_percentage', '&lt;', 20)]"/>
+					
+					<separator/>
+					
+					<group expand="0" string="Group By">
+						<filter string="Duration" name="group_duration"
+						        context="{'group_by': 'duration'}"/>
+						<filter string="Collection Gap" name="group_collection_gaps"
+						        context="{'group_by': 'collection_gaps'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		
+		<!-- Action -->
+		<record id="action_so_payment_plan" model="ir.actions.act_window">
+			<field name="name">Payment Plans</field>
+			<field name="res_model">so.payment.plan</field>
+			<field name="view_mode">tree,form,kanban</field>
+			<field name="search_view_id" ref="view_so_payment_plan_search"/>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create your first Payment Plan
+				</p>
+				<p>
+					Define payment plans with duration, collection gaps, and payment ratios.
+				</p>
+			</field>
+		</record>
+	</data>
+</odoo>

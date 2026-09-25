@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fund_request_user,fund.request user,model_fund_request,nn_fund_management.group_fund_user,1,1,1,0
+access_fund_request_manager,fund.request manager,model_fund_request,nn_fund_management.group_fund_manager,1,1,1,1

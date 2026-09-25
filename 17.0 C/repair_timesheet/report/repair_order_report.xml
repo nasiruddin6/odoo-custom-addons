@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_repairorder_inherit_timesheet" inherit_id="repair.report_repairorder">
+        <xpath expr="//div[@class='oe_structure'][last()]" position="before">
+            <div t-if="o.technician_ids" class="mt-4">
+                <h2 class="mb-3 border-bottom border-2 border-dark">Technicians</h2>
+                <p class="m-0">
+                    <strong>Assigned Technicians: </strong>
+                    <span t-foreach="o.technician_ids" t-as="tech">
+                        <span t-field="tech.name"/>
+                        <span t-if="not tech_last">, </span>
+                    </span>
+                </p>
+                <p t-if="o.estimated_time" class="m-0">
+                    <strong>Estimated Time: </strong>
+                    <span t-field="o.estimated_time"/> hours
+                </p>
+            </div>
+
+            <div t-if="o.analytic_account_ids" class="mt-4">
+                <h2 class="mb-3 border-bottom border-2 border-dark">Timesheet</h2>
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Employee</th>
+                            <th>Description</th>
+                            <th class="text-end">Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.analytic_account_ids" t-as="timesheet">
+                            <td>
+                                <span t-field="timesheet.date"/>
+                            </td>
+                            <td>
+                                <span t-field="timesheet.employee_id"/>
+                            </td>
+                            <td>
+                                <span t-field="timesheet.name"/>
+                            </td>
+                            <td class="text-end">
+                                <span t-field="timesheet.unit_amount"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="border-top border-dark">
+                            <td colspan="3" class="text-end">
+                                <strong>Total Hours:</strong>
+                            </td>
+                            <td class="text-end">
+                                <strong t-esc="sum(o.analytic_account_ids.mapped('unit_amount'))"/>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </xpath>
+    </template>
+</odoo>
+

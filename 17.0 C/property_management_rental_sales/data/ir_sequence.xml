@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Sequence for SO Booking -->
+        <record id="sequence_so_booking" model="ir.sequence">
+            <field name="name">SO Booking</field>
+            <field name="code">so.booking</field>
+            <field name="prefix">BOOKING/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <!-- Sequence for Property Sales Order -->
+        <record id="sequence_property_sales_order" model="ir.sequence">
+            <field name="name">Property Sales Order</field>
+            <field name="code">property.sales.order</field>
+            <field name="prefix">PSO/%(year)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <!-- Sequence for CRM Property Visit -->
+        <record id="sequence_crm_property_visit" model="ir.sequence">
+            <field name="name">CRM Property Visit</field>
+            <field name="code">crm.property.visit</field>
+            <field name="prefix">VISIT/%(year)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <!-- Sequence for Property Project -->
+        <record id="sequence_property_project" model="ir.sequence">
+            <field name="name">Property Project</field>
+            <field name="code">property.project</field>
+            <field name="prefix">PROJ/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+    </data>
+</odoo>

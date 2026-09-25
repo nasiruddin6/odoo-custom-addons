@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+
+    <!-- Record Rules for Property Lease -->
+
+    <!-- Property Managers can see all leases -->
+    <record id="property_lease_rule_manager" model="ir.rule">
+        <field name="name">Property Manager: All Leases</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="groups" eval="[(4, ref('group_property_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Property Users can see all leases but have limited write access -->
+    <record id="property_lease_rule_user" model="ir.rule">
+        <field name="name">Property User: All Leases (Read Only)</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="groups" eval="[(4, ref('group_property_user'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Landlords can only see leases for their properties -->
+    <record id="property_lease_rule_landlord" model="ir.rule">
+        <field name="name">Landlord: Own Property Leases</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="groups" eval="[(4, ref('group_property_landlord'))]"/>
+        <field name="domain_force">[('landlord_id.user_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Tenants can only see their own leases -->
+    <record id="property_lease_rule_tenant" model="ir.rule">
+        <field name="name">Tenant: Own Leases</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="groups" eval="[(4, ref('group_property_tenant'))]"/>
+        <field name="domain_force">[('partner_id.user_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Update access rights with groups -->
+    <record id="access_property_lease_manager" model="ir.model.access">
+        <field name="name">Property Lease Manager Access</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="group_id" ref="group_property_manager"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="access_property_lease_user" model="ir.model.access">
+        <field name="name">Property Lease User Access</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="group_id" ref="group_property_user"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="access_property_lease_landlord" model="ir.model.access">
+        <field name="name">Property Lease Landlord Access</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="group_id" ref="group_property_landlord"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="access_property_lease_tenant" model="ir.model.access">
+        <field name="name">Property Lease Tenant Access</field>
+        <field name="model_id" ref="model_property_lease"/>
+        <field name="group_id" ref="group_property_tenant"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

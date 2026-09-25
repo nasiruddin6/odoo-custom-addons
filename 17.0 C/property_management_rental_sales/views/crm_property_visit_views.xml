@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- List view for crm property visit -->
+        <record id="view_crm_property_visit_list" model="ir.ui.view">
+            <field name="name">crm.property.visit.list</field>
+            <field name="model">crm.property.visit</field>
+            <field name="arch" type="xml">
+                <tree string="Property Visits">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View for crm property visit -->
+        <record id="view_crm_property_visit_form" model="ir.ui.view">
+            <field name="name">crm.property.visit.form</field>
+            <field name="model">crm.property.visit</field>
+            <field name="arch" type="xml">
+                <form string="Property Visit">
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" invisible="state != 'draft'"/>
+                        <button name="action_draft" type="object" string="Reset to Draft" class="btn-secondary" invisible="state in ['draft', 'completed']"/>
+                        <button name="action_re_schedule" type="object" string="Re-schedule" class="btn-secondary" invisible="state in ['draft', 'completed']"/>
+                        <button name="action_complete" type="object" string="Complete" class="oe_highlight" invisible="state not in ['planned', 're_scheduled']"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ['completed', 'cancelled']"/>
+                        <field name="state" widget="statusbar" readonly="0" statusbar_visible="draft,planned,completed"/>
+                    </header>
+
+                    <sheet>
+                                            <div class="oe_button_box" name="button_box">
+                        <button name="action_view_attachments"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-paperclip"
+                                invisible="total_attachment_count == 0">
+                            <field name="total_attachment_count" widget="statinfo" string="Attachments"/>
+                        </button>
+                    </div>
+
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="priority" widget="priority" nolabel="1" class="oe_inline align-top"/>
+                            </h1>
+                            <h1>
+                                <field name="name" nolabel="1" readonly="1" placeholder="NEW VISITING"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="lead_id"/>
+                                <field name="visit_date"/>
+                                <field name="visit_start_time" widget="daterange" options="{'end_date_field': 'visit_end_time'}"
+                                       invisible="not visit_date" readonly="state != 'draft'"/>
+                                <field name="visit_end_time" invisible="1"/>
+                                <field name="duration" invisible="not visit_date" widget="float_time"/>
+                                <field name="visit_purpose"/>
+                            </group>
+                            <group >
+                                <field name="property_id" required="1" />
+                                <field name="unit_id" required="1"/>
+                                <field name="user_id" widget="many2one_avatar_user" required="1" string="Primary Agent"/>
+                                <field name="user_ids" widget="many2many_tags" string="Additional Agents"/>
+                                <field name="team_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="note" string="Notes">
+                                <group>
+                                    <field name="note" nolabel="1" placeholder="Write your notes here..."/>
+                                </group>
+                            </page>
+                            <page name="contact" string="Contact">
+                                <group>
+                                    <group  name="contact_info" string="Contact Information">
+                                        <field name="partner_id"/>
+                                        <field name="phone" widget="phone"/>
+                                        <field name="email" widget="email"/>
+                                        <field name="attendees_number"/>
+                                        <field name="special_request"/>
+                                    </group>
+                                    <group name="location_and_logisitics" string="Location &amp; Logistics">
+                                        <field name="meeting_point"/>
+                                        <field name="map_link" widget="url"/>
+                                        <field name="expected_travel_time" widget="float_time"/>
+                                        <field name="transport_mode"/>
+                                        <field name="is_parking_required"/>
+                                    </group>
+                                </group>
+                            </page>
+                                                    <page name="attachments" string="Attachments">
+                            <group>
+                                <group string="Photos" name="photos_group">
+                                    <field name="photo_ids" widget="many2many_binary" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="create_date"/>
+                                            <field name="create_uid"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group string="Documents" name="documents_group">
+                                    <field name="document_ids" widget="many2many_binary" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="create_date"/>
+                                            <field name="create_uid"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Signed Forms" name="signed_forms_group">
+                                    <field name="signed_form_ids" widget="many2many_binary" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="create_date"/>
+                                            <field name="create_uid"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group string="Visiting Cards" name="visiting_cards_group">
+                                    <field name="visiting_card_ids" widget="many2many_binary" nolabel="1">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="create_date"/>
+                                            <field name="create_uid"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+
+                                                    <page name="outcome" string="Outcome">
+                            <group>
+                                <group>
+                                    <field name="outcome"/>
+                                    <field name="interest_level" widget="percentage"/>
+                                    <field name="next_action_required"/>
+                                </group>
+                                <group invisible="next_action_required != 'yes'">
+                                    <field name="activity_type_id" widget="selection" domain="['|', ('res_model', '=', False), ('res_model', '=', 'crm.lead')]"/>
+                                    <field name="next_activity_date" />
+                                    <field name="followup_activity_id" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="notes" placeholder="Enter visit notes and observations..."/>
+                            </group>
+                            <group>
+                                <field name="next_action"
+                                       placeholder="What are the next steps?"
+                                       invisible="next_action_required != 'yes'"/>
+                            </group>
+                        </page>
+
+                        <page name="remarks" string="Remarks">
+                            <separator string="Internal Notes"/>
+                            <group>
+                                <field name="note"
+                                       placeholder="Enter internal notes for team reference (not visible to client)..."
+                                       nolabel="1"/>
+                            </group>
+                            <separator string="Client Remarks"/>
+                            <group>
+                                <field name="client_remarks"
+                                       placeholder="Enter remarks or feedback from the client..."
+                                       nolabel="1"/>
+                            </group>
+                        </page>
+                            <page name="expenses" string="Expenses">
+                                <field name="expense_line" >
+                                    <tree editable="bottom">
+                                        <field name="visit_id" column_invisible="1"/>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                        <field name="expense_type"/>
+                                        <field name="date"/>
+                                        <field name="amount" widget="monetary"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open visits -->
+        <record id="action_crm_property_visit" model="ir.actions.act_window">
+            <field name="name">Property Visits</field>
+            <field name="res_model">crm.property.visit</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Schedule and manage property visits here.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="portal_my_home_inherit" inherit_id="portal.portal_my_home" name="My Portal">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+            <t t-set="portal_alert_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/property_management_rental_sales/static/src/img/sales-contract.png'"/>
+                <t t-set="title">Your Sales Contracts</t>
+                <t t-set="url" t-value="'/my/sale-contracts'"/>
+                <t t-set="text">Follow, view or pay your sales contracts</t>
+                <t t-set="placeholder_count" t-value="'spa_count'"/>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/property_management_rental_sales/static/src/img/rent-contract.png'"/>
+                <t t-set="title">Your Rental Contracts</t>
+                <t t-set="url" t-value="'/my/rent-contracts'"/>
+                <t t-set="text">Follow, view or pay your rental contracts</t>
+                <t t-set="placeholder_count" t-value="'rent_count'"/>
+            </t>
+        </div>
+    </template>
+
+    <template id="portal_docs_entry_inherit" inherit_id="portal.portal_docs_entry">
+        <xpath expr="//div[hasclass('o_portal_icon')]" position="replace">
+            <div t-if="icon" class="o_portal_icon">
+                <img height="64px" t-attf-src="#{icon}"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Breadcrumbs for Sales Contracts -->
+    <template id="portal_my_home_menu_sale_inherited"
+            inherit_id="sale.portal_my_home_menu_sale"
+            priority="100">
+
+        <!-- Modify the Quotations breadcrumb to hide when is_spa -->
+        <xpath expr="//li[@id='portal_breadcrumbs_sale']" position="attributes">
+            <attribute name="t-if">(page_name == 'quote' or sale_order and sale_order.state in ('sent', 'cancel')) and not (sale_order and sale_order.is_spa)</attribute>
+        </xpath>
+
+        <!-- Modify the Sales Orders breadcrumb to hide when is_spa -->
+        <xpath expr="//ol[hasclass('o_portal_submenu')]/li[contains(@t-elif, 'page_name')]" position="attributes">
+            <attribute name="t-elif">(page_name == 'order' or sale_order and sale_order.state not in ('sent', 'cancel')) and not (sale_order and sale_order.is_spa)</attribute>
+        </xpath>
+
+        <!-- Add Sales Contracts breadcrumb after the Sales Orders breadcrumb -->
+        <xpath expr="//ol[hasclass('o_portal_submenu')]/li[contains(@t-elif, 'page_name')]" position="after">
+            <li t-if="page_name == 'sale_contract' or (sale_order and sale_order.is_spa)" 
+                t-attf-class="breadcrumb-item #{'active' if not sale_order else ''}">
+                <a t-if="sale_order" t-attf-href="/my/sale-contracts?{{ keep_query() }}">Sales Contracts</a>
+                <t t-else="">Sales Contracts</t>
+            </li>
+        </xpath>
+
+        <!-- Modify the active order name to show different content for contracts vs regular orders -->
+        <xpath expr="//ol[hasclass('o_portal_submenu')]/li[@t-if='sale_order']" position="replace">
+            <!-- Sale Order name for contracts -->
+            <li t-if="sale_order and sale_order.is_spa" class="breadcrumb-item active">
+                <em>Sales Contract #</em>
+                <t t-out="sale_order.name"/>
+            </li>
+            
+            <!-- Sale Order name for regular orders -->
+            <li t-if="sale_order and not sale_order.is_spa" class="breadcrumb-item active">
+                <span t-field="sale_order.type_name"/>
+                <t t-out="sale_order.name"/>
+            </li>
+        </xpath>
+
+    </template>
+
+    <!-- Breadcrumbs for Rental Contracts -->
+    <template id="portal_my_home_menu_rental_contract" name="Portal layout : rental contract menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'rent_contracts' or contract" t-attf-class="breadcrumb-item #{'active' if not contract else ''}">
+                <a t-if="contract" t-attf-href="/my/rent-contracts?{{ keep_query() }}">Rental Contracts</a>
+                <t t-else="">Rental Contracts</t>
+            </li>
+            <li t-if="contract" class="breadcrumb-item active">
+                <em>Contract# </em>
+                <t t-out="contract.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- Template for sales contracts -->
+    <template id="sales_contracts_portal_template" name="Sales Contracts Portal Template">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Your Contracts</t>
+            </t>
+            <div t-if="not orders" class="alert alert-warning" role="alert">
+                There are currently no sales contracts for your account.
+            </div>
+            <t t-if="orders" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class='d-none d-md-inline'>Sales Order #</span>
+                            <span class='d-block d-md-none'>Ref.</span>
+                        </th>
+                        <th class="text-end">Order Date</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <t t-foreach="orders" t-as="order">
+                    <tr>
+                        <td><a t-att-href="order.get_portal_url()"><t t-out="order.name"/></a></td>
+                        <td class="text-end">
+                            <span t-field="order.date_order" t-options="{'widget': 'date'}"/>&amp;nbsp;
+                            <span class='d-none d-md-inline' t-field="order.date_order" t-options="{'time_only': True}"/>
+                        </td>
+                        <td class="text-end"><span t-field="order.amount_total"/></td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="sale_contract_portal_content" name="Sales Contract Portal Content">
+        <!-- Intro -->
+        <div id="introduction" t-attf-class="#{'border-bottom-0 pt-0 pb-3' if report_type == 'html' else ''}">
+            <div class="d-flex gap-2" id="intro_row">
+                <h2>
+                    Sales Contract -
+                    <em t-out="sale_order.name"/>
+                </h2>
+            </div>
+        </div>
+        <div id="content">
+            <div id="informations" class="row">
+                <span id="transaction_info">
+                    <div t-if="sale_order.get_portal_last_transaction() and not invoices and sale_order.state in ('sent', 'sale') and portal_confirmation == 'pay' and not success and not error"
+                        t-att-data-order-id="sale_order.id">
+                        <t t-if="sale_order.transaction_ids">
+                            <t t-call="payment.state_header">
+                            <t t-set="tx" t-value="sale_order.get_portal_last_transaction()"/>
+                        </t>
+                    </t>
+                    </div>
+                </span>
+                <!-- Information -->
+                <div id="sale_info" class="col-12 col-lg-6 mb-4">
+                    <span id="sale_info_title">
+                        <h5 class="mb-1">Contract Information</h5>
+                        <hr class="mt-1 mb-2"/>
+                    </span>
+                    <table class="table table-borderless table-sm">
+                        <tbody style="white-space:nowrap" id="sale_info_table">
+                            <tr>
+                                <th t-if="sale_order.state in ['sale', 'cancel']" class="ps-0 pb-0">Order Date:</th>
+                                <th t-else="" class="ps-0 pb-0">Date:</th>
+                                <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.date_order" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr t-if="sale_order.validity_date and sale_order.state in ['draft', 'sent']">
+                                <th class="ps-0 pb-0">Expiration Date:</th>
+                                <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.validity_date" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr t-if="sale_order.client_order_ref">
+                                <th class="ps-0 pb-0">Your Reference:</th>
+                                <td class="w-100 pb-0 text-wrap"><span t-field="sale_order.client_order_ref"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="property_info" class="col-12 col-lg-6 mb-4">
+                    <h5 class="mb-1">
+                        Property Information
+                    </h5>
+                    <hr class="mt-1 mb-2"/>
+                    <table class="table table-borderless table-sm">
+                        <tbody style="white-space:nowrap" id="property_info_table">
+                            <tr>
+                                <th>
+                                    Property
+                                </th>
+                                <td>
+                                    <t t-esc="sale_order.property_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Unit
+                                </th>
+                                <td>
+                                    <t t-esc="sale_order.unit_id.name"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <section id="boxes" class="row mb-4">
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <!-- Order Lines -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab-orderline"
+                                data-bs-toggle="tab"
+                                data-bs-target="#orderLine"
+                                type="button" role="tab">
+                            Order Lines
+                        </button>
+                    </li>
+
+                    <!-- Payment Plans -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-paymentPlan"
+                                data-bs-toggle="tab"
+                                data-bs-target="#paymentPlan"
+                                type="button" role="tab">
+                                Payment Plan
+                        </button>
+                    </li>
+
+                    <!-- Installment Plans -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-installmentPlan"
+                                data-bs-toggle="tab"
+                                data-bs-target="#installmentPlan"
+                                type="button" role="tab">
+                            Installment Plan
+                        </button>
+                    </li>
+
+                    <!-- Payment Schedules -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-paymentSchedule"
+                                data-bs-toggle="tab"
+                                data-bs-target="#paymentSchedule"
+                                type="button" role="tab">
+                            Payment Schedule
+                        </button>
+                    </li>
+                </ul>
+                <!-- Tab Content -->
+                <div class="tab-content mt-3">
+                    <!-- Order Lines Tab -->
+                    <div class="tab-pane fade show active" id="orderLine" role="tabpanel">
+                        <div id="details" style="page-break-inside: auto;">
+                            <t t-if="product_documents">
+                                <h4 id="details">Documents</h4>
+                                <div class="d-flex flex-grow-1 flex-wrap gap-1 mb32">
+                                    <t t-foreach="product_documents" t-as="document_sudo">
+                                        <div class="bg-light p-2 rounded">
+                                            <div class="position-relative text-center">
+                                                <t t-set="attachment_sudo" t-value="document_sudo.ir_attachment_id"/>
+                                                <t t-set="target" t-value="attachment_sudo.type == 'url' and '_blank' or '_self'"/>
+                                                <a t-att-href="sale_order.get_portal_url('/document/' + str(document_sudo.id))" t-att-target="target" class="d-flex flex-row">
+                                                    <div class="o_image"
+                                                            t-att-title="attachment_sudo.name"
+                                                            t-att-data-mimetype="attachment_sudo.mimetype"
+                                                            t-attf-data-src="/web/image/#{attachment_sudo.id}/100x80?access_token=#{attachment_sudo.access_token}"/>
+                                                    <div class="o_portal_product_document align-self-center" t-out="attachment_sudo.name"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+            
+                            <t t-set="display_discount" t-value="True in [line.discount > 0 for line in sale_order.order_line]"/>
+            
+                            <div id="order_line" class="table-responsive">
+                                <table t-att-data-order-id="sale_order.id" t-att-data-token="sale_order.access_token" class="table table-sm" id="sales_order_table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-start" id="product_name_header">Property</th>
+                                            <!-- <th class="text-end" id="product_qty_header">Quantity</th> -->
+                                            <th t-attf-class="text-end {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                Price
+                                            </th>
+                                            <th t-if="display_discount" t-attf-class="text-end {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                <span>Disc.%</span>
+                                            </th>
+                                            <th t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" id="taxes_header">
+                                                <span>Taxes</span>
+                                            </th>
+                                            <th class="text-end" id="subtotal_header">
+                                                <span>Amount</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+            
+                                        <t t-set="current_subtotal" t-value="0"/>
+                                        <t t-set="lines_to_report" t-value="sale_order._get_order_lines_to_report()"/>
+            
+                                        <t t-foreach="lines_to_report" t-as="line">
+            
+                                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+            
+                                            <tr
+                                                t-att-class="'fw-bold o_line_section' if (
+                                                    line.display_type == 'line_section'
+                                                    or line.product_type == 'combo'
+                                                )
+                                                else 'fst-italic o_line_note' if line.display_type == 'line_note'
+                                                else ''"
+                                            >
+                                                <t
+                                                    name="product_line_row"
+                                                    t-if="not line.display_type and line.product_type != 'combo'"
+                                                >
+                                                    <td id="product_name">
+                                                        <span t-field="line.name"/>
+                                                    </td>
+                                                    <!-- <td class="text-end" id="quote_qty_td">
+                                                        <div id="quote_qty">
+                                                            <span t-field="line.product_uom_qty"/>
+                                                            <span t-field="line.product_uom"/>
+                                                        </div>
+                                                    </td> -->
+                                                    <td t-attf-class="text-end {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                        <div
+                                                            t-if="line.discount &gt;= 0"
+                                                            t-field="line.price_unit"
+                                                            t-att-style="line.discount and 'text-decoration: line-through' or None"
+                                                            t-att-class="(line.discount and 'text-danger' or '') + ' text-end'"
+                                                        />
+                                                        <div t-if="line.discount">
+                                                            <t t-out="(1-line.discount / 100.0) * line.price_unit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                                        </div>
+                                                    </td>
+                                                    <td t-if="display_discount" t-attf-class="text-end {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
+                                                        <strong t-if="line.discount &gt; 0" class="text-info">
+                                                            <t t-out="((line.discount % 1) and '%s' or '%d') % line.discount"/>%
+                                                        </strong>
+                                                    </td>
+                                                    <td t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" id="taxes">
+                                                        <span t-out="', '.join(map(lambda x: (x.name), line.tax_id))"/>
+                                                    </td>
+                                                    <td t-if="not line.is_downpayment" class="text-end" id="subtotal">
+                                                    <span class="oe_order_line_price_subtotal" t-field="line.price_subtotal"/>
+                                                    </td>
+                                                </t>
+                                                <t t-if="line.display_type == 'line_section' or line.product_type == 'combo'">
+                                                    <td colspan="99">
+                                                        <span t-field="line.name"/>
+                                                    </td>
+                                                    <t t-set="current_section" t-value="line"/>
+                                                    <t t-set="current_subtotal" t-value="0"/>
+                                                </t>
+                                                <t t-if="line.display_type == 'line_note'">
+                                                    <td colspan="99">
+                                                        <span t-field="line.name"/>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                            <tr
+                                                t-if="current_section and (
+                                                    line_last
+                                                    or lines_to_report[line_index+1].display_type == 'line_section'
+                                                    or lines_to_report[line_index+1].product_type == 'combo'
+                                                    or (
+                                                        line.combo_item_id
+                                                        and not lines_to_report[line_index+1].combo_item_id
+                                                    )
+                                                ) and not line.is_downpayment"
+                                                class="is-subtotal text-end"
+                                            >
+                                                <t t-set="current_section" t-value="None"/>
+                                                <td colspan="99">
+                                                    <strong class="mr16">Subtotal</strong>
+                                                    <span t-out="current_subtotal"
+                                                        t-options='{"widget": "monetary", "display_currency": sale_order.currency_id}'
+                                                    />
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+            
+                            <div id="total" name="total" style="page-break-inside: avoid;">
+                                <div class="col-xs-7 col-md-5 ms-auto">
+                                    <t t-call="sale.sale_order_portal_content_totals_table"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Plans Tab -->
+                    <div class="tab-pane fade" id="paymentPlan" role="tabpanel">
+                        <div class="row mt-3">
+                            <!-- Breakdown Section -->
+                            <div class="col-12 col-lg-6 mb-4">
+                                <h5 class="mb-3">Breakdown</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-sm table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="ps-0">Unit Price</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.unit_price_amount"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Down Payment</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.down_payment_amount"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Pre-Handover Payment</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.pre_handover_amount"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">On-Handover Payment</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.on_handover_amount"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Post-Handover Payment</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.post_handover_amount"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Amount Per Installment</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.amount_per_installment"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Additional Fees Section -->
+                            <div class="col-12 col-lg-6 mb-4">
+                                <h5 class="mb-3">Additional Fees</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-sm table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="ps-0">Admin Fee</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.admin_fee"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Stamp Duty Fee</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.stamp_duty_fee"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Registration Fee</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.registration_fee"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Mutation Fee</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.mutation_fee"/></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="ps-0">Others Fees</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.others_fee"/></td>
+                                            </tr>
+                                            <tr class="fw-bold border-top border-bottom">
+                                                <th class="ps-0">Total Fees</th>
+                                                <td class="text-end pe-0"><span t-field="sale_order.total_fees"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Installment Plan Tab -->
+                    <div class="tab-pane fade" id="installmentPlan" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">Installment #</th>
+                                        <th class="text-start">Invoice Date</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-end">VAT</th>
+                                        <th class="text-start">Payment Date</th>
+                                        <th class="text-start">Invoice</th>
+                                        <th class="text-start">Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="sale_order.installment_ids" t-as="line">
+                                        <tr>
+                                            <td><span t-field="line.name"/></td>
+                                            <td class="text-start">
+                                                <span t-esc="line.invoice_date"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.amount"/>
+                                            </td>
+                                            <td class="text-end"><span t-field="line.vat"/></td>
+                                            <td class="text-start">
+                                                <span t-esc="line.payment_date"/>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.invoice_id">
+                                                    <a t-att-href="line.invoice_id.get_portal_url()">
+                                                        <span t-field="line.invoice_id.name"/>
+                                                    </a>
+                                                </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.payment_state" t-att-class="
+                                                    ('text-success' if line.payment_state == 'paid'
+                                                    else 'text-warning' if line.payment_state in ('in_payment', 'partial')
+                                                    else 'text-danger' if line.payment_state == 'not_paid'
+                                                    else 'text-secondary')
+                                                ">
+                                                    <t t-esc="line.payment_state"/>
+                                                </span>
+                                            </td>
+
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payment Schedules Tab -->
+                    <div class="tab-pane fade" id="paymentSchedule" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">Type</th>
+                                        <th class="text-start">Journal</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-start">Due Date</th>
+                                        <th class="text-start">Payment Method</th>
+                                        <th class="text-start">Bank</th>
+                                        <th class="text-start">Cheque No.</th>
+                                        <th class="text-center">Is PDC</th>
+                                        <th class="text-start">Payment</th>
+                                        <th class="text-center">Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="sale_order.payment_line_ids" t-as="line">
+                                        <tr>
+                                            <td class="text-start">
+                                                <span t-field="line.type_so"/>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-if="line.journal_id" t-esc="line.journal_id.name"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.amount"/>
+                                            </td>
+                                            <td class="text-start"><span t-field="line.due_date"/></td>
+                                            <td class="text-start">
+                                                <span t-if="line.payment_method_id" t-esc="line.payment_method_id.name"/>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.partner_bank_id">
+                                                    <span t-field="line.partner_bank_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-field="line.cheque_number"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.is_pdc" class="text-success">Yes</span>
+                                                <span t-if="not line.is_pdc" class="text-danger">No</span>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.payment_id">
+                                                    <span t-field="line.payment_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.payment_state" t-att-class="
+                                                    ('text-success' if line.payment_state == 'paid'
+                                                    else 'text-warning' if line.payment_state == 'in_process'
+                                                    else 'text-danger' if line.payment_state in ('canceled', 'rejected')
+                                                    else 'text-secondary')
+                                                ">
+                                                    <t t-esc="line.payment_state"/>
+                                                </span>
+                                            </td>
+
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            
+
+            <section t-if="sale_order.signature" id="signature" name="Signature">
+                <div class="row mt-4" name="signature">
+                    <div t-attf-class="#{'col-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ms-auto text-center">
+                        <h5>Signature</h5>
+                        <img t-att-src="image_data_uri(sale_order.signature)" style="max-height: 6rem; max-width: 100%;"/>
+                        <p t-field="sale_order.signed_by"/>
+                    </div>
+                </div>
+            </section>
+
+            <section t-if="not is_html_empty(sale_order.note)" id="terms" class="mt-4">
+                <h4 class="">Terms &amp; Conditions</h4>
+                <hr class="mt-0 mb-1"/>
+                <em t-field="sale_order.note"/>
+            </section>
+
+            <section t-if="sale_order.payment_term_id" class="mt-4">
+                <h4 class="">Payment terms</h4>
+                <hr class="mt-0 mb-1"/>
+                <span t-field="sale_order.payment_term_id.note"/>
+            </section>
+        </div>
+    </template>
+
+    <!-- ============================Rental============================= -->
+    <template id="rent_contracts_portal_template" name="Rental Contracts Portal Template">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Your Rental Contracts</t>
+            </t>
+            <t t-if="not contracts" class="alert alert-warning" role="alert">
+                There are currently no rental contracts for your account.
+            </t>
+
+            <t t-if="contracts" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class=''>Contracts#</span>
+                        </th>
+                        <th class="text-end">Duration</th>
+                        <th class="text-end">Start</th>
+                        <th class="text-end">End</th>
+                    </tr>
+                    <t t-foreach="contracts" t-as="contract">
+                        <tr>
+                            <td><a t-att-href="contract.get_portal_url()"><t t-out="contract.name"/></a></td>
+                            <td class="text-end">
+                                <span t-field="contract.duration_id.name"/>&amp;nbsp;
+                            </td>
+                            <td class="text-end">
+                                <span t-field="contract.start_date" t-options="{'widget': 'date'}"/>&amp;nbsp;
+                            </td>
+                            <td class="text-end">
+                                <span t-field="contract.end_date" t-options="{'widget': 'date'}"/>&amp;nbsp;
+                            </td>
+                        </tr>
+                    </t>
+                </thead>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================Rent Contract Content============================= -->
+    
+    <template id="portal_rent_contract_content" name="Rent Contract Portal Content">
+        <!-- Intro -->
+        <div id="introduction" t-attf-class="#{'border-bottom-0 pt-0 pb-3' if report_type == 'html' else ''}">
+            <div class="d-flex gap-2" id="intro_row">
+                <h2>
+                    Rental Contract -
+                    <em t-out="contract.name"/>
+                </h2>
+            </div>
+        </div>
+        <div id="content">
+            <div id="informations" class="row">
+                <!-- Contract Information -->
+                <div id="contract_info" class="col-12 col-lg-6 mb-4">
+                    <span id="contract_info_title">
+                        <h5 class="mb-1">Contract Information</h5>
+                        <hr class="mt-1 mb-2"/>
+                    </span>
+                    <table class="table table-borderless table-sm">
+                        <tbody style="white-space:nowrap" id="contract_info_table">
+                            <tr>
+                                <th class="ps-0 pb-0">Contract Number:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.name"/></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">Status:</th>
+                                <td class="w-100 text-end pb-0 text-wrap">
+                                    <span t-if="contract.state" t-att-class="
+                                        ('text-success' if contract.state == 'active'
+                                        else 'text-info' if contract.state == 'draft'
+                                        else 'text-warning' if contract.state in ('settled', 'expired')
+                                        else 'text-danger' if contract.state in ('terminated', 'cancel')
+                                        else 'text-secondary')
+                                    ">
+                                        <t t-if="contract.state == 'active'">Active</t>
+                                        <t t-elif="contract.state == 'draft'">Draft</t>
+                                        <t t-elif="contract.state == 'settled'">Settled</t>
+                                        <t t-elif="contract.state == 'expired'">Expired</t>
+                                        <t t-elif="contract.state == 'terminated'">Terminated</t>
+                                        <t t-elif="contract.state == 'done'">Done</t>
+                                        <t t-elif="contract.state == 'cancel'">Cancelled</t>
+                                        <t t-else=""><t t-esc="contract.state"/></t>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">Start Date:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.start_date" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">End Date:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.end_date" t-options='{"widget": "date"}'/></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">Duration:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.duration_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">Rent Amount:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.contract_value"/></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-0 pb-0">Payment Term:</th>
+                                <td class="w-100 text-end pb-0 text-wrap">
+                                    <t t-if="contract.payment_term == 'monthly'">Monthly</t>
+                                    <t t-elif="contract.payment_term == 'quarterly'">Quarterly</t>
+                                    <t t-elif="contract.payment_term == 'yearly'">Yearly</t>
+                                    <t t-else=""><span t-field="contract.payment_term"/></t>
+                                </td>
+                            </tr>
+                            <tr t-if="contract.security_deposit">
+                                <th class="ps-0 pb-0">Security Deposit:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.security_deposit"/></td>
+                            </tr>
+                            <!-- <tr t-if="contract.maintenance_charges">
+                                <th class="ps-0 pb-0">Maintenance Charges:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.maintenance_charges"/></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Partner Information -->
+                <div id="partner_info" class="col-12 col-lg-6 mb-4">
+                    <h5 class="mb-1">
+                        Tenant Information
+                    </h5>
+                    <hr class="mt-1 mb-2"/>
+                    <table class="table table-borderless table-sm">
+                        <tbody style="white-space:nowrap" id="partner_info_table">
+                            <tr>
+                                <th class="ps-0 pb-0">Tenant Name:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.partner_id.name"/></td>
+                            </tr>
+                            <tr t-if="contract.partner_id.email">
+                                <th class="ps-0 pb-0">Email:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.partner_id.email"/></td>
+                            </tr>
+                            <tr t-if="contract.partner_id.phone">
+                                <th class="ps-0 pb-0">Phone:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.partner_id.phone"/></td>
+                            </tr>
+                            <tr t-if="contract.partner_id.mobile">
+                                <th class="ps-0 pb-0">Mobile:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.partner_id.mobile"/></td>
+                            </tr>
+                            <tr t-if="contract.nationality">
+                                <th class="ps-0 pb-0">Nationality:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.nationality"/></td>
+                            </tr>
+                            <tr t-if="contract.responsible_id">
+                                <th class="ps-0 pb-0">Account Manager:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.responsible_id.name"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Landlord Information -->
+                <div t-if="contract.landlord_id" id="landlord_info" class="col-12 col-lg-6 mb-4">
+                    <h5 class="mb-1">
+                        Landlord Information
+                    </h5>
+                    <hr class="mt-1 mb-2"/>
+                    <table class="table table-borderless table-sm">
+                        <tbody style="white-space:nowrap" id="landlord_info_table">
+                            <tr t-if="contract.landlord_id">
+                                <th class="ps-0 pb-0">Name:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.landlord_id.name"/></td>
+                            </tr>
+                            <tr t-if="contract.landlord_id.email">
+                                <th class="ps-0 pb-0">Email:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.landlord_id.email"/></td>
+                            </tr>
+                            <tr t-if="contract.landlord_id.phone">
+                                <th class="ps-0 pb-0">Phone:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.landlord_id.phone"/></td>
+                            </tr>
+                            <tr t-if="contract.landlord_id.mobile">
+                                <th class="ps-0 pb-0">Mobile:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.landlord_id.mobile"/></td>
+                            </tr>
+                            <tr t-if="contract.landlord_id.street">
+                                <th class="ps-0 pb-0">Address:</th>
+                                <td class="w-100 text-end pb-0 text-wrap">
+                                    <span t-field="contract.landlord_id.street"/>
+                                    <span t-if="contract.landlord_id.street2" t-field="contract.landlord_id.street2"/>
+                                </td>
+                            </tr>
+                            <tr t-if="contract.landlord_id.city">
+                                <th class="ps-0 pb-0">City:</th>
+                                <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.landlord_id.city"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Property and Unit Information Full Width -->
+            <div id="property_unit_section" class="row">
+                <div class="col-12 mb-4">
+                    <div class="row">
+                        <!-- Property Information -->
+                        <div id="property_info" class="col-12 col-lg-6 mb-4">
+                            <h5 class="mb-1">
+                                Property Information
+                            </h5>
+                            <hr class="mt-1 mb-2"/>
+                            <table class="table table-borderless table-sm">
+                                <tbody style="white-space:nowrap" id="property_info_table">
+                                    <tr>
+                                        <th class="ps-0 pb-0">Property Name:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.property_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="contract.property_id.code">
+                                        <th class="ps-0 pb-0">Property Code:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.property_id.code"/></td>
+                                    </tr>
+                                    <tr t-if="contract.property_type_id">
+                                        <th class="ps-0 pb-0">Property Type:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.property_type_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="contract.property_id.construction_status">
+                                        <th class="ps-0 pb-0">Construction Status:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.property_id.construction_status"/></td>
+                                    </tr>
+                                    <tr t-if="contract.street">
+                                        <th class="ps-0 pb-0">Address:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap">
+                                            <span t-field="contract.street"/>
+                                            <span t-if="contract.street2" t-field="contract.street2"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="contract.city_id">
+                                        <th class="ps-0 pb-0">City:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.city_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="contract.state_id">
+                                        <th class="ps-0 pb-0">State:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.state_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="contract.country_id">
+                                        <th class="ps-0 pb-0">Country:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.country_id.name"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Unit Information -->
+                        <div id="unit_info" class="col-12 col-lg-6 mb-4">
+                            <h5 class="mb-1">
+                                Unit Information
+                            </h5>
+                            <hr class="mt-1 mb-2"/>
+                            <table class="table table-borderless table-sm">
+                                <tbody style="white-space:nowrap" id="unit_info_table">
+                                    <tr>
+                                        <th class="ps-0 pb-0">Unit Name:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.name"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.code">
+                                        <th class="ps-0 pb-0">Unit Code:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.code"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.floor">
+                                        <th class="ps-0 pb-0">Floor:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.floor"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.building">
+                                        <th class="ps-0 pb-0">Building:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.building"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.area_sqft">
+                                        <th class="ps-0 pb-0">Area (sqft):</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.area_sqft"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.area_sqm">
+                                        <th class="ps-0 pb-0">Area (sqm):</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.area_sqm"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.bedroom">
+                                        <th class="ps-0 pb-0">Bedrooms:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.bedroom"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.unit_type">
+                                        <th class="ps-0 pb-0">Unit Type:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap"><span t-field="contract.unit_id.unit_type"/></td>
+                                    </tr>
+                                    <tr t-if="contract.unit_id.state">
+                                        <th class="ps-0 pb-0">Unit Status:</th>
+                                        <td class="w-100 text-end pb-0 text-wrap">
+                                            <span t-att-class="
+                                                ('text-success' if contract.unit_id.state == 'available'
+                                                else 'text-info' if contract.unit_id.state == 'rented'
+                                                else 'text-warning' if contract.unit_id.state in ('booked', 'maintenance')
+                                                else 'text-danger' if contract.unit_id.state == 'sold'
+                                                else 'text-secondary')
+                                            ">
+                                                <t t-if="contract.unit_id.state == 'available'">Available</t>
+                                                <t t-elif="contract.unit_id.state == 'rented'">Rented</t>
+                                                <t t-elif="contract.unit_id.state == 'booked'">Booked</t>
+                                                <t t-elif="contract.unit_id.state == 'maintenance'">Maintenance</t>
+                                                <t t-elif="contract.unit_id.state == 'sold'">Sold</t>
+                                                <t t-else=""><t t-esc="contract.unit_id.state"/></t>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="boxes" class="row mb-4">
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs" id="rentalTab" role="tablist">
+                    <!-- Rent Installments -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab-installmentPlan"
+                                data-bs-toggle="tab"
+                                data-bs-target="#installmentPlan"
+                                type="button" role="tab">
+                            Rent Installments
+                        </button>
+                    </li>
+
+                    <!-- Payment Schedules -->
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-paymentSchedule"
+                                data-bs-toggle="tab"
+                                data-bs-target="#paymentSchedule"
+                                type="button" role="tab">
+                            Payment Schedules
+                        </button>
+                    </li>
+
+                    <!-- Contract Agreement -->
+                    <li t-if="contract.contract_agreement" class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-contractAgreement"
+                                data-bs-toggle="tab"
+                                data-bs-target="#contractAgreement"
+                                type="button" role="tab">
+                            Contract Agreement
+                        </button>
+                    </li>
+
+                    <!-- Terms & Conditions -->
+                    <li t-if="contract.terms_and_conditions" class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-termsConditions"
+                                data-bs-toggle="tab"
+                                data-bs-target="#termsConditions"
+                                type="button" role="tab">
+                            Terms &amp; Conditions
+                        </button>
+                    </li>
+                </ul>
+                <!-- Tab Content -->
+                <div class="tab-content mt-3">
+                    <!-- Rent Installments Tab -->
+                    <div class="tab-pane fade show active" id="installmentPlan" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">Type</th>
+                                        <th class="text-start">Invoice Date</th>
+                                        <th class="text-start">Description</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-start">Invoice</th>
+                                        <th class="text-center">Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="not contract.installment_ids">
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">No installments found</td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="contract.installment_ids" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <t t-if="line.invoice_type == 'rent'">Rent</t>
+                                                <t t-elif="line.invoice_type == 'maintenance'">Maintenance</t>
+                                                <t t-elif="line.invoice_type == 'deposit'">Deposit</t>
+                                                <t t-elif="line.invoice_type == 'penalty'">Penalty</t>
+                                                <t t-elif="line.invoice_type == 'fees'">Fees</t>
+                                                <t t-elif="line.invoice_type == 'other'">Other</t>
+                                                <t t-else=""><span t-field="line.invoice_type"/></t>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-field="line.invoice_date" t-options='{"widget": "date"}'/>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-field="line.description"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.amount"/>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.invoice_id">
+                                                    <a t-att-href="line.invoice_id.get_portal_url()">
+                                                        <span t-field="line.invoice_id.name"/>
+                                                    </a>
+                                                </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.payment_status" t-att-class="
+                                                    ('text-success' if line.payment_status == 'paid'
+                                                    else 'text-warning' if line.payment_status in ('in_payment', 'partial')
+                                                    else 'text-danger' if line.payment_status == 'not_paid'
+                                                    else 'text-secondary')
+                                                ">
+                                                    <t t-if="line.payment_status == 'paid'">Paid</t>
+                                                    <t t-elif="line.payment_status == 'in_payment'">In Payment</t>
+                                                    <t t-elif="line.payment_status == 'partial'">Partial</t>
+                                                    <t t-elif="line.payment_status == 'not_paid'">Not Paid</t>
+                                                    <t t-else=""><t t-esc="line.payment_status"/></t>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payment Schedules Tab -->
+                    <div class="tab-pane fade" id="paymentSchedule" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">Type</th>
+                                        <th class="text-start">Journal</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-start">Due Date</th>
+                                        <th class="text-start">Payment Method</th>
+                                        <th class="text-start">Bank</th>
+                                        <th class="text-start">Cheque No.</th>
+                                        <th class="text-center">Is PDC</th>
+                                        <th class="text-start">Payment</th>
+                                        <th class="text-center">Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="not contract.payment_schedule_ids">
+                                        <tr>
+                                            <td colspan="10" class="text-center text-muted">No payment schedules found</td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="contract.payment_schedule_ids" t-as="line">
+                                        <tr>
+                                            <td class="text-start">
+                                                <t t-if="line.type == 'rent'">Rent</t>
+                                                <t t-elif="line.type == 'maintenance'">Maintenance</t>
+                                                <t t-elif="line.type == 'deposit'">Deposit</t>
+                                                <t t-elif="line.type == 'penalty'">Penalty</t>
+                                                <t t-elif="line.type == 'fees'">Fees</t>
+                                                <t t-elif="line.type == 'other'">Other</t>
+                                                <t t-else=""><span t-field="line.type"/></t>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-if="line.journal_id" t-field="line.journal_id.name"/>
+                                            </td>
+                                            <td class="text-end">
+                                                <span t-field="line.amount"/>
+                                            </td>
+                                            <td class="text-start"><span t-field="line.due_date" t-options='{"widget": "date"}'/></td>
+                                            <td class="text-start">
+                                                <span t-if="line.payment_method_id" t-field="line.payment_method_id.name"/>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.partner_bank_id">
+                                                    <span t-field="line.partner_bank_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td class="text-start">
+                                                <span t-field="line.cheque_number"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.is_pdc" class="text-success">Yes</span>
+                                                <span t-if="not line.is_pdc" class="text-danger">No</span>
+                                            </td>
+                                            <td class="text-start">
+                                                <t t-if="line.payment_id">
+                                                    <span t-field="line.payment_id.name"/>
+                                                </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-if="line.payment_status" t-att-class="
+                                                    ('text-success' if line.payment_status in ('posted', 'paid')
+                                                    else 'text-warning' if line.payment_status in ('in_process', 'draft')
+                                                    else 'text-danger' if line.payment_status in ('canceled', 'rejected', 'cancel')
+                                                    else 'text-secondary')
+                                                ">
+                                                    <t t-if="line.payment_status == 'posted'">Posted</t>
+                                                    <t t-elif="line.payment_status == 'paid'">Paid</t>
+                                                    <t t-elif="line.payment_status == 'in_process'">In Process</t>
+                                                    <t t-elif="line.payment_status == 'draft'">Draft</t>
+                                                    <t t-elif="line.payment_status == 'canceled'">Cancelled</t>
+                                                    <t t-elif="line.payment_status == 'rejected'">Rejected</t>
+                                                    <t t-elif="line.payment_status == 'cancel'">Cancelled</t>
+                                                    <t t-else=""><t t-esc="line.payment_status"/></t>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Contract Agreement Tab -->
+                    <div class="tab-pane fade" id="contractAgreement" role="tabpanel" t-if="contract.contract_agreement">
+                        <div class="mt-3">
+                            <div t-field="contract.contract_agreement"/>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions Tab -->
+                    <div class="tab-pane fade" id="termsConditions" role="tabpanel" t-if="contract.terms_and_conditions">
+                        <div class="mt-3">
+                            <div t-field="contract.terms_and_conditions"/>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section t-if="contract.signed_agreement" id="signature" name="Signed Agreement">
+                <div class="row mt-4" name="agreement">
+                    <div class="col-12">
+                        <h5>Signed Agreement</h5>
+                        <a t-att-href="'/web/content/property.contract/' + str(contract.id) + '/signed_agreement?download=true'" class="btn btn-primary btn-sm">
+                            <i class="fa fa-download"/> Download Agreement
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <template id="rent_contract_portal_template" inherit_id="portal.portal_sidebar" primary="True" name="Rent Contract Portal Template">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert" groups="sales_team.group_sale_salesman">
+                <!-- Uses backend_url provided in rendering values -->
+                <t t-call="portal.portal_back_in_edit_mode"/>
+            </t>
+
+            <div class="row o_portal_sale_sidebar">
+                <t t-call="portal.portal_record_sidebar" id="rental_contract_portal_sidebar">
+                    <t t-set="classes" t-value="'col-lg-4 col-xxl-3 d-print-none'"/>
+                    <t t-set="title">
+                        <h2 t-field="contract.total_amount" data-id="total_amount" class="mb-0 text-break"/>
+                    </t>
+
+                    <t t-set="entries">                       
+                        <div class="navspy flex-grow-1 ps-0" t-ignore="true" role="complementary">
+                            <ul class="nav flex-column bs-sidenav"></ul>
+                        </div>
+                    </t>
+
+                    <div t-if="contract.responsible_id">
+                        <h6><small class="text-muted">Your contact</small></h6>
+                        <t t-call="portal.portal_my_contact">
+                            <t t-set="_contactAvatar" t-value="image_data_uri(contract.responsible_id.avatar_128)"/>
+                            <t t-set="_contactName" t-value="contract.responsible_id.name"/>
+                            <t t-set="_contactLink" t-value="True"/>
+                        </t>
+                    </div>
+                </t>
+
+                <!-- Page content -->
+                <div id="man-content" class="col-12 col-lg-8 col-xxl-9 mt-5 mt-lg-0">
+                    <!-- main content -->
+                    <div t-attf-class="#{'pb-5' if report_type == 'html' else ''}" id="portal_rent_contract_content">
+                        <div t-call="property_management_rental_sales.portal_rent_contract_content"/>
+                    </div>
+                </div>
+
+                <hr/>
+                <div id="sale_order_communication">
+                    <h3>Communication history</h3>
+                    <t t-call="portal.message_thread"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Fund Request Report Action -->
+        <record id="action_report_fund_request" model="ir.actions.report">
+            <field name="name">Fund Request Report</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">fund.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">nn_fund_management.report_fund_request_template</field>
+            <field name="print_report_name">'Fund Request - %s' % (object.request_number)</field>
+            <field name="binding_model_id" ref="model_fund_request"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+    </data>
+</odoo>

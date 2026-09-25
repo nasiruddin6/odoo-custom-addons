@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Primary Meta Tags -->
+    <title>Property Management - Manage Rent/Lease, Sales | Odoo 18 Real Estate ERP</title>
+    <meta name="description" content="Complete Odoo property management system for rental, lease, and sales. Manage properties, units, tenants, contracts, automated invoicing, payments, commissions, maintenance, and full accounting integration." />
+    <meta name="keywords" content="odoo property management, real estate erp, property rental software, lease management odoo, property sales system, tenant management, property accounting, real estate crm, commission management, maintenance tracking, odoo 18 property app" />
+
+    <meta name="author" content="Tectise" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Property Management - Manage Rent/Lease, Sales | Odoo 18 Real Estate ERP" />
+    <meta
+      property="og:image"
+      content="https://www.tectise.com/images/property-management-og.jpg"
+    />
+    <meta property="og:url" content="https://www.tectise.com/" />
+    <meta property="og:site_name" content="Tectise" />
+    <meta property="og:description" content="All-in-one Odoo property management system for rental, lease, and sales operations with tenant tracking, automated invoicing, and full accounting integration." />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Property Management - Manage Rent/Lease, Sales | Odoo 18 Real Estate ERP" />
+    <meta name="twitter:description" content="Complete property management solution for rental, lease, and sales operations with automated invoicing, tenant tracking, and full Odoo integration." />
+    <meta name="twitter:image" content="https://www.tectise.com/images/property-management-twitter.jpg" />
+    <meta name="twitter:site" content="@tectise" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.tectise.com/" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      .img-border {
+        border: 1px solid #ffc107;
+      }
+
+      .section-box {
+        padding: 30px 0;
+      }
+
+      .bg-teal {
+        background-color: #017e84 !important;
+      }
+
+      .bg-purple {
+        background-color: #875a7b !important;
+      }
+
+      /* Reusable badge style */
+      .badge-box {
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        margin: 3px;
+        border-radius: 50px;
+        min-width: 120px;
+      }
+    </style>
+  </head>
+
+  <body style="font-size: 22px">
+    <div class="container">
+      <!-- Header -->
+      <div class="row">
+        <div
+          class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between flex-wrap align-items-sm-center"
+          style="border-bottom: 1px solid rgba(0, 0, 0, 0.22)"
+        >
+          <div class="my-3">
+            <img
+              src="./icon/logo.png"
+              alt="Tectise Logo"
+              style="width: auto !important; height: 60px !important"
+            />
+          </div>
+          <div class="my-3 d-flex align-items-center">
+            <div
+              class="text-center"
+              style="
+                background-color: #017e84 !important;
+                font-size: 18px !important;
+                color: #fff !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Community
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #875a7b !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Enterprise
+            </div>
+            <div
+              class="text-center"
+              style="
+                background-color: #71639e !important;
+                color: #fff !important;
+                font-size: 18px !important;
+                font-weight: bolder !important;
+                padding: 4px !important;
+                margin: 0 3px !important;
+                border-radius: 50px !important;
+                min-width: 120px !important;
+              "
+            >
+              Odoo.sh
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!--
+    /*******************************************************************************************/
+     Header Section 
+     /*******************************************************************************************/
+     -->
+
+      <h1 style="text-align: center; font-size: 60px">
+        <b>Property Management - Manage Rent/Lease, Sales Contracts</b>
+      </h1>
+
+      <!-- <h2> <b>Description</b></h2> -->
+      <p class="small" style="font-size: 22px; text-align: center">
+       Complete Odoo Property Management System for managing rental, lease, and property sales in one unified platform. Streamline property and unit management, tenant contracts, automated rent invoicing, payment collection, lease renewals, contract settlements, broker commissions, maintenance requests, and property bookings. Fully integrated with Odoo Accounting, CRM, Sales, and Maintenance modules. Perfect for real estate companies, property developers, landlords, and property management agencies looking to automate operations, maximize revenue, and deliver exceptional tenant experiences.
+      </p>
+      <br />
+      <!-- banner_updated -->
+
+      <p class="text-center" style="font-size: 25px !important">
+        <a
+          href="https://www.youtube.com/watch?v=E0fbuHXIhz8"
+          target="_blank"
+          style="text-decoration: none; color: #e17055 !important"
+        >
+          <span
+            class="badge"
+            style="
+              border: 2px solid #e17055 !important;
+              border-radius: 7px !important;
+              color: #e17055 !important;
+              padding: 15px !important;
+              font-size: 20px !important;
+              font-weight: 900 !important;
+            "
+          >
+            <img
+              src="./icon/youtube-48x48.png"
+              class="img-fluid"
+              style="width: 35px; vertical-align: middle; margin-right: 5px"
+            />
+            How it works? Click here to watch video
+          </span>
+        </a>
+      </p>
+
+      <br />
+      <!-- Feature List -->
+      <div>
+        <h3 style="margin-bottom: 30px"><b>Key Features:</b></h3>
+        <ol>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Comprehensive Property & Unit Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Manage unlimited properties with multi-unit support. Track property details including type (apartment, villa, commercial), status (available, rented, sold), location, amenities, facilities, specifications, and connectivity options. Support for properties under construction or ready to move.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Flexible Rental & Lease Contract Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Create and manage rental/lease contracts with customizable durations, payment terms (monthly, quarterly, yearly), security deposits, and admin fees. Track contract lifecycle from draft to active, settled, expired, or terminated with automated status updates.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Property Sales & SPA (Sale & Purchase Agreement) Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Complete property sales workflow with booking management, EOI (Expression of Interest) payments, payment plan configuration, installment tracking, down payment handling, and sale order stages from offer received to registered and sold.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Automated Recurring Invoicing & Rent Collection</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Generate recurring rent invoices automatically based on contract payment terms. Track payment status, send reminders, and manage late fees. Create invoices for security deposits, utilities, admin fees, and other charges with full tax support.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Advanced Tenant & Customer Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Maintain detailed tenant profiles including contact details, nationality, profession, visa information, trade license, PO Box, and document expiry tracking. Support for tenant categorization and history tracking across multiple properties.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Broker & Agent Commission Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Automatically calculate and track broker commissions with flexible commission types (fixed or percentage-based) and brokerage types (one month or all months). Generate commission invoices and manage payments to real estate agents.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Contract Settlement & Renewal Automation</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Streamline contract settlements with automated calculations for deposits, utility bills, outstanding payments, and refunds. Support for contract renewals with updated terms and automatic notification system for expiring contracts.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Property Booking & Payment Plan Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Manage property bookings with configurable payment plans, down payment percentages, booking amounts, and fee structures (admin fee, stamp duty, registration fee, mutation fee). Track booking expiration and payment status.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Integrated Maintenance Request Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Seamlessly manage property and unit maintenance requests linked to Odoo Maintenance module. Track work orders, assign teams, monitor repair status, and maintain complete maintenance history for each property.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Real-Time Property Availability Dashboard</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Monitor property portfolio status in real-time with visual dashboards showing available, rented, leased, sold, booked, and under-maintenance units. Track occupancy rates and revenue metrics at a glance.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Full Odoo Accounting Integration</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Seamlessly integrated with Odoo Accounting for automatic journal entries, invoice generation, payment reconciliation, financial reporting, and P&L statements. Support for multi-currency and multi-company operations.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">CRM & Sales Pipeline Integration</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Link property inquiries directly from Odoo CRM leads and opportunities to available properties. Track sales pipeline stages from initial contact through negotiation, booking, agreement signing, to final registration.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Utility & Service Charge Management</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Track and bill for property utilities (electricity, water, gas, internet) and service charges. Configure utility products and automatically generate invoices based on consumption or fixed rates.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Detailed Unit Specifications & Attributes</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Define comprehensive unit details including floor/level, building/block, area (sqft/sqm), bedrooms, bathrooms, kitchen, living, dining, balconies, parking spaces, facing direction, and furnishing type (fully furnished, semi-furnished, unfurnished).
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Installment & Payment Plan Configuration</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Create flexible payment plans for property sales with customizable installment schedules, payment milestones, and automated invoice generation. Track installment payments and outstanding balances.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Multi-Currency & Multi-Company Support</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Manage properties across multiple companies and currencies. Support for international real estate operations with automatic currency conversion and company-specific pricing and policies.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Advanced Reporting & Analytics</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Generate comprehensive reports on occupancy rates, revenue analysis, contract expiry tracking, payment collections, commission calculations, and property performance metrics with customizable dashboards.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Document Management & Audit Trail</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Store and manage all property-related documents including contracts, tenant KYC documents, licenses, agreements, and brochures. Complete audit trail with activity tracking and change history for compliance.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Landlord & Developer Portal</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Dedicated portal for landlords and developers to track their properties, view revenue reports, monitor tenant contracts, and manage property portfolios with role-based access control.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="inline-item">
+              <h4 style="margin: 0">Geo-Location & Map Integration</h4>
+              <p style="margin: 2px; padding-bottom: 10px; font-size: 20px !important; color: #333;">
+                Store property GPS coordinates (latitude/longitude) for location-based searches and mapping features. Enhance property listings with accurate geographical information.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+      </div>
+
+      <h3 class="pt-4"><b>Module Screenshots</b></h3>
+      <!-- Screenshots -->
+      <div class="section-box">
+        <h3>1. Property Management Dashboard - View all properties, units, and their status at a glance</h3>
+        <img src="./images/1.png" alt="Property Management Dashboard" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>2. Property Details - Comprehensive property information with amenities, facilities, and specifications</h3>
+        <img src="./images/2.png" alt="Property Details View" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>3. Property Unit Management - Manage multiple units with detailed specifications and status tracking</h3>
+        <img src="./images/3.png" alt="Property Unit Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>4. Rental/Lease Contract Management - Create and manage rental contracts with payment terms and tenant details</h3>
+        <img src="./images/4.png" alt="Rental Lease Contract Management" class="img img-thumbnail img-border" />
+        <img src="./images/4-1.png" alt="Rental Lease Contract Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>5. Property Sales & SPA Management - Complete sales workflow from offer to registration</h3>
+        <img src="./images/5.png" alt="Property Sales SPA Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>6. Property Booking Management - Manage property bookings with payment plans and EOI tracking</h3>
+        <img src="./images/6.png" alt="Property Booking Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>7. Automated Rent Invoicing - Generate recurring invoices based on contract payment terms</h3>
+        <img src="./images/7.png" alt="Automated Rent Invoicing" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>8. Broker Commission Management - Track and calculate broker commissions automatically</h3>
+        <img src="./images/8.png" alt="Broker Commission Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>9. Contract Settlement - Streamline contract settlements with automated calculations</h3>
+        <img src="./images/9.png" alt="Contract Settlement" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>10. Tenant Management - Detailed tenant profiles with KYC, visa, and document tracking</h3>
+        <img src="./images/10.png" alt="Tenant Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>11. Payment Plan Configuration - Create flexible installment plans for property sales</h3>
+        <img src="./images/11.png" alt="Payment Plan Configuration" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>12. Maintenance Request Integration - Track property maintenance requests from Odoo Maintenance module</h3>
+        <img src="./images/12.png" alt="Maintenance Request Integration" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>13. CRM Integration - Link property sales opportunities from CRM to available properties</h3>
+        <img src="./images/13.png" alt="CRM Integration" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>14. Utility Management - Track and bill for property utilities and service charges</h3>
+        <img src="./images/14.png" alt="Utility Management" class="img img-thumbnail img-border" />
+      </div>
+
+      <div class="section-box">
+        <h3>15. Property Configuration - Configure property types, amenities, facilities, and specifications</h3>
+        <img src="./images/15.png" alt="Property Configuration" class="img img-thumbnail img-border" />
+      </div>
+      <!--
+    /*******************************************************************************************/
+     Footer Section 
+     /*******************************************************************************************/
+     -->
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-8 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                  >
+                    Free
+                    <span
+                      style="
+                        background-color: #dc3545;
+                        color: white;
+                        border-radius: 10rem;
+                        padding: 0.25em 0.6em;
+                        font-size: 25px;
+                      "
+                      >90 Days</span
+                    >
+                    Support
+                  </span>
+                  <p class="m-0" style="color: #718096">
+                    Tectise will provide FREE 90 days support for any doubt,
+                    queries, and bug fixing (excluding data recovery) or any
+                    type of issues related to this module. This is applicable
+                    from the date of purchase.
+                  </p>
+                  <div style="font-weight: 400"><span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-4 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/90-days-support.png"
+                  alt=""
+                  width="200px"
+                  style="margin-right: 12px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div
+          class="col-lg-12 d-flex flex-column justify-content-center align-items-center mt-5"
+        >
+          <img
+            src="./icon/logo.png"
+            alt="Tectise - Odoo Solutions Provider"
+            class="img-thumbnail"
+            style="width: 20%"
+          />
+        </div>
+      </div>
+
+      <div class="container my-5" style="border: 1px solid #ccc">
+        <div class="row" style="background-color: #fffafe">
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/support.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div style="padding: 0px 8px">
+                  <span
+                    style="
+                      color: #714b67;
+                      font-size: 24px;
+                      font-weight: 600;
+                      padding-bottom: 1rem;
+                    "
+                    >Need Any Help?</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Got questions or need help? Get in touch.
+                  </p>
+                  <div style="font-weight: 400">
+                    <span
+                      ><img
+                        src="./icon/email.png"
+                        alt=""
+                        width="18px"
+                        style="margin-right: 0.8rem" /></span
+                    >info.tectise@gmail.com
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6 pb-4 d-flex align-items-center justify-content-center"
+          >
+            <div style="padding: 30px">
+              <div class="d-flex align-items-center">
+                <img
+                  src="./icon/whatsapp.png"
+                  alt=""
+                  width="60px"
+                  style="margin-right: 12px"
+                />
+                <div>
+                  <span
+                    style="color: #714b67; font-size: 24px; font-weight: 600"
+                    >WhatsApp</span
+                  >
+                  <p class="m-0" style="color: #718096">
+                    Say hi to us on WhatsApp!
+                  </p>
+                  <div style="font-weight: 400; font-size: 16px">
+                    <span
+                      ><img
+                        src="./icon/call.png"
+                        alt=""
+                        width="14px"
+                        style="margin-right: 0.8rem" /></span
+                    >+8801903559562
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_fund_request_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="row mb32">
+                            <div class="col-md-12">
+                                <h2>
+                                    <strong>FUND REQUEST REPORT</strong>
+                                </h2>
+                                <hr/>
+                            </div>
+                        </div>
+                        
+                        <!-- Request Summary -->
+                        <div class="row mb32">
+                            <div class="col-md-6">
+                                <h4>
+                                    <strong>Request Details</strong>
+                                </h4>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Request Number:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.request_number"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Request Date:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.request_date.strftime('%d-%m-%Y')"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Status:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="dict(o._fields['status'].selection).get(o.status, o.status)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h4>
+                                    <strong>Employee Information</strong>
+                                </h4>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Employee Name:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.employee_name or 'N/A'"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Email:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.employee_id.email or 'N/A'"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Phone:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.employee_id.phone or 'N/A'"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Financial Details -->
+                        <div class="row mb32">
+                            <div class="col-md-12">
+                                <h4>
+                                    <strong>Financial Details</strong>
+                                </h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">Amount</th>
+                                            <th style="text-align: right;">
+                                                <t t-esc="'%.2f' % o.amount"/>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Purpose -->
+                        <div class="row mb32">
+                            <div class="col-md-12">
+                                <h4>
+                                    <strong>Purpose of Fund Request</strong>
+                                </h4>
+                                <div style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
+                                    <t t-esc="o.purpose"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Notes -->
+                        <t t-if="o.notes">
+                            <div class="row mb32">
+                                <div class="col-md-12">
+                                    <h4>
+                                        <strong>Additional Notes</strong>
+                                    </h4>
+                                    <div style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
+                                        <t t-esc="o.notes"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        
+                        <!-- Audit Information -->
+                        <div class="row mb32">
+                            <div class="col-md-12">
+                                <h4>
+                                    <strong>Audit Trail</strong>
+                                </h4>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Created By:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.created_by.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.last_modified_by">
+                                            <td>
+                                                <strong>Last Modified By:</strong>
+                                            </td>
+                                            <td>
+                                                <t t-esc="o.last_modified_by.name"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="row mt32">
+                            <div class="col-md-12">
+                                <hr/>
+                                <p style="text-align: center; font-size: 10pt; color: #888;">
+                                    <em>This is an automatically generated report. For official use only.</em>
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

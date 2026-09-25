@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ACTION -->
+        <record id="action_fund_request" model="ir.actions.act_window">
+            <field name="name">Fund Requests</field>
+            <field name="res_model">fund.request</field>
+            <field name="view_mode">tree,form</field>
+
+            <!-- FIX: correct way -->
+            <field name="search_view_id" ref="view_fund_request_search"/>
+
+            <field name="context">{}</field>
+        </record>
+
+        <!-- MAIN MENU -->
+        <menuitem id="menu_fund_management"
+                  name="Fund Management"
+                  sequence="50"/>
+
+        <!-- SUB MENU -->
+        <menuitem id="menu_fund_request"
+                  name="Fund Requests"
+                  parent="menu_fund_management"
+                  action="action_fund_request"
+                  sequence="10"/>
+
+    </data>
+</odoo>
