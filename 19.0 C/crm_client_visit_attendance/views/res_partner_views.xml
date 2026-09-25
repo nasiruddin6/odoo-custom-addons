@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit Partner Form View -->
+    <record id="view_partner_form_inherit_crm_visit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.crm.visit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Smart Button -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_visits"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-map-marker"
+                        invisible="visit_count == 0"
+                        groups="crm_client_visit_attendance.group_crm_visit_user">
+                    <field name="visit_count" widget="statinfo" string="Visits"/>
+                </button>
+            </xpath>
+
+            <!-- Add Visit Information in Sales & Purchase Tab -->
+            <xpath expr="//page[@name='sales_purchases']" position="inside">
+                <group string="Client Visits" name="client_visits">
+                    <field name="total_visits"/>
+                    <field name="completed_visits"/>
+                    <field name="last_visit_date"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Add action to partner -->
+    <record id="view_partner_form_action_schedule_visit" model="ir.ui.view">
+        <field name="name">res.partner.form.action.schedule.visit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_schedule_visit"
+                        type="object"
+                        class="btn-primary"
+                        string="Schedule Visit"
+                        groups="crm_client_visit_attendance.group_crm_visit_user"
+                        invisible="is_company == False"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

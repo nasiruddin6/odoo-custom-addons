@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']/.." position="after">
+                    <group string="Final Property Details">
+                        <group>
+                            <field name="property_id"/>
+                        </group>
+                        <group>
+                            <field name="unit_id" invisible="not unit_id" readonly="1" domain="[('property_id', '=', property_id)]"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="action_confirm_property" string="Confirm Property" type="object" class="oe_highlight" invisible="unit_id"/>
+                    <button name="action_confirm_property" string="Change Property" type="object" class="btn-secondary" invisible="not unit_id"/>
+                    <button name="action_create_contract" string="Create Contract" type="object" class="oe_highlight"/>
+                    <button name="action_schedule_visit" string="Schedule Visit" type="object" class="btn-secondary"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button name="action_view_contracts" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                        <field name="contract_count" widget="statinfo" string="Contracts"/>
+                    </button>
+                    <button name="action_view_visits" type="object" class="oe_stat_button" icon="fa-clock-o" invisible="not visit_id">
+                        <field name="visit_id" widget="statinfo" string="Visit"/>
+                    </button>
+                </xpath>
+                <xpath expr="//page[@name='extra']" position="after">
+                    <!-- PAGE 1: Client Property Requirement Details -->
+                    <page name="property_requirements" string="Property Requirements">
+                        <group>
+                            <group>
+                                <field name="requirement_type"/>
+                                <field name="property_category"/>
+                                <field name="property_type"/>
+                                <field name="purpose"/>
+                            </group>
+                            <group>
+                                <field name="bedroom_count"/>
+                                <field name="bathroom_count"/>
+                                <field name="floor_preference"/>
+                                <field name="facing"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="min_area" widget="float"/>
+                                <field name="max_area" widget="float"/>
+                                <field name="furnishing_status"/>
+                            </group>
+                            <group>
+                                <field name="preferred_location_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <separator string="Property Confirmation"/>
+                    </page>
+
+                    <!-- PAGE 2: Budget & Financial Details -->
+                    <page name="budget_financial" string="Budget &amp; Financial">
+                        <group>
+                            <group>
+                                <field name="currency_id"/>
+                                <field name="budget_min"/>
+                                <field name="budget_max"/>
+                                <field name="booking_amount"/>
+                            </group>
+                            <group>
+                                <field name="payment_mode"/>
+                                <field name="loan_required"/>
+                                <field name="bank_id"/>
+                                <field name="expected_roi"/>
+                                <field name="interested_property_ids" widget="many2many_tags" domain="[('property_id', '=', property_id), ('partner_id', '=', False), ('state', '=', 'available'), ('property_for', '=', requirement_type)]" string="Interested Properties"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <!-- PAGE 3: Rental-Specific Information -->
+                    <page name="rental_information" string="Rental Information">
+                        <group>
+                            <group>
+                                <field name="lease_duration"/>
+                                <field name="move_in_date"/>
+                                <field name="rent_frequency"/>
+                                <field name="tenant_type"/>
+                            </group>
+                            <group>
+                                <field name="furnishing_requirement"/>
+                                <field name="pets_allowed"/>
+                                <field name="security_deposit_budget"/>
+                                <field name="maintenance_budget"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <!-- PAGE 4: Sales-Specific Information -->
+                    <page name="sales_information" string="Sales Information">
+                        <group>
+                            <group>
+                                <field name="purchase_timeline"/>
+                                <field name="ownership_preference"/>
+                                <field name="construction_status"/>
+                                <field name="possession_date"/>
+                            </group>
+                            <group>
+                                <field name="registration_budget"/>
+                                <field name="tax_consideration"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <!-- PAGE 5: Client Profile & Qualification -->
+                    <page name="client_profile" string="Client Profile">
+                        <group>
+                            <group>
+                                <field name="client_type"/>
+                                <field name="nationality"/>
+                                <field name="employment_type"/>
+                                <field name="company_name"/>
+                            </group>
+                            <group>
+                                <field name="id_type"/>
+                                <field name="id_number"/>
+                                <field name="decision_maker"/>
+                                <field name="preferred_contact_time"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <!-- PAGE 6: Legal & Compliance -->
+                    <page name="legal_compliance" string="Legal &amp; Compliance">
+                        <group>
+                            <group>
+                                <field name="kyc_status"/>
+                                <field name="agreement_type"/>
+                                <field name="document_status"/>
+                            </group>
+                        </group>
+                        <group string="Compliance Notes">
+                            <field name="compliance_notes" nolabel="1"/>
+                        </group>
+                    </page>
+
+                    <!-- PAGE 7: Decision & Closing Indicators -->
+                    <page name="decision_closing" string="Decision &amp; Closing">
+                        <group>
+                            <group>
+                                <field name="interest_level"/>
+                                <field name="negotiation_status"/>
+                                <field name="expected_close_date"/>
+                            </group>
+                            <group>
+                                <field name="lost_reason_property"/>
+                            </group>
+                        </group>
+                        <group string="Deal Breakers">
+                            <field name="deal_breakers" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+</odoo>

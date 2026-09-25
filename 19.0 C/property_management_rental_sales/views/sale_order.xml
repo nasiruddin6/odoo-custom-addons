@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_property" model="ir.ui.view">
+			<field name="name">sale.order.form.inherit.property</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//sheet/div[@name='button_box']" position="before">
+					<widget name="web_ribbon" title="Sold" invisible="state != 'sold'"/>
+				</xpath>
+				<xpath expr="//field[@name='signed_by']" position="attributes">
+					<attribute name="readonly">state == 'sold'</attribute>
+				</xpath>
+				<xpath expr="//field[@name='signed_on']" position="attributes">
+					<attribute name="readonly">state == 'sold'</attribute>
+				</xpath>
+				<!--Online signature-->
+				<xpath expr="//page[@name='customer_signature']/group/field[@name='signature']" position="attributes">
+					<attribute name="widget">signature</attribute>
+				</xpath>
+
+				<!-- Button 1: The one with id='action_confirm' and class='btn-primary' (visible when state='sent') -->
+				<xpath expr="//button[@name='action_confirm' and @id='action_confirm']" position="attributes">
+					<attribute name="invisible">state != 'sent' or invoice_count &gt;= 1 or is_spa</attribute>
+				</xpath>
+
+				<!-- Button 2: The one without id (visible when state='draft') -->
+				<xpath expr="//button[@name='action_confirm' and not(@id)]" position="attributes">
+					<attribute name="invisible">state != 'draft' or invoice_count &gt;= 1 or is_spa</attribute>
+				</xpath>
+
+				<xpath expr="//button[@name='action_quotation_send']" position="attributes">
+					<attribute name="invisible">is_spa == True</attribute>
+				</xpath>
+
+				<xpath expr="//button[@name='action_confirm' and not(@id)]" position="after">
+					<button name="action_confirm_booking" string="Confirm" class="oe_highlight" type="object" invisible="state != 'draft' or not is_spa"/>
+					<button name="action_create_booking" string="Create Booking" class="btn btn-info" type="object" invisible="state != 'draft' or not is_spa or booking_id"/>
+					<button name="action_pay_eoi" string="Pay EOI" class="oe_highlight" type="object" invisible="not is_spa or eoi_payment_id != False or state == 'sold'"/>
+					<button name="action_send_for_kyc_verification" string="Send for KYC Verification" class="oe_highlight" type="object" invisible="state != 'booked'"/>
+					<button name="action_confirm_kyc_verification" string="Confirm Verification" class="oe_highlight" type="object" invisible="state != 'waiting_for_kyc'"/>
+					<button name="action_create_down_payment" string="Down Payment" class="oe_highlight" type="object" invisible="is_hide_down_payment_btn"/>
+					<button name="action_so_generate_installments" string="Generate Installments" class="oe_highlight" type="object" invisible="is_hide_installment_btn"/>
+					<button name="action_generate_invoice" string="Create Invoice" class="oe_highlight" type="object" invisible="state in ['draft', 'sold']"/>
+					<button name="action_send_for_payment" string="Send for Payment" class="oe_highlight" type="object" invisible="is_hide_payment_btn"/>
+					<button name="action_send_for_register" string="Send for Registration" class="oe_highlight" type="object" invisible="is_hide_register_btn"/>
+					<button name="action_confirm_registration" string="Confirm Registration" class="oe_highlight" type="object" invisible="state != 'waiting_registration'"/>
+					<button name="action_sale" string="Complete Sale" class="oe_highlight" type="object" invisible="state != 'registered'"/>
+					<field name="is_hide_down_payment_btn" invisible="1" readonly="state != 'draft'"/>
+					<field name="is_hide_installment_btn" invisible="1" readonly="state != 'draft'"/>
+					<field name="is_hide_payment_btn" invisible="1" readonly="state != 'draft'"/>
+					<field name="is_hide_register_btn" invisible="1" readonly="state != 'draft'"/>
+				</xpath>
+
+				<xpath expr="//button[@name='action_view_invoice']" position="attributes">
+					<attribute name="invisible">invoice_count == 0 or is_spa</attribute>
+				</xpath>
+
+				<xpath expr="//div[@name='button_box']" position="inside">
+					<button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="payment_count == 0">
+						<field name="payment_count" widget="statinfo" string="Payments" readonly="1"/>
+					</button>
+					<button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-bars" invisible="spa_invoice_count == 0">
+						<field name="spa_invoice_count" widget="statinfo" string="Invoices" readonly="1"/>
+					</button>
+					<button name="action_view_booking" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="not booking_id">
+						<field name="booking_id" widget="statinfo" string="Booking Form" readonly="state != 'draft'"/>
+					</button>
+				</xpath>
+
+				<xpath expr="//button[@name='action_cancel']" position="attributes">
+					<attribute name="invisible">state in ['draft', 'sale', 'sold', 'cancel'] or not id or locked</attribute>
+				</xpath>
+
+				<xpath expr="//field[@name='state']" position="after">
+					<field name="state" widget="statusbar" statusbar_visible="draft,offer_accepted,booked,payment,registration,sold" invisible="not is_spa" readonly="state != 'draft'"/>
+				</xpath>
+
+				<xpath expr="//field[@name='state']" position="attributes">
+					<attribute name="invisible">is_spa</attribute>
+				</xpath>
+
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<field name="is_spa" readonly="state != 'draft'"/>
+					<field name="property_id" readonly="1"/>
+					<field name="unit_id" readonly="1"/>
+				</xpath>
+				<xpath expr="//field[@name='payment_term_id']" position="after">
+					<field name="eoi_amount" readonly="state != 'draft'" invisible="not eoi_amount"/>
+					<field name="eoi_paid" readonly="1" invisible="1"/>
+					<field name="eoi_expiration" readonly="state != 'draft'" invisible="not eoi_expiration or not eoi_payment_id"/>
+					<field name="eoi_payment_id" readonly="1" invisible="1"/>
+					<field name="payment_plan_id" required="is_spa" readonly="state != 'draft'"/>
+				</xpath>
+
+				<page name="order_lines" position="after">
+					<page name="payment_plan" string="Payment Plan">
+						<header>
+							<button name="action_recompute" type="object" class="btn btn-secondary" string="Re-Compute" icon="fa-refresh"/>
+						</header>
+						<group>
+							<group name="breakdown" string="Breakdown">
+								<field name="unit_price_amount" widget="monetary" readonly="state != 'draft'"/>
+								<field name="down_payment_amount" widget="monetary" readonly="state != 'draft'"/>
+								<field name="pre_handover_amount" widget="monetary" readonly="state != 'draft'"/>
+								<field name="on_handover_amount" widget="monetary" readonly="state != 'draft'"/>
+								<field name="post_handover_amount" widget="monetary" readonly="state != 'draft'"/>
+								<field name="amount_per_installment" widget="monetary" readonly="state != 'draft'"/>
+								<field name="pre_handover_installment_count" invisible="pre_handover_installment_count == 0" readonly="state != 'draft'"/>
+								<field name="post_handover_installment_count" invisible="post_handover_installment_count == 0" readonly="state != 'draft'"/>
+							</group>
+
+							<group name="additional_fees" string="Additional Fees">
+								<field name="currency_id" invisible="1" readonly="state != 'draft'"/>
+								<field name="admin_fee" widget="monetary" readonly="state != 'draft'"/>
+								<field name="stamp_duty_fee" widget="monetary" readonly="state != 'draft'"/>
+								<field name="registration_fee" widget="monetary" readonly="state != 'draft'"/>
+								<field name="mutation_fee" widget="monetary" readonly="state != 'draft'"/>
+								<field name="others_fee" widget="monetary" readonly="state != 'draft'"/>
+								<field name="total_fees" widget="monetary" readonly="state != 'draft'"/>
+							</group>
+						</group>
+					</page>
+					<page string="Installment Plan">
+						<field name="installment_ids" readonly="state != 'draft'">
+							<list editable="bottom">
+								<field name="so_id" column_invisible="1"/>
+								<field name="currency_id" column_invisible="1"/>
+								<field name="name"/>
+								<field name="type" optional="hide"/>
+								<field name="due_date" optional="hide" widget="date"/>
+								<field name="invoice_date" optional="show" widget="date"/>
+								<field name="percentage" optional="show"/>
+								<field name="amount" widget="monetary"/>
+								<field name="vat" widget="monetary" optional="show"/>
+								<field name="paid_amount" widget="monetary" optional="hide"/>
+								<field name="due_amount" widget="monetary" optional="hide"/>
+								<field name="payment_date" widget="date" optional="show"/>
+								<field name="invoice_id" optional="show"/>
+								<field name="payment_state" optional="show" widget="badge" decoration-success="payment_state == 'paid'" decoration-warning="payment_state in ('in_payment', 'partial')" decoration-danger="payment_state == 'not_paid'"/>
+								<button name="action_create_invoice" type="object" class="oe_highlight btn btn-sm" string="Create Invoice" invisible="invoice_id != False"/>
+								<button name="action_view_invoice" class="oe_stat_button" type="object" title="View Invoice" icon="fa-external-link" help="View Invoice" invisible="not invoice_id"/>
+							</list>
+						</field>
+					</page>
+
+					<!-- Payments -->
+					<page name="payment_line" string="Payments Schedules">
+						<field name="payment_line_ids" readonly="state != 'draft'">
+							<list editable="bottom">
+								<field name="name" column_invisible="1"/>
+								<field name="currency_id" column_invisible="1"/>
+								<field name="so_id" column_invisible="1"/>
+								<field name="type_so" required="so_id"/>
+								<field name="journal_id"/>
+								<field name="amount"/>
+								<field name="due_date"/>
+								<field name="payment_method_id" widget="selection"/>
+								<field name="partner_bank_id"/>
+								<field name="cheque_number"/>
+								<field name="is_pdc"/>
+								<field name="payment_id" readonly="1"/>
+								<field name="payment_status" widget="badge" decoration-success="payment_status == 'paid'" decoration-warning="payment_status == 'in_process'" decoration-danger="payment_status in ['canceled', 'rejected']"/>
+								<button invisible="payment_id or amount &lt;= 0" name="action_create_payment" type="object" string="Create Payment" class="btn btn-primary btn-sm"/>
+								<button name="action_view_payment" class="oe_stat_button" type="object" title="View Payment" icon="fa-external-link" help="View Payment" invisible="not payment_id"/>
+							</list>
+						</field>
+					</page>
+
+				</page>
+
+			</field>
+		</record>
+
+		<!-- List view -->
+		 <record id="view_sale_order_tree_inherit" model="ir.ui.view">
+			<field name="name">view.sale.order.list.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.sale_order_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='state']" position="replace">
+					<field name="state"
+                    decoration-success="state in ['sale', 'sold']"
+                    decoration-info="state == 'draft'"
+                    decoration-primary="state == 'sent'"
+                    widget="badge"
+                    optional="hide"/>
+				</xpath>
+			</field>
+		 </record>
+
+		<record id="action_property_sales_contract" model="ir.actions.act_window">
+			<field name="name">Contracts</field>
+			<field name="res_model">sale.order</field>
+			<field name="domain">[('property_for', '=', 'sale')]</field>
+			<field name="context">{'default_state': 'draft'}</field>
+			<field name="view_mode">list,form</field>
+		</record>
+</odoo>

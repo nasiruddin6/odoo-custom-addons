@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search View -->
+    <record id="view_property_kyc_search" model="ir.ui.view">
+        <field name="name">property.kyc.search</field>
+        <field name="model">property.kyc</field>
+        <field name="arch" type="xml">
+            <search string="Property KYC">
+                <!-- Search Fields -->
+                <field name="full_name" string="Name" filter_domain="['|', ('full_name', 'ilike', self), ('parent_name', 'ilike', self)]"/>
+                <field name="so_id" string="Sales Order"/>
+                <field name="mobile_number"/>
+                <field name="email_address"/>
+                <field name="id_number" string="ID Number"/>
+                <field name="company_name" string="Company"/>
+                <field name="property_id" string="Project"/>
+                <field name="unit_id" string="Unit/Plot"/>
+
+                <!-- Filters -->
+                <separator/>
+                <filter string="Pending" name="pending" domain="[('kyc_status', '=', 'pending')]"/>
+                <filter string="Verified" name="verified" domain="[('kyc_status', '=', 'verified')]"/>
+                <filter string="Rejected" name="rejected" domain="[('kyc_status', '=', 'rejected')]"/>
+
+                <separator/>
+                <filter string="Single" name="single" domain="[('marital_status', '=', 'single')]"/>
+                <filter string="Married" name="married" domain="[('marital_status', '=', 'married')]"/>
+
+                <separator/>
+                <filter string="National ID" name="national_id" domain="[('id_type', '=', 'national_id')]"/>
+                <filter string="Passport" name="passport" domain="[('id_type', '=', 'passport')]"/>
+                <filter string="Driving License" name="driving_license" domain="[('id_type', '=', 'driving_license')]"/>
+
+                <separator/>
+                <filter string="Apartment" name="apartment" domain="[('property_type', '=', 'apartment')]"/>
+                <filter string="Villa" name="villa" domain="[('property_type', '=', 'villa')]"/>
+                <filter string="Commercial" name="commercial" domain="[('property_type', '=', 'commercial')]"/>
+                <filter string="Plot" name="plot" domain="[('property_type', '=', 'plot')]"/>
+
+                <separator/>
+                <filter string="This Month" name="this_month" domain="[('declaration_date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')), ('declaration_date', '&lt;=', (context_today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Year" name="this_year" domain="[('declaration_date', '&gt;=', (context_today() - relativedelta(month=1, day=1)).strftime('%Y-%m-%d')), ('declaration_date', '&lt;=', (context_today() + relativedelta(month=12, day=31)).strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_property_kyc_list" model="ir.ui.view">
+        <field name="name">property.kyc.list</field>
+        <field name="model">property.kyc</field>
+        <field name="arch" type="xml">
+            <list string="Property KYC">
+                <field name="full_name"/>
+                <field name="so_id"/>
+                <field name="mobile_number"/>
+                <field name="email_address"/>
+                <field name="id_type"/>
+                <field name="id_number"/>
+                <field name="property_type"/>
+                <field name="kyc_status" widget="badge" decoration-success="kyc_status == 'verified'" decoration-warning="kyc_status == 'pending'" decoration-danger="kyc_status == 'rejected'"/>
+                <field name="verification_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_property_kyc_form" model="ir.ui.view">
+        <field name="name">property.kyc.form</field>
+        <field name="model">property.kyc</field>
+        <field name="arch" type="xml">
+	        <form string="Property KYC Form">
+		        <header>
+			        <button name="action_confirm" type="object" string="Confirm"
+			                class="oe_highlight"
+			                invisible="kyc_status != 'pending'"/>
+			        <button name="action_reject" type="object" string="Reject"
+			                class="btn-secondary"
+			                invisible="kyc_status == 'rejected'"/>
+			        <button name="action_reset_to_pending" type="object" string="Reset to Pending"
+			                class="btn-secondary"
+			                invisible="kyc_status == 'pending'"/>
+			        <field name="kyc_status" widget="statusbar" readonly="1"/>
+		        </header>
+		        <sheet>
+			        <div class="oe_button_box" name="button_box">
+				        <!--                        <button name="%(base.action_attachment)d"-->
+				        <!--                                type="action"-->
+				        <!--                                class="oe_stat_button"-->
+				        <!--                                icon="fa-files-o"-->
+				        <!--                                context="{'default_res_model': 'property.kyc', 'default_res_id': id}">-->
+				        <!--                        </button>-->
+				        <button name="action_view_contract"
+				                type="object"
+				                class="oe_stat_button"
+				                icon="fa-files-o">
+					        <field name="so_id" widget="statinfo" string="Contract"/>
+				        </button>
+			        </div>
+
+			        <div class="oe_title">
+				        <h1>
+					        <field name="full_name" placeholder="Full Name"/>
+				        </h1>
+			        </div>
+
+			        <group>
+				        <group>
+					        <field name="so_id"/>
+				        </group>
+			        </group>
+
+			        <notebook>
+				        <!-- Tab 1: Applicant Information -->
+				        <page string="Applicant Information">
+					        <group>
+						        <group string="Personal Details">
+							        <field name="full_name"/>
+							        <field name="parent_name"/>
+							        <field name="date_of_birth"/>
+							        <field name="nationality"/>
+							        <field name="marital_status"/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 2: Contact Details -->
+				        <page string="Contact Details">
+					        <group>
+						        <group string="Contact Information">
+							        <field name="mobile_number"/>
+							        <field name="email_address" widget="email"/>
+						        </group>
+					        </group>
+					        <group>
+						        <group string="Address Information">
+							        <field name="current_address" placeholder="Enter current address..."/>
+							        <field name="permanent_address"
+							               placeholder="Enter permanent address (if different)..."/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 3: Identification Details -->
+				        <page string="Identification (KYC)">
+					        <group>
+						        <group string="ID Information">
+							        <field name="id_type"/>
+							        <field name="id_number"/>
+							        <field name="issuing_authority"/>
+							        <field name="id_expiry_date"/>
+						        </group>
+					        </group>
+					        <group>
+						        <group string="Documents">
+							        <field name="id_copy_front" widget="image" class="oe_avatar"/>
+							        <field name="id_copy_back" widget="image" class="oe_avatar"/>
+							        <field name="photograph" widget="image" class="oe_avatar"/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 4: Employment Information -->
+				        <page string="Employment / Business">
+					        <group>
+						        <group string="Employment Details">
+							        <field name="occupation"/>
+							        <field name="company_name"/>
+							        <field name="designation"/>
+						        </group>
+						        <group string="Income Information">
+							        <field name="monthly_income" widget="monetary"
+							               options="{'currency_field': 'currency_id'}" invisible="1"/>
+							        <field name="monthly_income"/>
+							        <field name="annual_income"/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 5: Property Details -->
+				        <page string="Property Details">
+					        <group>
+						        <group string="Property Information">
+							        <field name="property_id"/>
+							        <field name="unit_id"/>
+							        <field name="property_type"/>
+							        <field name="sales_offer_reference"/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 6: Source of Funds -->
+				        <page string="Source of Funds">
+					        <group>
+						        <group string="Fund Sources (Select all that apply)">
+							        <field name="fund_source_salary"/>
+							        <field name="fund_source_savings"/>
+							        <field name="fund_source_loan"/>
+							        <field name="fund_source_other"/>
+							        <field name="fund_source_other_desc" invisible="not fund_source_other"
+							               placeholder="Please specify other source..."/>
+						        </group>
+					        </group>
+				        </page>
+
+				        <!-- Tab 7: Declaration -->
+				        <page string="Declaration &amp; Consent">
+					        <group>
+						        <group>
+							        <field name="declaration_date"/>
+						        </group>
+					        </group>
+					        <group>
+						        <group string="Customer Signature">
+							        <field name="customer_signature" widget="image"/>
+						        </group>
+					        </group>
+					        <group>
+						        <div class="alert alert-info" role="alert">
+							        <strong>Declaration:</strong>
+							        <p>I hereby declare that the information provided above is true and correct to the
+								        best of my knowledge.
+								        I authorize the company to verify my information for property sale compliance
+								        purposes.
+							        </p>
+						        </div>
+					        </group>
+				        </page>
+
+				        <!-- Tab 8: Verification -->
+				        <page string="Verification (Office Use)" groups="base.group_user">
+					        <group>
+						        <group string="Verification Details">
+							        <field name="kyc_status"/>
+							        <field name="verified_by"/>
+							        <field name="verification_date"/>
+						        </group>
+					        </group>
+					        <group>
+						        <group string="Remarks">
+							        <field name="verification_remarks" placeholder="Enter verification remarks..."/>
+						        </group>
+					        </group>
+				        </page>
+
+			        </notebook>
+		        </sheet>
+		        <chatter/>
+	        </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_property_kyc" model="ir.actions.act_window">
+        <field name="name">Property KYC</field>
+        <field name="res_model">property.kyc</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Property KYC record
+            </p>
+            <p>
+                Track and manage customer KYC information for property sales.
+            </p>
+        </field>
+    </record>
+
+</odoo>

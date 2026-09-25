@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for property.property -->
+        <record id="action_property_property" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">property.property</field>
+            <field name="view_mode">kanban,list,form</field>
+        </record>
+
+        <!-- Kanban view for property.property -->
+        <record id="view_property_property_kanban" model="ir.ui.view">
+            <field name="name">property.property.kanban</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_property">
+                    <field name="name"/>
+                    <field name="property_value"/>
+                    <field name="state"/>
+                    <field name="construction_status"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card o_kanban_record"
+                                 style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                                <!-- Property Image -->
+                                <div class="">
+                                    <field name="property_image" widget="image"/>
+                                </div>
+
+                                <!-- Property Info -->
+                                <div class="o_kanban_details" style="padding: 10px 14px;">
+                                    <div class="o_kanban_primary d-flex justify-between align-items-center mb-2">
+                                        <strong class="o_kanban_title"
+                                                style="font-size: 16px; font-weight: 600; color: #2c3e50;">
+                                            <field name="name"/>
+                                        </strong>
+                                        <span t-if="record.property_value.raw_value"
+                                              style="color: #16a085; font-weight: 600; font-size: 14px;">
+                                            (<t t-esc="record.property_value.value"/>
+                                            <field name="currency_id" invisible="1"/>)
+                                        </span>
+                                    </div>
+
+                                    <div class="o_kanban_subinfo"
+                                         style="font-size: 13px; color: #555; line-height: 1.6;">
+                                        <div>
+                                            <b>Type:</b>
+                                            <field name="property_type_id"/>
+                                        </div>
+                                        <div>
+                                            <b>For:</b>
+                                            <field name="property_for"/>
+                                        </div>
+                                        <div>
+                                            <b>State:</b>
+                                            <field name="state"/>
+                                        </div>
+                                        <div t-if="record.city.raw_value">
+                                            <b>City:</b>
+                                            <field name="city"/>
+                                        </div>
+                                        <div t-if="record.construction_status.raw_value">
+                                            <b>Status:</b>
+                                            <field name="construction_status"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Optional footer badges -->
+                                    <div class="o_kanban_footer mt-3" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <t t-if="record.property_for.raw_value == 'rent'">
+                                            <span class="badge text-white" style="background-color: #2980b9;">For Rent
+                                            </span>
+                                        </t>
+                                        <t t-if="record.property_for.raw_value == 'sale'">
+                                            <span class="badge text-white" style="background-color: #27ae60;">For Sale
+                                            </span>
+                                        </t>
+                                        <t t-if="record.property_for.raw_value == 'lease'">
+                                            <span class="badge text-white" style="background-color: #273c75;">For Lease
+                                            </span>
+                                        </t>
+                                        <t t-if="record.construction_status.raw_value == 'completed'">
+                                            <span class="badge text-white" style="background-color: #16a085;">Ready
+                                            </span>
+                                        </t>
+                                        <t t-if="record.construction_status.raw_value == 'under_construction'">
+                                            <span class="badge text-white" style="background-color: #f39c12;">Under
+                                                Construction
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- List (tree) view for property.property -->
+        <record id="view_property_property_list" model="ir.ui.view">
+            <field name="name">property.property.list</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <list string="Properties">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="property_type_id"/>
+                    <field name="property_for"/>
+                    <field name="landlord_id"/>
+                    <field name="city"/>
+                    <field name="state"/>
+                    <field name="website_published" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view for property.property -->
+        <record id="view_property_property_form" model="ir.ui.view">
+            <field name="name">property.property.form</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <form string="Property">
+                    <header>
+                        <button name="create_units" string="Create Units" type="object" class="oe_highlight"/>
+                        <button name="set_available" string="Available" type="object" invisible="state == 'available'"/>
+                        <button name="to_new" string="To New" type="object" invisible="state == 'new'"/>
+                        <button name="set_to_renovation" string="To Renovate" type="object"
+                                invisible="state not in ('available')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,available,renovate,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_units" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field name="unit_count" widget="statinfo" string="Units"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" readonly="state != 'new'"/>
+                                <field name="code" readonly="state != 'new'"/>
+                                <field name="property_type_id" readonly="state != 'new'"/>
+                                <field name="property_for" readonly="state != 'new'"/>
+                                <field name="website_published" readonly="state != 'new'" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="property_image" widget="image" class="oe_avatar" nolabel="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="General">
+                                <group>
+                                    <group>
+                                        <field name="total_units" readonly="1"/>
+                                        <field name="available_units" readonly="1"/>
+                                        <field name="rented_units" readonly="1"/>
+                                        <field name="leased_units" readonly="1"/>
+                                        <field name="sold_units" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="area_size" readonly="state != 'new'"/>
+                                        <field name="land_area" readonly="state != 'new'"/>
+                                        <field name="built_up_area" readonly="state != 'new'"/>
+                                        <field name="carpet_area" readonly="state != 'new'"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="area_unit_size" readonly="state != 'new'"/>
+                                        <field name="category_id" readonly="state != 'new'"/>
+                                        <field name="furnish_type_id" readonly="state != 'new'"/>
+                                        <field name="area_type_id" readonly="state != 'new'"/>
+                                    </group>
+                                    <group string="Construction Information">
+                                        <field name="construction_status" readonly="state != 'new'"/>
+                                        <field name="construction_year" readonly="state != 'new'"
+                                               widget="char" pattern="[0-9]*" inputmode="numeric"/>
+                                        <field name="date_of_listing" readonly="state != 'new'"/>
+                                        <field name="property_value" readonly="state != 'new'"/>
+                                        <field name="currency_id" readonly="state != 'new'"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Address &amp; Contact">
+                                <group string="Property Address">
+                                    <group>
+                                        <field name="street" readonly="state != 'new'"/>
+                                        <field name="street2" readonly="state != 'new'"/>
+                                        <field name="city" readonly="state != 'new'" invisible="1"/>
+                                        <field name="city_id" readonly="state != 'new'"/>
+                                        <field name="zip" readonly="state != 'new'"/>
+                                    </group>
+                                    <group>
+                                        <field name="state_id" readonly="state != 'new'"/>
+                                        <field name="country_id" readonly="state != 'new'"/>
+                                        <field name="latitude" readonly="state != 'new'"/>
+                                        <field name="longitude" readonly="state != 'new'"/>
+                                    </group>
+                                </group>
+                                <group string="Contacts">
+                                    <group>
+                                        <field name="developer_id" readonly="state != 'new'"/>
+                                        <field name="company_id" readonly="state != 'new'"/>
+                                    </group>
+                                    <group>
+                                        <field name="landlord_id" readonly="state != 'new'" options="{'no_create': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Features">
+                                <group>
+                                    <field name="amenity_ids" widget="many2many_tags" readonly="state != 'new'"/>
+                                    <field name="connectivity_ids" widget="many2many_tags" readonly="state != 'new'"/>
+                                    <field name="specification_ids" widget="many2many_tags" readonly="state != 'new'"/>
+                                    <field name="tag_ids" widget="many2many_tags" readonly="state != 'new'"/>
+                                </group>
+                                <group>
+                                    <field name="facility_ids" widget="many2many_tags" readonly="state != 'new'"/>
+                                </group>
+                            </page>
+
+                            <page string="Media &amp; Documents">
+                                <group>
+                                    <field name="brochure" readonly="state != 'new'"/>
+                                </group>
+                            </page>
+
+                            <page string="Notes">
+                                <group>
+                                    <field name="description" colspan="2" readonly="state != 'new'"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="repair_order_form_inherit_technicians" model="ir.ui.view">
+        <field name="name">repair.order.form.inherit.technicians</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_repair_cancel']" position="after">
+                <button name="action_generate_technician_timesheet" type="object" string="Generate Technician Timesheet" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="technician_ids" widget="many2many_tags"/>
+                <field name="estimated_time"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='parts']" position="after">
+                <page string="Timesheet">
+                    <field name="analytic_account_ids">
+                        <list editable="bottom">
+                            <field name="date"/>
+                            <field name="employee_id"/>
+                            <field name="name"/>
+                            <field name="unit_amount"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

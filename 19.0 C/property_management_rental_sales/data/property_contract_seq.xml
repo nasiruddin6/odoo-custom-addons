@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="sequence_property_contract" model="ir.sequence">
+        <field name="name">Property Contract</field>
+        <field name="code">property.contract</field>
+        <field name="prefix">RENT/(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

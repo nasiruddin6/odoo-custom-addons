@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Lease Confirmation Email Template -->
+        <record id="email_template_lease_confirmation" model="mail.template">
+            <field name="name">Lease Confirmation</field>
+            <field name="model_id" ref="model_property_lease"/>
+            <field name="subject">Lease Confirmation - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.tenant_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ object.partner_id.name }},
+                        <br/><br/>
+                        We are pleased to confirm your lease agreement for the following property:
+                        <br/><br/>
+                        <strong>Lease Details:</strong>
+                        <ul>
+                            <li><strong>Lease ID:</strong> {{ object.name }}</li>
+                            <li><strong>Property:</strong> {{ object.property_id.name }}</li>
+                            <li><strong>Unit:</strong> {{ object.unit_id.name }}</li>
+                            <li><strong>Start Date:</strong> {{ format_date(object.start_date) }}</li>
+                            <li><strong>End Date:</strong> {{ format_date(object.end_date) }}</li>
+                            <li><strong>Rent Amount:</strong> {{ object.rent_amount }} {{ object.currency_id.symbol }}</li>
+                            <li><strong>Payment Schedule:</strong> {{ dict(object._fields['payment_schedule'].selection).get(object.payment_schedule) }}</li>
+                            <li><strong>Security Deposit:</strong> {{ object.security_deposit }} {{ object.currency_id.symbol }}</li>
+                        </ul>
+                        <br/>
+                        Please review the attached lease agreement and keep it for your records.
+                        <br/><br/>
+                        If you have any questions, please contact us at {{ object.company_id.email or object.company_id.phone }}.
+                        <br/><br/>
+                        Thank you,
+                        <br/>
+                        {{ object.company_id.name }}
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <!-- Lease Renewal Reminder Email Template -->
+        <record id="email_template_lease_renewal_reminder" model="mail.template">
+            <field name="name">Lease Renewal Reminder</field>
+            <field name="model_id" ref="model_property_lease"/>
+            <field name="subject">Lease Renewal Reminder - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.tenant_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ object.partner_id.name }},
+                        <br/><br/>
+                        This is a reminder that your lease agreement is expiring soon:
+                        <br/><br/>
+                        <strong>Lease Details:</strong>
+                        <ul>
+                            <li><strong>Lease ID:</strong> {{ object.name }}</li>
+                            <li><strong>Property:</strong> {{ object.property_id.name }}</li>
+                            <li><strong>Unit:</strong> {{ object.unit_id.name }}</li>
+                            <li><strong>End Date:</strong> {{ format_date(object.end_date) }}</li>
+                            <li><strong>Days Remaining:</strong> {{ object.days_remaining }} days</li>
+                        </ul>
+                        <br/>
+                        If you wish to renew your lease, please contact us as soon as possible.
+                        <br/><br/>
+                        Thank you,
+                        <br/>
+                        {{ object.company_id.name }}
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <!-- Lease Expiry Email Template -->
+        <record id="email_template_lease_expiry" model="mail.template">
+            <field name="name">Lease Expiry Notification</field>
+            <field name="model_id" ref="model_property_lease"/>
+            <field name="subject">Lease Expired - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.tenant_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ object.partner_id.name }},
+                        <br/><br/>
+                        Your lease agreement has expired:
+                        <br/><br/>
+                        <strong>Lease Details:</strong>
+                        <ul>
+                            <li><strong>Lease ID:</strong> {{ object.name }}</li>
+                            <li><strong>Property:</strong> {{ object.property_id.name }}</li>
+                            <li><strong>Unit:</strong> {{ object.unit_id.name }}</li>
+                            <li><strong>End Date:</strong> {{ format_date(object.end_date) }}</li>
+                        </ul>
+                        <br/>
+                        Please contact us to discuss your options regarding the property.
+                        <br/><br/>
+                        Thank you,
+                        <br/>
+                        {{ object.company_id.name }}
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <!-- Lease Termination Email Template -->
+        <record id="email_template_lease_termination" model="mail.template">
+            <field name="name">Lease Termination Notification</field>
+            <field name="model_id" ref="model_property_lease"/>
+            <field name="subject">Lease Terminated - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.tenant_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ object.partner_id.name }},
+                        <br/><br/>
+                        This is to inform you that your lease agreement has been terminated:
+                        <br/><br/>
+                        <strong>Lease Details:</strong>
+                        <ul>
+                            <li><strong>Lease ID:</strong> {{ object.name }}</li>
+                            <li><strong>Property:</strong> {{ object.property_id.name }}</li>
+                            <li><strong>Unit:</strong> {{ object.unit_id.name }}</li>
+                            <li><strong>Termination Date:</strong> {{ format_date(object.termination_date) }}</li>
+                            <li><strong>Reason:</strong> {{ object.termination_reason or 'Not specified' }}</li>
+                        </ul>
+                        <br/>
+                        Please contact us if you have any questions.
+                        <br/><br/>
+                        Thank you,
+                        <br/>
+                        {{ object.company_id.name }}
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <!-- Payment Reminder Email Template -->
+        <record id="email_template_payment_reminder" model="mail.template">
+            <field name="name">Lease Payment Reminder</field>
+            <field name="model_id" ref="model_property_lease"/>
+            <field name="subject">Payment Reminder - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.tenant_email }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ object.partner_id.name }},
+                        <br/><br/>
+                        This is a reminder that you have outstanding payments for your lease:
+                        <br/><br/>
+                        <strong>Lease Details:</strong>
+                        <ul>
+                            <li><strong>Lease ID:</strong> {{ object.name }}</li>
+                            <li><strong>Property:</strong> {{ object.property_id.name }}</li>
+                            <li><strong>Unit:</strong> {{ object.unit_id.name }}</li>
+                            <li><strong>Total Due:</strong> {{ object.total_due }} {{ object.currency_id.symbol }}</li>
+                            <li><strong>Total Paid:</strong> {{ object.total_paid }} {{ object.currency_id.symbol }}</li>
+                            <li><strong>Outstanding:</strong> {{ object.total_due - object.total_paid }} {{ object.currency_id.symbol }}</li>
+                        </ul>
+                        <br/>
+                        Please arrange for payment at your earliest convenience to avoid late fees.
+                        <br/><br/>
+                        Thank you,
+                        <br/>
+                        {{ object.company_id.name }}
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+</odoo>

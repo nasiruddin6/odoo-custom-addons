@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence for Property Contract -->
+        <record id="sequence_property_contract" model="ir.sequence">
+            <field name="name">Property Contract</field>
+            <field name="code">property.contract</field>
+            <field name="prefix">T/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Property Contract Form View -->
+        <record id="property_contract_view_form" model="ir.ui.view">
+            <field name="name">property.contract.form</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <form string="Contract">
+                    <header>
+                        <button name="action_generate_installments" string="Generate Installments" type="object"
+                                class="oe_highlight" invisible="state != 'draft' or property_for == 'sale'"/>
+                        <button name="action_activate_contract" string="Activate" type="object" class="oe_highlight"
+                                invisible="state != 'draft'"/>
+
+                        <button name="action_create_sale_order" string="Create Sales Order" type="object"
+                                invisible="property_for != 'sale' or state not in ('active', 'expired', 'terminated')"
+                                class="oe_highlight"/>
+                        <button name="action_expire_contract" string="Expire" type="object"
+                                invisible="state != 'active'" class="btn btn-danger"/>
+                        <button name="action_terminate_contract" string="Terminate" type="object"
+                                invisible="state != 'active'" class="btn btn-danger"/>
+                        <button name="action_create_invoice" string="Create Invoice" type="object"
+                                invisible="state not in ('active', 'expired', 'terminated')" class="btn btn-success"/>
+                        <button name="action_create_bill" string="Create Bill" type="object"
+                                invisible="state not in ('active', 'expired', 'terminated')" class="btn btn-success"/>
+                        <button name="action_contract_settlement" string="Contract Settlement" type="object"
+                                invisible="state not in ('active', 'expired', 'terminated') or property_for == 'sale'" class="btn btn-success"/>
+                        <button name="action_set_draft" string="Set to Draft" type="object"
+                                invisible="state not in ('active', 'expired', 'terminated')"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active,settled"/>
+                    </header>
+                    <sheet>
+	                    <div class="oe_button_box" name="button_box">
+		                    <button name="action_view_payments" type="object" class="oe_stat_button"
+		                            icon="fa-pencil-square-o" invisible="payment_count == 0">
+			                    <field name="payment_count" widget="statinfo" string="Payments"/>
+		                    </button>
+		                    <button name="action_view_invoices" type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+	                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+		                    <button name="action_view_credit_notes" type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o" invisible="not credit_note_count">
+	                            <field name="credit_note_count" widget="statinfo" string="Credit Notes"/>
+                            </button>
+	                        <button name="action_view_bills" type="object" class="oe_stat_button"
+                                    icon="fa-pencil-square-o">
+	                            <field name="bill_count" widget="statinfo" string="Bills"/>
+                            </button>
+                            <button name="action_view_settlements" type="object" class="oe_stat_button"
+                                    icon="fa-balance-scale" invisible="property_for == 'sale'">
+                                <field name="settlement_count" widget="statinfo" string="Settlements"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Contract Information">
+                                <field name="sale_price" invisible="property_for != 'sale'"/>
+                                <div class="o_row" invisible="property_for not in ('rent', 'lease')">
+                                    <div class="o_col_2">
+                                        <label for="contract_value" string="Rent Amount"
+                                               invisible="property_for not in ('rent', 'lease')"/>
+                                    </div>
+                                    <div class="o_col-6">
+                                        <field name="contract_value" nolabel="1" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                               readonly="state != 'draft'" invisible="property_for not in ('rent', 'lease')"/>
+                                    </div>
+                                    <div class="o_col-4">
+                                        <field name="rent_period" readonly="state != 'draft'"/>
+                                    </div>
+                                </div>
+
+                                <field name="security_deposit" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}" readonly="state != 'draft'"/>
+                                <field name="admin_fee" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}" readonly="state != 'draft'"/>
+                                <field name="payment_term" readonly="state != 'draft'"/>
+                                <field name="property_for" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="duration_id" readonly="state != 'draft'" domain="[('state', '=', 'confirm')]"/>
+                                <field name="start_date" readonly="state != 'draft'"/>
+                                <field name="end_date" readonly="1"/>
+                                <field name="duration_days"/>
+                                <field name="invoice_start_date" readonly="state != 'draft'"/>
+                                <field name="terminate_date" readonly="state != 'draft'" invisible="not terminate_date"/>
+                            </group>
+                        </group>
+
+                        <group string="Property Details">
+                            <group>
+                                <field name="property_id" readonly="state != 'draft'"/>
+                                <field name="unit_id" readonly="state != 'draft'"/>
+                                <field name="property_type_id"/>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="zip"/>
+                            </group>
+	                        <group>
+		                        <field name="landlord_id" readonly="state != 'draft'"/>
+		                        <field name="city_id"/>
+		                        <field name="state_id"/>
+		                        <field name="country_id"/>
+		                        <field name="company_id" readonly="state != 'draft'"/>
+	                        </group>
+                        </group>
+                        <group string="Tenant">
+	                        <group>
+		                        <field name="partner_id"
+		                               string="Tenant" readonly="state != 'draft'"/>
+		                        <field name="tenant_code"/>
+		                        <field name="email" widget="email"/>
+		                        <field name="phone" widget="phone"/>
+		                        <field name="mobile" widget="phone"/>
+	                        </group>
+	                        <group>
+		                        <field name="nationality"/>
+		                        <field name="profession"/>
+		                        <field name="trade_license_no"/>
+		                        <field name="license_expiry_date"/>
+		                        <field name="visa_type"/>
+		                        <field name="visa_expiry_date"/>
+		                        <field name="po_box_number"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="is_broker_commission" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Broker Details" invisible="not is_broker_commission">
+                            <group>
+                                <field name="broker_id" readonly="state != 'draft'"/>
+                                <field name="brokerage_type" widget="radio" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="commission_type" widget="radio" readonly="state != 'draft'"/>
+                                <field name="commission" widget="monetary" options="{'currency_field': 'currency_id'}"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="is_property_taxes" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Taxes" invisible="not is_property_taxes">
+                            <group>
+                                <field name="taxes_on_installment" readonly="state != 'draft'"/>
+                                <field name="taxes_on_deposit" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="tax_ids" widget="many2many_tags" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <group string="Agreement">
+                            <group>
+                                <field name="signed_agreement" widget="binary" filename="'agreement.pdf'"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="responsible_id" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Rent Installments" invisible="property_for == 'sale'">
+                                <field name="installment_ids" readonly="state != 'draft'">
+                                    <list editable="bottom">
+                                        <field name="invoice_date"/>
+                                        <field name="invoice_type"/>
+                                        <field name="description"/>
+                                        <field name="amount"/>
+                                        <field name="invoice_id" readonly="1"/>
+                                        <field name="payment_status" widget="badge"
+                                               decoration-success="payment_status == 'paid'"
+                                               decoration-warning="payment_status in ('in_payment', 'partial')"
+                                               decoration-danger="payment_status == 'not_paid'"/>
+                                        <button name="action_create_invoice" string="Create Invoice" type="object"
+                                                class="btn-primary" invisible="invoice_id or amount &lt;= 0"/>
+                                        <button name="action_view_invoice" class="oe_stat_button" type="object" title="View Invoice" icon="fa-external-link" help="View Invoice" invisible="not invoice_id"/>
+
+                                    </list>
+                                </field>
+                            </page>
+	                        <page string="Payment Schedules">
+		                        <field name="payment_schedule_ids" readonly="state != 'draft'">
+			                        <list editable="bottom">
+				                        <field name="name" column_invisible="1"/>
+				                        <field name="currency_id" column_invisible="1"/>
+				                        <field name="type" required="contract_id"/>
+				                        <field name="journal_id"/>
+				                        <field name="amount"/>
+				                        <field name="due_date"/>
+				                        <field name="payment_method_id" widget="selection"/>
+				                        <field name="partner_bank_id"/>
+				                        <field name="cheque_number"/>
+				                        <field name="is_pdc"/>
+				                        <field name="payment_id" readonly="1"/>
+				                        <field name="payment_status" widget="badge"
+				                               decoration-success="payment_status == 'paid'"
+				                               decoration-warning="payment_status == 'in_process'"
+				                               decoration-danger="payment_status in ['canceled', 'rejected']"/>
+				                        <button invisible="payment_id or amount &lt;= 0" name="action_create_payment" type="object" string="Create Payment" class="btn btn-primary btn-sm"/>
+                                        <button name="action_view_payment" class="oe_stat_button" type="object" title="View Payment" icon="fa-external-link" help="View Payment" invisible="not payment_id"/>
+			                        </list>
+		                        </field>
+	                        </page>
+	                        <page string="Contract Agreement">
+                                <field name="contract_agreement" readonly="state != 'draft'"/>
+                            </page>
+                            <page string="Terms &amp; Conditions">
+                                <field name="terms_and_conditions" readonly="state != 'draft'"/>
+                            </page>
+                            <page string="Others">
+                                <group string="Installment Item">
+                                    <group>
+                                        <field name="installment_product_id" readonly="state != 'draft'"/>
+                                        <field name="broker_product_id" readonly="state != 'draft'"/>
+                                    </group>
+                                    <group>
+                                        <field name="deposit_product_id" readonly="state != 'draft'"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="untaxed_amount"/>
+                            <field name="tax_amount"/>
+                            <field name="total_amount" class="oe_subtotal_footer_separator"/>
+                            <field name="paid_amount"/>
+                            <field name="remaining_amount" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Property Contract List View -->
+        <record id="property_contract_view_list" model="ir.ui.view">
+            <field name="name">property.contract.list</field>
+            <field name="model">property.contract</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="property_id"/>
+                    <field name="partner_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="contract_value"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action for Property Contract -->
+        <record id="action_property_renting_contract" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">property.contract</field>
+            <field name="domain">[('property_for', '=', 'rent')]</field>
+            <field name="context">{'default_state': 'draft', 'default_is_spa': True}</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_property_selling_contract" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">sale.order</field>
+            <field name="domain">[('unit_id', '!=', False)]</field>
+            <field name="context">{'default_state': 'draft'}</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_property_leasing_contract" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">property.contract</field>
+            <field name="domain">[('property_for', '=', 'lease')]</field>
+            <field name="context">{'default_state': 'draft'}</field>
+            <field name="view_mode">list,form</field>
+        </record>
+</odoo>

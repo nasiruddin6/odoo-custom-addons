@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Cron to Auto Create Invoices for Contracts -->
+        <record id="ir_cron_action_auto_create_invoices" model="ir.cron">
+            <field name="name">Create Invoices for Contract</field>
+            <field name="model_id" ref="model_property_invoice"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_auto_create_invoice()</field>
+            <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="True"/>
+        </record>
+
+	    <!--Cron Auto create payments for contract-->
+        <record id="ir_cron_action_auto_create_payments" model="ir.cron">
+            <field name="name">Create Payments for Contract</field>
+            <field name="model_id" ref="model_property_payment"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_action_create_scheduled_payment()</field>
+            <field name="interval_number">1</field>
+	        <field name="interval_type">days</field>
+	        <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron to Auto Create Invoices for SO Installments -->
+        <record id="ir_cron_action_auto_create_so_installment_invoices" model="ir.cron">
+            <field name="name">Create Invoices for SO Installments</field>
+            <field name="model_id" ref="model_so_installment_line"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_auto_create_invoice()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="active" eval="True"/>
+        </record>
+</odoo>

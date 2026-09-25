@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Maintenance Request Form View -->
+    <record id="maintenance_request_view_form_property" model="ir.ui.view">
+        <field name="name">maintenance.request.form.property</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="before">
+                <field name="contract_id" options="{'no_create': True}"/>
+                <field name="unit_id" options="{'no_create': True}"/>
+                <field name="property_id" options="{'no_create': True}"/>
+                <field name="location_details"/>
+            </xpath>
+
+            <xpath expr="//field[@name='maintenance_team_id']" position="before">
+                <field name="partner_id" options="{'no_create': True}"/>
+                <field name="landlord_id" options="{'no_create': True}"/>
+                <field name="responsible_party"/>
+                <field name="is_warranty"/>
+                <field name="warranty_details" invisible="is_warranty == False"/>
+            </xpath>
+
+            <xpath expr="//field[@name='description']/.." position="before">
+                <page string="Images" name="images">
+                    <group>
+                        <group string="Before Images">
+                            <field name="before_images" widget="many2many_binary" nolabel="1"/>
+                        </group>
+                        <group string="After Images">
+                            <field name="after_images" widget="many2many_binary" nolabel="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="maintenance_request_view_tree_property" model="ir.ui.view">
+        <field name="name">maintenance.request.list.property</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-danger">maintenance_type == 'emergency'</attribute>
+                <attribute name="decoration-warning">priority == '2'</attribute>
+                <attribute name="decoration-info">maintenance_type == 'preventive'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="property_id" optional="show"/>
+                <field name="unit_id" optional="show"/>
+                <field name="partner_id" optional="hide"/>
+                <field name="maintenance_type" optional="show"/>
+                <field name="responsible_party" optional="hide"/>
+                <field name="estimated_cost" optional="hide"/>
+                <field name="actual_cost" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Maintenance Request Search View -->
+    <record id="maintenance_request_view_search_property" model="ir.ui.view">
+        <field name="name">maintenance.request.search.property</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="property_id"/>
+                <field name="unit_id"/>
+                <field name="contract_id"/>
+                <field name="partner_id"/>
+                <field name="landlord_id"/>
+                <field name="vendor_id"/>
+                <separator/>
+                <filter string="Emergency" name="emergency" domain="[('maintenance_type', '=', 'emergency')]"/>
+                <filter string="Repair" name="repair" domain="[('maintenance_type', '=', 'repair')]"/>
+                <filter string="Preventive" name="preventive" domain="[('maintenance_type', '=', 'preventive')]"/>
+                <filter string="Inspection" name="inspection" domain="[('maintenance_type', '=', 'inspection')]"/>
+                <separator/>
+                <filter string="Landlord Responsibility" name="landlord_resp"
+                        domain="[('responsible_party', '=', 'landlord')]"/>
+                <filter string="Tenant Responsibility" name="tenant_resp"
+                        domain="[('responsible_party', '=', 'tenant')]"/>
+                <separator/>
+                <filter string="Under Warranty" name="under_warranty" domain="[('is_warranty', '=', True)]"/>
+                <filter string="Recurring" name="recurring" domain="[('recurring_maintenance', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_property_maintenance_request" model="ir.actions.act_window">
+        <field name="name">Property Maintenance Requests</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_id" ref="maintenance.hr_equipment_request_view_tree"/>
+        <field name="context">{
+            'search_default_my_requests': True,
+            'default_user_id': uid,
+            }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new property maintenance request
+            </p>
+            <p>
+                Follow the process of the request and communicate with the tenant.
+            </p>
+        </field>
+    </record>
+
+</odoo>

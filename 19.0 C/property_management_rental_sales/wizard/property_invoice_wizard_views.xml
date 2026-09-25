@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_invoice_wizard_form_view" model="ir.ui.view">
+            <field name="name">property.invoice.wizard.form</field>
+            <field name="model">property.invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Invoice">
+                    <group>
+                        <field name="contract_id" readonly="1"/>
+                        <field name="property_id"/>
+                        <field name="unit_id"/>
+                        <field name="invoice_for"/>
+                        <field name="product_id" domain="[('type', '=', 'service')]"/>
+                        <field name="invoice_date"/>
+                        <field name="amount"/>
+                        <field name="invoice_description"/>
+                    </group>
+                    <footer>
+                        <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

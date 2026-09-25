@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_bill_wizard_form_view" model="ir.ui.view">
+            <field name="name">property.bill.wizard.form</field>
+            <field name="model">property.bill.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Bill">
+                    <group>
+                        <group>
+                            <field name="contract_id"/>
+                            <field name="partner_id"/>
+                            <field name="bill_for"/>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                            <field name="invoice_date"/>
+                            <field name="amount"/>
+                            <field name="tax_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Enter bill description..."/>
+                    </group>
+                    <footer>
+                        <button string="Create Bill" type="object" name="action_create_bill" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

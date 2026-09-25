@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Property Rent Product -->
+        <record id="product_property_rent" model="product.product">
+            <field name="name">Property Rent</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Property rental service charges</field>
+        </record>
+
+        <!-- Property Maintenance Product -->
+        <record id="product_property_maintenance" model="product.product">
+            <field name="name">Property Maintenance</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Property maintenance charges</field>
+        </record>
+
+        <!-- Property Deposit Product -->
+        <record id="product_property_deposit" model="product.product">
+            <field name="name">Property Deposit</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Property security deposit</field>
+        </record>
+
+        <!-- Property Penalty Product -->
+        <record id="product_property_penalty" model="product.product">
+            <field name="name">Property Penalty</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Property penalty charges for late payments or violations</field>
+        </record>
+
+        <!-- Property Other Charges Product -->
+        <record id="product_property_other" model="product.product">
+            <field name="name">Property Other Charges</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Other miscellaneous property charges</field>
+        </record>
+
+        <!-- Property Commission Product -->
+        <record id="product_property_commission" model="product.product">
+            <field name="name">Property Commission</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Property broker commission charges</field>
+        </record>
+
+        <!-- Property Down Payment Product -->
+        <record id="product_property_down_payment" model="product.product">
+            <field name="name">Property Down Payment</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Down payment for property booking</field>
+        </record>
+
+        <!-- Property Admin Fees Product -->
+        <record id="product_property_admin_fees" model="product.product">
+            <field name="name">Property Admin Fees</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Administrative fees related to property processing</field>
+        </record>
+
+        <!-- Property Stamp Duty Product -->
+        <record id="product_property_stamp_duty" model="product.product">
+            <field name="name">Property Stamp Duty</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Stamp duty fees for property transactions</field>
+        </record>
+
+        <!-- Property Registration Product -->
+        <record id="product_property_registration" model="product.product">
+            <field name="name">Property Registration</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Registration fees for property transfer</field>
+        </record>
+
+        <!-- Property Mutation Product -->
+        <record id="product_property_mutation" model="product.product">
+            <field name="name">Property Mutation Fees</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Mutation/transfer administrative fees</field>
+        </record>
+
+        <!-- Property Installment Before Handover Product -->
+        <record id="product_property_installment_before" model="product.product">
+            <field name="name">Property Installment (Before Handover)</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Installment payments made before handover</field>
+        </record>
+
+        <!-- Property Installment On Handover Product -->
+        <record id="product_property_installment_on" model="product.product">
+            <field name="name">Property Installment (On Handover)</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Installment payments due on handover</field>
+        </record>
+
+        <!-- Property Installment After Handover Product -->
+        <record id="product_property_installment_after" model="product.product">
+            <field name="name">Property Installment (After Handover)</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_services"/>
+            <field name="list_price">0.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
+            <field name="invoice_policy">order</field>
+            <field name="description">Installment payments made after handover</field>
+        </record>
+</odoo>

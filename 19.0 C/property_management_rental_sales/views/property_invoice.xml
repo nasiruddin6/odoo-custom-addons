@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_property_renting_invoice" model="ir.actions.act_window">
+            <field name="name">Renting Invoices</field>
+            <field name="path">renting-invoices</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">list,kanban,form,activity</field>
+            <field name="view_id" ref="account.view_out_invoice_tree"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">[('is_rent_invoice', '=', True), ('move_type', 'in', ['out_invoice', 'out_refund'])]</field>
+            <field name="context">{'default_move_type': 'out_invoice', 'default_is_rent_invoice': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Renting invoice
+                </p>
+                <p>
+                    Create invoices, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_property_selling_invoice" model="ir.actions.act_window">
+            <field name="name">Selling Invoices</field>
+            <field name="path">selling-invoices</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">list,kanban,form,activity</field>
+            <field name="view_id" ref="account.view_out_invoice_tree"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">[('is_sell_invoice', '=', True), ('move_type', 'in', ['out_invoice', 'out_refund'])]</field>
+            <field name="context">{'default_move_type': 'out_invoice', 'default_is_sell_invoice': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Renting invoice
+                </p>
+                <p>
+                    Create invoices, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_property_leasing_invoice" model="ir.actions.act_window">
+            <field name="name">leasing Invoices</field>
+            <field name="path">leasing-invoices</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">list,kanban,form,activity</field>
+            <field name="view_id" ref="account.view_out_invoice_tree"/>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="domain">[('is_lease_invoice', '=', True), ('move_type', 'in', ['out_invoice', 'out_refund'])]</field>
+            <field name="context">{'default_move_type': 'out_invoice', 'default_is_sell_invoice': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a Renting invoice
+                </p>
+                <p>
+                    Create invoices, register payments and keep track of the discussions with your customers.
+                </p>
+            </field>
+        </record>
+</odoo>

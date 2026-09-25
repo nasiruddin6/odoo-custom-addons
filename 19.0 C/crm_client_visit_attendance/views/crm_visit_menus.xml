@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu under CRM -->
+    <menuitem id="menu_crm_client_visit_root"
+              name="Client Visits"
+              parent="crm.crm_menu_root"
+              sequence="5"
+              groups="crm_client_visit_attendance.group_crm_visit_user"/>
+
+    <!-- My Visits Menu -->
+    <menuitem id="menu_crm_client_visit_my"
+              name="My Visits"
+              parent="menu_crm_client_visit_root"
+              action="action_crm_client_visit_my"
+              sequence="10"
+              groups="crm_client_visit_attendance.group_crm_visit_user"/>
+
+    <!-- All Visits Menu -->
+    <menuitem id="menu_crm_client_visit_all"
+              name="All Visits"
+              parent="menu_crm_client_visit_root"
+              action="action_crm_client_visit"
+              sequence="20"
+              groups="crm_client_visit_attendance.group_crm_visit_manager"/>
+
+    <!-- Visit Attendance Menu -->
+    <menuitem id="menu_crm_client_visit_attendance"
+              name="Visit Attendance"
+              parent="menu_crm_client_visit_root"
+              action="action_crm_client_visit_attendance"
+              sequence="30"
+              groups="crm_client_visit_attendance.group_crm_visit_manager"/>
+
+    <!-- Reports Menu -->
+    <menuitem id="menu_crm_client_visit_reports"
+              name="Reports"
+              parent="menu_crm_client_visit_root"
+              sequence="90"
+              groups="crm_client_visit_attendance.group_crm_visit_manager"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_crm_client_visit_config"
+              name="Configuration"
+              parent="crm.crm_menu_config"
+              sequence="100"
+              groups="crm_client_visit_attendance.group_crm_visit_manager"/>
+
+</odoo>
+

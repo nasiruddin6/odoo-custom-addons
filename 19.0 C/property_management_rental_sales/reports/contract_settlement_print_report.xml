@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_contract_settlement" model="ir.actions.report">
+            <field name="name">Contract Settlement</field>
+            <field name="model">contract.settlement</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">property_management_rental_sales.report_contract_settlement</field>
+            <field name="print_report_name">'Contract Settlement - %s' % (object.name)</field>
+        </record>
+
+        <template id="report_contract_settlement">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <h2 style="text-align:center;">Property Settlement Report</h2>
+                        <h3>Basic Information</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Settlement Ref:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.name"/>
+                            </td>
+                            <td>
+                                <strong>Settlement Date:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.settlement_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Contract:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.contract_id.name"/>
+                            </td>
+                            <td>
+                                <strong>Settlement Type:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.settlement_type"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Tenant:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.partner_id.name"/>
+                            </td>
+                            <td>
+                                <strong>Landlord:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.landlord_id.name"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Contract &amp; Rental Period</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Contract Start:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.contract_start_date"/>
+                            </td>
+                            <td>
+                                <strong>Contract End:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.contract_end_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Actual End Date:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.actual_end_date"/>
+                            </td>
+                            <td>
+                                <strong>Days Occupied:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.days_occupied"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Remaining Days:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.remaining_days"/>
+                            </td>
+                            <td>
+                                <strong>Rent Per Day:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.rent_per_day"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Financial Breakdown</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Total Contract Rent:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.total_rent"/>
+                            </td>
+                            <td>
+                                <strong>Occupied Rent:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.occupied_rent"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Paid Rent:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.paid_rent"/>
+                            </td>
+                            <td>
+                                <strong>Unpaid Rent:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.unpaid_rent"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Security Deposit:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.security_deposit"/>
+                            </td>
+                            <td>
+                                <strong>Deposit Deductions:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.deposit_deduction"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Deposit Refund:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.deposit_refund"/>
+                            </td>
+                            <td>
+                                <strong>Advance Rent Adjustment:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.advance_rent_adjustment"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Deductions &amp; Charges</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Maintenance/Repair:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.maintenance_charges"/>
+                            </td>
+                            <td>
+                                <strong>Utility:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.utility_charges"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Penalty:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.penalty_charges"/>
+                            </td>
+                            <td>
+                                <strong>Other Charges:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.other_charges"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Total Deductions:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.total_deductions"/>
+                            </td>
+                            <td>
+                                <strong>Net Payable:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.net_payable"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Property Condition &amp; Inspection</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Condition:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.property_condition"/>
+                            </td>
+                            <td>
+                                <strong>Inspection Date:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.inspection_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <strong>Inspection Notes:</strong>
+                                <t t-esc="doc.inspection_notes"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <strong>Damage Description:</strong>
+                                <t t-esc="doc.damage_description"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Approval &amp; Payment</h3>
+                        <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <strong>Approved By:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.approved_by.name"/>
+                            </td>
+                            <td>
+                                <strong>Approval Date:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.approval_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Payment Method:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.payment_method"/>
+                            </td>
+                            <td>
+                                <strong>Payment Date:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.payment_date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Bank Account:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.bank_account_id.acc_number"/>
+                            </td>
+                            <td>
+                                <strong>Payment Reference:</strong>
+                            </td>
+                            <td>
+                                <t t-esc="doc.payment_reference"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                        <h3>Attachments</h3>
+                        <ul>
+                        <t t-if="doc.settlement_agreement">
+                            <li>Settlement Agreement:
+                                <t t-esc="doc.settlement_agreement_filename"/>
+                            </li>
+                        </t>
+                        <t t-if="doc.inspection_report">
+                            <li>Inspection Report:
+                                <t t-esc="doc.inspection_report_filename"/>
+                            </li>
+                        </t>
+                        <t t-if="doc.handover_certificate">
+                            <li>Handover Certificate:
+                                <t t-esc="doc.handover_certificate_filename"/>
+                            </li>
+                        </t>
+                        <t t-if="doc.tenant_acknowledgement">
+                            <li>Tenant Acknowledgement:
+                                <t t-esc="doc.tenant_acknowledgement_filename"/>
+                            </li>
+                        </t>
+                        </ul>
+
+                        <div style="margin-top:20px; text-align:center;">
+                            <strong>Property Management Suite</strong>
+                            <br/>
+                            <span>Generated on
+                            </span>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+</odoo>

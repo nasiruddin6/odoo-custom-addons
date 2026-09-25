@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!--Res partner form view-->
+	<record id="view_res_partner_form_inherit" model="ir.ui.view">
+		<field name="name">view.res.partner.form.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='phone']" position="attributes">
+				<attribute name="string">Mobile</attribute>
+			</xpath>
+			<xpath expr="//sheet" position="before">
+				<header>
+					<button name="action_confirm_kyc_verification" type="object" class="oe_highlight" string="Confirm Verification" invisible="kyc_status not in ['pending', 'rejected']"/>
+					<button name="action_reject_kyc" type="object" class="btn-secondary" string="Reject" invisible="kyc_status != 'pending'"/>
+					<button name="action_pending" type="object" class="btn-secondary" string="Pending"/>
+					<button name="action_expire_kyc" type="object" class="btn-secondary" string="Expire"/>
+					<field name="kyc_status" readonly="1" widget="statusbar" statusbar_visible="pending,verified"/>
+				</header>
+			</xpath>
+			<xpath expr="//sheet/group" position="inside">
+				<group string="Additional Info" name="additional_info">
+					<field name="tenant_code"/>
+                    <field name="nationality"/>
+                    <field name="profession"/>
+                    <field name="trade_license_no"/>
+                    <field name="license_expiry_date"/>
+                    <field name="visa_type"/>
+                    <field name="visa_expiry_date"/>
+                    <field name="po_box_number"/>
+				</group>
+			</xpath>
+			<xpath expr="//notebook" position="inside">
+				<!-- KYC Page -->
+				<page string="KYC Information">
+					<group string="Applicant Information">
+						<group>
+							<field name="full_name"/>
+							<field name="parents_name"/>
+							<field name="date_of_birth"/>
+						</group>
+						<group>
+							<field name="nationality"/>
+							<field name="marital_status"/>
+						</group>
+					</group>
+
+					<group string="Identification Details (KYC)">
+						<group>
+							<field name="id_type"/>
+							<field name="id_number"/>
+							<field name="issuing_authority"/>
+							<field name="id_expiry_date"/>
+						</group>
+					</group>
+
+					<group string="Documents">
+						<group>
+							<field name="id_copy_front" widget="image" class="oe_avatar"/>
+							<field name="id_copy_back" widget="image" class="oe_avatar"/>
+						</group>
+						<group>
+							<field name="photograph" widget="image" class="oe_avatar"/>
+						</group>
+					</group>
+
+					<group string="Employment / Business Information">
+						<group>
+							<field name="monthly_income"/>
+						</group>
+						<group>
+							<field name="annual_income"/>
+						</group>
+					</group>
+
+					<group string="Source of Funds">
+						<group>
+							<field name="fund_source_salary"/>
+							<field name="fund_source_savings"/>
+							<field name="fund_source_loan"/>
+							<field name="fund_source_other"/>
+							<field name="fund_source_other_desc" invisible="not fund_source_other"
+							       placeholder="Please specify..."/>
+						</group>
+					</group>
+
+					<group string="Declaration &amp; Consent">
+						<group>
+							<field name="declaration_date"/>
+							<field name="customer_signature" widget="signature"/>
+						</group>
+					</group>
+
+					<group string="Verification (Office Use Only)" groups="base.group_user">
+						<group>
+							<field name="kyc_status"/>
+							<field name="verified_by"/>
+						</group>
+						<group>
+							<field name="verification_date"/>
+						</group>
+						<group colspan="2">
+							<field name="verification_remarks" placeholder="Enter verification remarks..."/>
+						</group>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="action_property_tenant" model="ir.actions.act_window">
+        <field name="name">Tenants</field>
+        <field name="path">tenants</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="domain">[('partner_type', '=', 'tenant')]</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_partner_type': 'tenant'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Tenants in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your Tenants.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_property_customer" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="path">property-customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="domain">[('partner_type', '=', 'customer')]</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_partner_type': 'customer'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Customers in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your Customers.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_property_landlord" model="ir.actions.act_window">
+        <field name="name">LandLords</field>
+        <field name="path">landlord</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="domain">[('partner_type', '=', 'landlord')]</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_partner_type': 'landlord'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a LandLords in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your LandLords.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_property_brokers" model="ir.actions.act_window">
+        <field name="name">Brokers</field>
+        <field name="path">brokers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <field name="domain">[('partner_type', '=', 'broker')]</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_partner_type': 'broker'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Brokers in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your Brokers.
+            </p>
+        </field>
+    </record>
+
+    <record id="res_partner_view_form_inherit_property" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.hr</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='function']" position="before">
+                <field name="partner_type" widget="radio"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

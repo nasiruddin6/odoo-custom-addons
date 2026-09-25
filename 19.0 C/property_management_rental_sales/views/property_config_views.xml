@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- property.agreement.template -->
+        <record id="action_property_agreement_template" model="ir.actions.act_window">
+            <field name="name">Agreement Templates</field>
+            <field name="res_model">property.agreement.template</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_agreement_template_list" model="ir.ui.view">
+            <field name="name">property.agreement.template.list</field>
+            <field name="model">property.agreement.template</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_agreement_template_form" model="ir.ui.view">
+            <field name="name">property.agreement.template.form</field>
+            <field name="model">property.agreement.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="content"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.amenities -->
+        <record id="action_property_amenities" model="ir.actions.act_window">
+            <field name="name">Amenities</field>
+            <field name="res_model">property.amenities</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_amenities_list" model="ir.ui.view">
+            <field name="name">property.amenities.list</field>
+            <field name="model">property.amenities</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_amenities_form" model="ir.ui.view">
+            <field name="name">property.amenities.form</field>
+            <field name="model">property.amenities</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.area.type -->
+        <record id="action_property_area_type" model="ir.actions.act_window">
+            <field name="name">Area Types</field>
+            <field name="res_model">property.area.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_area_type_list" model="ir.ui.view">
+            <field name="name">property.area.type.list</field>
+            <field name="model">property.area.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_area_type_form" model="ir.ui.view">
+            <field name="name">property.area.type.form</field>
+            <field name="model">property.area.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.city -->
+        <record id="action_property_city" model="ir.actions.act_window">
+            <field name="name">Cities</field>
+            <field name="res_model">property.city</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_city_list" model="ir.ui.view">
+            <field name="name">property.city.list</field>
+            <field name="model">property.city</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_city_form" model="ir.ui.view">
+            <field name="name">property.city.form</field>
+            <field name="model">property.city</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.connectivity -->
+        <record id="action_property_connectivity" model="ir.actions.act_window">
+            <field name="name">Connectivity</field>
+            <field name="res_model">property.connectivity</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_connectivity_list" model="ir.ui.view">
+            <field name="name">property.connectivity.list</field>
+            <field name="model">property.connectivity</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_connectivity_form" model="ir.ui.view">
+            <field name="name">property.connectivity.form</field>
+            <field name="model">property.connectivity</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.duration -->
+        <record id="action_property_duration" model="ir.actions.act_window">
+            <field name="name">Durations</field>
+            <field name="res_model">property.duration</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_duration_list" model="ir.ui.view">
+            <field name="name">property.duration.list</field>
+            <field name="model">property.duration</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="duration"/>
+                    <field name="duration_unit"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_duration_form" model="ir.ui.view">
+            <field name="name">property.duration.form</field>
+            <field name="model">property.duration</field>
+            <field name="arch" type="xml">
+                <form>
+	                <header>
+		                <button name="action_confirm_duration" string="Confirm" invisible="state != 'draft'"
+		                        type="object" class="oe_highlight"/>
+		                <button name="action_set_to_draft" string="Set to Draft" invisible="state != 'confirm'"
+		                        type="object" class="btn-secondary"/>
+		                <field name="state" widget="statusbar"
+		                       statusbar_visible="draft,confirm"/>
+	                </header>
+	                <sheet>
+                        <group>
+                            <field name="name" readonly="state == 'confirm'"/>
+                            <field name="duration" readonly="state == 'confirm'"/>
+                            <field name="duration_unit" readonly="state == 'confirm'"/>
+                            <field name="description" readonly="state == 'confirm'"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.furnish.type -->
+        <record id="action_property_furnish_type" model="ir.actions.act_window">
+            <field name="name">Furnish Types</field>
+            <field name="res_model">property.furnish.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_furnish_type_list" model="ir.ui.view">
+            <field name="name">property.furnish.type.list</field>
+            <field name="model">property.furnish.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_furnish_type_form" model="ir.ui.view">
+            <field name="name">property.furnish.type.form</field>
+            <field name="model">property.furnish.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.specification -->
+        <record id="action_property_specification" model="ir.actions.act_window">
+            <field name="name">Specifications</field>
+            <field name="res_model">property.specification</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_specification_list" model="ir.ui.view">
+            <field name="name">property.specification.list</field>
+            <field name="model">property.specification</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_specification_form" model="ir.ui.view">
+            <field name="name">property.specification.form</field>
+            <field name="model">property.specification</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.tags -->
+        <record id="action_property_tags" model="ir.actions.act_window">
+            <field name="name">Tags</field>
+            <field name="res_model">property.tags</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_tags_list" model="ir.ui.view">
+            <field name="name">property.tags.list</field>
+            <field name="model">property.tags</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_tags_form" model="ir.ui.view">
+            <field name="name">property.tags.form</field>
+            <field name="model">property.tags</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.type -->
+        <record id="action_property_type" model="ir.actions.act_window">
+            <field name="name">Property Types</field>
+            <field name="res_model">property.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_type_list" model="ir.ui.view">
+            <field name="name">property.type.list</field>
+            <field name="model">property.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_type_form" model="ir.ui.view">
+            <field name="name">property.type.form</field>
+            <field name="model">property.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- property.category -->
+        <record id="action_property_category" model="ir.actions.act_window">
+            <field name="name">Property Category</field>
+            <field name="res_model">property.category</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_category_list" model="ir.ui.view">
+            <field name="name">property.category.list</field>
+            <field name="model">property.category</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_category_form" model="ir.ui.view">
+            <field name="name">property.category.form</field>
+            <field name="model">property.category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+	                    <div class="oe_title">
+		                    <h1>
+			                    <field name="name" required="1" nolabel="1" placeholder="Property Category"/>
+		                    </h1>
+	                    </div>
+	                    <group>
+		                    <field name="description" nolabel="1" placeholder="Description"/>
+		                    <field name="active" invisible="1"/>
+	                    </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+	    <!--property.facilities-->
+	    <record id="view_property_facilities_list" model="ir.ui.view">
+		    <field name="name">property.facilities.list</field>
+		    <field name="model">property.facilities</field>
+		    <field name="arch" type="xml">
+			    <list editable="bottom" create="1" delete="1" multi_edit="1">
+				    <field name="name"/>
+				    <field name="active" column_invisible="1"/>
+			    </list>
+		    </field>
+	    </record>
+	    <record id="action_property_facilities" model="ir.actions.act_window">
+		    <field name="name">Property Facilities</field>
+		    <field name="res_model">property.facilities</field>
+		    <field name="view_mode">list</field>
+		    <field name="view_id" ref="view_property_facilities_list"/>
+	    </record>
+
+	    <!--property.unit.type-->
+	    <record id="action_property_unit_type" model="ir.actions.act_window">
+            <field name="name">Unit Types</field>
+            <field name="res_model">property.unit.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="view_property_unit_type_list" model="ir.ui.view">
+            <field name="name">property.unit.type.list</field>
+            <field name="model">property.unit.type</field>
+            <field name="arch" type="xml">
+                <list>
+	                <field name="name" string="Unit Type"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_property_unit_type_form" model="ir.ui.view">
+            <field name="name">property.unit.type.form</field>
+            <field name="model">property.unit.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+	                    <div class="oe_title">
+		                    <h1>
+			                    <field name="name" required="1" nolabel="1" placeholder="Unit Type"/>
+		                    </h1>
+	                    </div>
+	                    <group>
+		                    <group string="Attributes">
+			                    <field name="bedroom"/>
+			                    <field name="living"/>
+			                    <field name="dining"/>
+			                    <field name="kitchen"/>
+			                    <field name="bathroom"/>
+			                    <field name="balcony"/>
+			                    <field name="parking"/>
+			                    <field name="active" invisible="1"/>
+		                    </group>
+	                    </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+</odoo>

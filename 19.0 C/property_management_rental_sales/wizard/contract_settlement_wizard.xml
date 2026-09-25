@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Contract Settlement Wizard-->
+		<record id="view_contract_settlement_wizard_form" model="ir.ui.view">
+			<field name="name">view.contract.settlement.wizard.form</field>
+			<field name="model">contract.settlement.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="journal_id" required="1"/>
+								<field name="payment_method_id" required="1"/>
+								<field name="partner_bank_id"/>
+							</group>
+							<group>
+								<field name="amount" widget="monetary"/>
+								<field name="date"/>
+							</group>
+							<group string="Settlement Info">
+								<field name="partner_id" required="1" placeholder="Tenant" readonly="1"/>
+								<field name="property_id" readonly="1"/>
+								<field name="unit_id" readonly="1"/>
+								<field name="contract_id" readonly="1"/>
+							</group>
+							<group invisible="1">
+								<field name="currency_id"/>
+								<field name="type"/>
+								<field name="settlement_id"/>
+							</group>
+						</group>
+						<footer>
+							<button name="action_settlement" type="object" string="Settlement" class="oe_highlight"/>
+							<button special="cancel" string="Cancel" class="btn-secondary"/>
+						</footer>
+					</sheet>
+				</form>
+			</field>
+		</record>
+</odoo>

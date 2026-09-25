@@ -1,0 +1,49 @@
+/* Style for Purchase RFQ Notes HTML Field */
+
+/* Target the field container */
+.o_setting_right_pane .o_field_widget[name="purchase_rfq_note"] {
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Target the HTML field wrapper */
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] {
+    width: 100% !important;
+    min-height: 200px !important;
+    display: block !important;
+}
+
+/* Target the Odoo editor wrapper */
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] .o_html_field_wrapper {
+    width: 100% !important;
+    min-height: 200px !important;
+}
+
+/* Target the editable area in Odoo 19 */
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] .odoo-editor-editable {
+    min-height: 200px !important;
+    width: 100% !important;
+}
+
+/* Target any iframe or editor container */
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] iframe,
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] .note-editor,
+.o_setting_right_pane .o_field_html[name="purchase_rfq_note"] .note-editable {
+    width: 100% !important;
+    min-height: 200px !important;
+}
+
+/* Ensure parent div also takes full width */
+.o_setting_box .o_field_html[name="purchase_rfq_note"] {
+    width: 100% !important;
+}
+
+/* Additional specificity for the content-group container */
+.content-group > div[style*="width"] {
+    width: 100% !important;
+}
+
+.content-group .o_field_html {
+    width: 100% !important;
+}
+
