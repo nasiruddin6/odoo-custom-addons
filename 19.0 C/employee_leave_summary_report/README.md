@@ -1,50 +1,19 @@
 # Employee Leave Summary Report
 
-## Overview
-This module provides a comprehensive Employee Leave Summary Report with Excel export functionality for Odoo 19.
+Export an Excel summary of employee time off for a date range, selected employees, and leave status.
 
-## Features
-* Generate leave summary reports for selected employees
-* Filter by date range (From Date - To Date)
-* Filter by leave status (To Approve, Approved, Refused, etc.)
-* Multi-employee selection support
-* Professional Excel export with company branding
-* Display leave balance information
-* Department-wise employee details
+Depends on `hr` and `hr_holidays`. Requires the Python package `xlsxwriter`.
 
-## Report Columns
-* Badge ID
-* Employee Name
-* Department
-* Leave Start Date
-* Leave End Date
-* Leave Type
-* Total Leave Days
-* Leave Balance
-* Status
+## What it does
 
-## Usage
-1. Navigate to: **Time Off → Reporting → Leave Summary Report**
-2. Select date range (From Date and To Date)
-3. Choose employees (multiple selection supported)
-4. Select leave status filter
-5. Click "Export" to generate Excel report
+- Wizard filters: from date, to date, one or more employees, and leave status.
+- Excel columns: badge ID, employee name, department, start date, end date, leave type, total days, leave balance, and status.
+- Menu is limited to Time Off users.
 
-## Technical Details
-* **Module Name**: employee_leave_summary_report
-* **Odoo Version**: 19.0
-* **Dependencies**: hr, hr_holidays
-* **External Library**: xlsxwriter
+## How to check the UI
 
-## Installation
-Install required Python library:
-```bash
-pip install xlsxwriter
-```
-
-## Author
-Tectise
-
-## License
-LGPL-3
-
+1. Make sure at least one employee has time off in the date range you will use.
+2. Open **Time Off → Reporting → Leave Summary Report**.
+3. Set from date, to date, employees, and status, then click **Export**.
+4. Open the Excel file and match rows to the leaves in Odoo (dates, type, days, status).
+5. Run it again with a range that has no leaves and confirm the file still downloads cleanly.
